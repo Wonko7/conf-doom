@@ -76,22 +76,24 @@
 ;; parens & clojure:
 
 (after! smartparens
-  (add-hook! clojure-mode #'smartparens-strict-mode)
+        (add-hook! clojure-mode #'smartparens-strict-mode)
 
-  (setq evil-cleverparens-use-s-and-S nil)
+        (setq evil-cleverparens-use-s-and-S nil)
 
-  (use-package! evil-cleverparens
-    :init
-    (setq evil-move-beyond-eol t
-          evil-cleverparens-use-additional-bindings nil
-          ;; evil-cleverparens-swap-move-by-word-and-symbol t
-          ;; evil-cleverparens-use-regular-insert t
-          )
+        (use-package! evil-cleverparens
+                      :init
+                      (setq evil-move-beyond-eol t
+                            evil-cleverparens-use-additional-bindings nil
+                            ;; evil-cleverparens-swap-move-by-word-and-symbol t
+                            ;; evil-cleverparens-use-regular-insert t
+                            )
 
-    (add-hook! clojure-mode #'evil-cleverparens-mode)
-    (add-hook 'smartparens-enabled-hook #'evil-smartparens-mode)
-    ))
+                      (add-hook! clojure-mode #'evil-cleverparens-mode)
+                      (add-hook 'smartparens-enabled-hook #'evil-smartparens-mode)
+                      ))
 
+(add-hook! clojure-mode
+  (rainbow-delimiters-mode))
 
 ;; (after! clojure-mode
 ;;   (use-package! aggressive-indent
