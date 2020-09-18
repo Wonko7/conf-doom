@@ -1,8 +1,19 @@
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
+;;;
+(setq x-super-keysym 'meta)
+
 
 ;; Place your private configuration here! Remember, you do not need to run 'doom
 ;; sync' after modifying this file!
 
+(use-package! evil-escape
+  :init
+  (setq-default evil-escape-delay 0.3)
+  (setq evil-escape-key-sequence "jj"))
+
+;; (setq doom-localleader-alt-key "C-SPC")
+(setq avy-all-windows t)
+(setq projectile-project-search-path '("~/conf" "~/conf/private" "~/work"))
 
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
 ;; clients, file templates and snippets.
@@ -37,6 +48,11 @@
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type t)
 
+;; (map! ;:map general-override-mode-map
+      ;:nvm "<newleaderkey"> #'doom/leader
+      ;:ei "<alternative-newleaderkey"> #'doom/leader
+      ;; "s" 'avy-goto-char-2
+      ;; )
 
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;
