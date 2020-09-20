@@ -75,35 +75,40 @@
 
 ;; parens & clojure:
 
-(after! smartparens
-        (add-hook! clojure-mode #'smartparens-strict-mode)
+;; (after! smartparens
+;;         ;; (add-hook! clojure-mode #'smartparens-strict-mode)
+;;
+;;         ;; (setq evil-cleverparens-use-s-and-S nil)
+;;
+;;         (use-package! evil-cleverparens
+;;                       :init
+;;                       (setq evil-move-beyond-eol t
+;;                             evil-cleverparens-use-additional-bindings nil
+;;                             ;; evil-cleverparens-swap-move-by-word-and-symbol t
+;;                             ;; evil-cleverparens-use-regular-insert t
+;;                             )
+;;
+;;                       ;; (add-hook! clojure-mode #'evil-cleverparens-mode)
+;;                       ;; (add-hook! 'clojure-mode #'rainbow-delimiters-mode
+;;                       ;; (add-hook! 'smartparens-enabled-hook #'evil-smartparens-mode)
+;;                       ))
 
-        (setq evil-cleverparens-use-s-and-S nil)
+;;  (add-hook 'clojure-mode-hook #'rainbow-delimiters-mode)
+;;  (add-hook 'clojure-mode-hook #'evil-cleverparens-mode)
+;;  (add-hook 'clojure-mode-hook #'aggressive-indent-mode)
 
-        (use-package! evil-cleverparens
-                      :init
-                      (setq evil-move-beyond-eol t
-                            evil-cleverparens-use-additional-bindings nil
-                            ;; evil-cleverparens-swap-move-by-word-and-symbol t
-                            ;; evil-cleverparens-use-regular-insert t
-                            )
+(after! clojure-mode
+  (add-hook 'clojure-mode-hook #'rainbow-delimiters-mode)
+  (add-hook 'clojure-mode-hook #'evil-cleverparens-mode)
+  (add-hook 'clojure-mode-hook #'aggressive-indent-mode)
+  (setq clojure-indent-style 'align-arguments)
+  (setq clojure-align-forms-automatically t))
 
-                      (add-hook! clojure-mode #'evil-cleverparens-mode)
-                      (add-hook 'smartparens-enabled-hook #'evil-smartparens-mode)
-                      ))
-
-(add-hook! clojure-mode
-  (rainbow-delimiters-mode))
-
-;; (after! clojure-mode
-;;   (use-package! aggressive-indent
-;;     :config (add-hook! clojure-mode (aggressive-indent-mode 1))))
-
-(map! :after evil-cleverparens
-      :map clojure-mode-map
-      :localleader
-      (:desc "Wrap round" :n "(" #'sp-wrap-round
-       :desc "Wrap square" :n "[" #'sp-wrap-square
-       :desc "Wrap curly" :n "{" #'sp-wrap-curly
-       :desc "Unwrap sexp" :n "u" #'sp-unwrap-sexp
-       ))
+;; (map! :after evil-cleverparens
+;;       :map clojure-mode-map
+;;       :localleader
+;;       (:desc "Wrap round" :n "(" #'sp-wrap-round
+;;        :desc "Wrap square" :n "[" #'sp-wrap-square
+;;        :desc "Wrap curly" :n "{" #'sp-wrap-curly
+;;        :desc "Unwrap sexp" :n "u" #'sp-unwrap-sexp
+;;        ))
