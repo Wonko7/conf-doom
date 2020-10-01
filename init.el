@@ -14,6 +14,10 @@
 ;;      Alternatively, press 'gd' (or 'C-c c d') on a module to browse its
 ;;      directory (for easy access to its source code).
 
+(setq doom-leader-key "SPC"
+      ;doom-localleader-alt-key "SPC m"
+      doom-localleader-key "RET")
+
 (doom! :input
        ;;chinese
        ;;japanese

@@ -100,9 +100,27 @@
 (after! clojure-mode
   (add-hook 'clojure-mode-hook #'rainbow-delimiters-mode)
   (add-hook 'clojure-mode-hook #'evil-cleverparens-mode)
-  (add-hook 'clojure-mode-hook #'aggressive-indent-mode)
+  ;(add-hook 'clojure-mode-hook #'aggressive-indent-mode)
+  (add-hook 'clojure-mode-hook #'electric-indent-mode)
   (setq clojure-indent-style 'align-arguments)
   (setq clojure-align-forms-automatically t))
+
+;; (after! org
+;;   ;; (evil-set-leader 'global "SPC m" t)
+;;   ;; (evil-set-leader 'global "SPC m" t)
+;;   (setq doom-leader-key "SPC"
+;;       doom-localleader-key "RET")
+;;   ;;
+;;   )
+
+(map! :localleader
+      :map tuareg-mode-map
+      "RET" #'tuareg-eval-phrase
+      "b"   #'tuareg-eval-buffer
+      "TAB" #'tuareg-complete
+      "K"   #'tuareg-kill-ocaml)
+
+(add-hook 'tuareg-mode-hook #'rainbow-delimiters-mode)
 
 ;; (map! :after evil-cleverparens
 ;;       :map clojure-mode-map
