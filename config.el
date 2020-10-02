@@ -11,7 +11,6 @@
   (setq-default evil-escape-delay 0.3)
   (setq evil-escape-key-sequence "jj"))
 
-;; (setq doom-localleader-alt-key "C-SPC")
 (setq avy-all-windows t)
 (setq projectile-project-search-path '("~/conf" "~/conf/private" "~/work"))
 
@@ -100,18 +99,21 @@
 (after! clojure-mode
   (add-hook 'clojure-mode-hook #'rainbow-delimiters-mode)
   (add-hook 'clojure-mode-hook #'evil-cleverparens-mode)
-  ;(add-hook 'clojure-mode-hook #'aggressive-indent-mode)
+  ;(add-hook 'clojure-mode-hook #'aggressive-indent-mode) ;; difficult to use with trace-form cljsrn fn tracing
   (add-hook 'clojure-mode-hook #'electric-indent-mode)
   (setq clojure-indent-style 'align-arguments)
   (setq clojure-align-forms-automatically t))
 
+
+;; nothing works:
 ;; (after! org
-;;   ;; (evil-set-leader 'global "SPC m" t)
-;;   ;; (evil-set-leader 'global "SPC m" t)
-;;   (setq doom-leader-key "SPC"
-;;       doom-localleader-key "RET")
-;;   ;;
-;;   )
+;;   (evil-set-leader 'normal (kbd "SPC m") t))
+;; (map! :leader
+;;       :map org-mode-map
+;;       "m" #'evil-send-localleader)
+;; (map! :localleader
+;;       :map org-mode-map
+;;       "RET" #'org/dwim-at-point)
 
 (map! :localleader
       :map tuareg-mode-map
@@ -121,6 +123,7 @@
       "K"   #'tuareg-kill-ocaml)
 
 (add-hook 'tuareg-mode-hook #'rainbow-delimiters-mode)
+(add-hook 'tuareg-mode-hook #'(lambda() (setq mode-name "🐫")))
 
 ;; (map! :after evil-cleverparens
 ;;       :map clojure-mode-map
