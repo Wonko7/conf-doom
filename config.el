@@ -104,9 +104,9 @@
   (setq clojure-indent-style 'align-arguments)
   (setq clojure-align-forms-automatically t))
 
-
 ;; nothing works:
 ;; (after! org
+;;   (setq doom-localleader-key "SPC m")
 ;;   (evil-set-leader 'normal (kbd "SPC m") t))
 ;; (map! :leader
 ;;       :map org-mode-map
@@ -115,6 +115,8 @@
 ;;       :map org-mode-map
 ;;       "RET" #'org/dwim-at-point)
 
+
+;; ocaml
 (map! :localleader
       :map tuareg-mode-map
       "RET" #'tuareg-eval-phrase
@@ -125,11 +127,8 @@
 (add-hook 'tuareg-mode-hook #'rainbow-delimiters-mode)
 (add-hook 'tuareg-mode-hook #'(lambda() (setq mode-name "🐫")))
 
-;; (map! :after evil-cleverparens
-;;       :map clojure-mode-map
-;;       :localleader
-;;       (:desc "Wrap round" :n "(" #'sp-wrap-round
-;;        :desc "Wrap square" :n "[" #'sp-wrap-square
-;;        :desc "Wrap curly" :n "{" #'sp-wrap-curly
-;;        :desc "Unwrap sexp" :n "u" #'sp-unwrap-sexp
-;;        ))
+;; global:
+(map! :nv "s"  #'evil-avy-goto-char-timer
+      :nv "g>" #'transpose-words
+      :nv "g<" #'(lambda() (interactive) (transpose-words -1))
+      )
