@@ -31,6 +31,60 @@
   (setq-default evil-escape-delay 0.3)
   (setq evil-escape-key-sequence "jj"))
 
+;; erf, dupe code testing order:
+
+(use-package! org-journal
+  :init
+  (setq org-journal-dir "~/conf/private/org/the-road-so-far/"
+        org-journal-enable-agenda-integration t
+        org-journal-enable-cache t
+        org-journal-carryover-items "next|lol|yolo|kkt|work|bs|TODO=\"TODO\"|TODO=\"[ ]\"|TODO=\"[ ]\"|TODO=\"\\[ \\]\"|TODO=\"\\[\\\\]\"" ;; checkboxes do not work FIXME
+        org-journal-file-format "%F_%A.org"
+        org-journal-date-format "%F"))
+
+(setq org-tags-column 72)
+(after! org
+  (setq org-tags-column 72))
+
+(use-package! org-super-agenda
+  :after org-agenda
+  :init
+  (setq org-super-agenda-groups '((:name "ssdd"
+                                   ;:time-grid t
+                                   ;:date today
+                                   ;:todo "TODAY"
+                                   :tag ("next" "lol" "yolo" "kkt" "work" "bs")
+                                   )
+                                  (:name "ssdd"
+                                   ;:tag ("fuckme" "today" "urg" "urgent" "lol" "yolo" "ssdd")
+                                   :time-grid t)
+                                  (:name "don't be a cunt"
+                                   :time-grid t
+                                   :tag "dbac")
+                                  (:name "WWSCD"
+                                   :time-grid t
+                                   :tag ("wwscd"))
+                                  (:name "Projects"
+                                   :time-grid t
+                                   :todo "PROJ")
+                                  )
+
+       ;; org-agenda-skip-scheduled-if-done t
+       ;; org-agenda-skip-deadline-if-done t
+        ;; org-agenda-start-with-log-mode t
+        ;;org-agenda-start-with-follow-mode t
+       org-agenda-compact-blocks nil
+       org-agenda-block-separator nil
+        )
+  :config
+  (org-super-agenda-mode))
+
+(setq org-directory "~/conf/private/org/")
+(setq org-agenda-file-regexp "\\`\\\([^.].*\\.org\\\|[0-9]\\\{8\\\}\\\(\\.gpg\\\)?\\\)\\'")
+(setq org-agenda-files '("~/conf/private/org/" "~/conf/private/org/the-road-so-far/"))
+
+;; org advice newline bug:
+;; https://github.com/hlissner/doom-emacs/issues/3172
 (setq avy-all-windows t)
 (setq projectile-project-search-path '("~/conf" "~/conf/private" "~/work/2morrow" "~/work/gentoo/overlays" "~/work/ocaml"))
 
@@ -49,8 +103,8 @@
 ;;
 ;; They all accept either a font-spec, font string ("Input Mono-12"), or xlfd
 ;; font string. You generally only need these two:
-;; jj(setq doom-font (font-spec :family "Fira Mono" :size 14)
-;; jj     )
+;; (setq doom-font (font-spec :family "Fira Mono" :size 14)
+;;      )
 
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
@@ -58,10 +112,6 @@
 (setq doom-theme 'doom-solarized-dark)
 (setq doom-font (font-spec :family "Fira Mono for Powerline" :size 16))
 ; j(setq doom-font (font . "Fira Mono for Powerline-14"))
-
-;; If you use `org' and don't want your org files in the default location below,
-;; change `org-directory'. It must be set before org loads!
-(setq org-directory "~/conf/private/org/")
 
 ;; nil numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type t)
@@ -99,7 +149,7 @@
 (after! clojure-mode
   (add-hook 'clojure-mode-hook #'rainbow-delimiters-mode)
   (add-hook 'clojure-mode-hook #'evil-cleverparens-mode)
-  ;(add-hook 'clojure-mode-hook #'aggressive-indent-mode) ;; difficult to use with trace-form cljsrn fn tracing
+  (add-hook 'clojure-mode-hook #'aggressive-indent-mode) ;; difficult to use with trace-form cljsrn fn tracing
   (add-hook 'clojure-mode-hook #'electric-indent-mode)
   (setq clojure-indent-style 'align-arguments)
   (setq clojure-align-forms-automatically t))
@@ -117,6 +167,32 @@
 ;; (map! :map general-override-mode-map
 ;;       :nvm "SPC m" #'doom/localleader)
 
+;; (setq evil-cleverparens-use-additional-movement-keys nil)
+
+(map! :map evil-cleverparens-mode-map
+      :nvm "}" #'evil-cp-up-sexp
+      :nvm "{" #'evil-cp-backward-up-sexp
+      :nvm ")" #'evil-cp-previous-closing
+      :nvm "(" #'evil-cp-next-opening
+      :nvm "é" #'evil-cp-previous-opening
+      :nvm "&" #'evil-cp-next-opening
+      :nvm "M-t"  #'sp-transpose-sexp
+      :nvm "M-T"  (lambda() (interactive) (sp-transpose-sexp -1))
+      :nv "M-g p" #'evil-cp-wrap-next-round
+      :nv "M-g P" #'evil-cp-wrap-previous-round
+      :nv "M-g c" #'evil-cp-wrap-next-curly
+      :nv "M-g C" #'evil-cp-wrap-previous-curly
+      :nv "M-g s" #'evil-cp-wrap-next-square
+      :nv "M-g S" #'evil-cp-wrap-previous-square
+      )
+
+(map! :map clojure-mode-map
+      :localleader
+      :nvm "RET" #'cider-eval-defun-at-point)
+(map! :map clojure-mode-map
+      :nv "s"  #'evil-avy-goto-char-2
+      )
+
 ;; org
 (setq org-use-property-inheritance t) ;; FIXME test this
 
@@ -129,7 +205,15 @@
       :nv   "<left>" #'org-promote-subtree
       :nv   "<down>" #'org-move-subtree-down
       :nv   "<up>" #'org-move-subtree-up
-      :nv   "<right>" #'org-demote-subtree
+      :nv   "<right>" #'org-demote-subtree)
+
+(map! :map org-journal-mode-map
+      :localleader
+      :nvm "n" #'org-journal-new-entry
+      :nvm "N" #'org-journal-new-date-entry
+      :nvm "r" #'org-journal-new-scheduled-entry
+      :nvm "j" #'org-journal-next-entry
+      :nvm "k" #'org-journal-previous-entry
       )
 
 ;; ocaml
@@ -153,7 +237,112 @@
       :i  "C-V" #'evil-paste-after
       )
 
+;; org
 (map! :leader
       :nvm "SPC"  #'ivy-switch-buffer
       :nvm "<" #'+ivy/projectile-find-file
+      :nvm "jt" #'org-journal-open-current-journal-file
+      :nvm "jn" #'org-journal-new-entry
+      :nvm "jN" #'org-journal-new-date-entry
+      :nvm "jr" #'org-journal-new-scheduled-entry
+      :nvm "jj" #'org-journal-next-entry
+      :nvm "jk" #'org-journal-previous-entry)
+
+(map! :map org-agenda
+      :nvm "j" #'org-agenda-next-line
+      :nvm "k" #'org-agenda-previous-line
       )
+;; wip
+;; (let ((org-super-agenda-groups
+;;        '(;; Each group has an implicit boolean OR operator between its selectors.
+;;          (:name "Today"  ; Optionally specify section name
+;;                 :time-grid t  ; Items that appear on the time grid
+;;                 :todo "TODAY")  ; Items that have this TODO keyword
+;;          (:name "Important"
+;;                 ;; Single arguments given alone
+;;                 :tag "bills"
+;;                 :priority "A")
+;;          ;; Set order of multiple groups at once
+;;          (:order-multi (2 (:name "Shopping in town"
+;;                                  ;; Boolean AND group matches items that match all subgroups
+;;                                  :and (:tag "shopping" :tag "@town"))
+;;                           (:name "Food-related"
+;;                                  ;; Multiple args given in list with implicit OR
+;;                                  :tag ("food" "dinner"))
+;;                           (:name "Personal"
+;;                                  :habit t
+;;                                  :tag "personal")
+;;                           (:name "Space-related (non-moon-or-planet-related)"
+;;                                  ;; Regexps match case-insensitively on the entire entry
+;;                                  :and (:regexp ("space" "NASA")
+;;                                                ;; Boolean NOT also has implicit OR between selectors
+;;                                                :not (:regexp "moon" :tag "planet")))))
+;;          ;; Groups supply their own section names when none are given
+;;          (:todo "WAITING" :order 8)  ; Set order of this section
+;;          (:todo ("SOMEDAY" "TO-READ" "CHECK" "TO-WATCH" "WATCHING")
+;;                 ;; Show this group at the end of the agenda (since it has the
+;;                 ;; highest number). If you specified this group last, items
+;;                 ;; with these todo keywords that e.g. have priority A would be
+;;                 ;; displayed in that group instead, because items are grouped
+;;                 ;; out in the order the groups are listed.
+;;                 :order 9)
+;;          (:priority<= "B"
+;;                       ;; Show this section after "Today" and "Important", because
+;;                       ;; their order is unspecified, defaulting to 0. Sections
+;;                       ;; are displayed lowest-number-first.
+;;                       :order 1)
+;;          ;; After the last group, the agenda will display items that didn't
+;;          ;; match any of these groups, with the default order position of 99
+;;          )))
+;;   (org-agenda-list))
+
+(let ((org-super-agenda-groups
+       '((:name "Projects"
+                :children t)
+         (:discard (:anything t)))))
+  (org-todo-list))
+
+
+;; (setq org-agenda-time-grid '((daily today require-timed) "----------------------" nil)
+;;       org-agenda-skip-scheduled-if-done t
+;;       org-agenda-skip-deadline-if-done t
+;;       org-agenda-include-deadlines t
+;;       org-agenda-block-separator nil
+;;       org-agenda-compact-blocks t
+;;       org-agenda-start-with-log-mode t)
+
+(setq org-agenda-custom-commands
+      '(("z" "Super zaen view"
+         ((agenda "test" ((org-agenda-span 'day)
+                          (org-super-agenda-groups
+                           '((:name "Today"
+                              :time-grid t
+                              :date today
+                              :scheduled today
+                              :order 1)))))
+          (alltodo "" (;(org-agenda-overriding-header "")
+                       (org-super-agenda-groups
+                        '((:name "fuckme"
+                           :time-grid t
+                           :scheduled today
+                           )
+                          (:name "ssdd"
+                           :tag ("fuckme" "today" "urg" "urgent" "lol" "yolo" "ssdd")
+                           :time-grid t)
+                          (:name "don't be a cunt"
+                           :time-grid t
+                           :tag "dbac")
+                          (:name "WWSCD"
+                           :time-grid t
+                           :tag ("wwscd"))
+                          (:name "Projects"
+                           :time-grid t
+                           :todo "PROJ")
+                          ))))))
+
+        ))
+
+(setq org-agenda-custom-commands
+      '(("c" "Simple agenda view"
+         ((agenda "")
+          (alltodo "")))))

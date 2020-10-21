@@ -52,3 +52,6 @@
 
 (package! evil-cleverparens)
 (package! aggressive-indent)
+
+(package! org-super-agenda)
+(package! org-journal)
