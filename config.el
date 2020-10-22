@@ -162,7 +162,7 @@
       (quote
        ((agenda . "%-20c%?-12t% s")
         (timeline . "% s")
-        (todo . "%-12c")
+        (todo . "%-20c")
         (tags . "%-12c")
         (search . "%-12c"))))
 (setq org-agenda-deadline-leaders (quote ("!D!: " "D%2d: " "")))
@@ -344,26 +344,26 @@
           (alltodo "" )))
         ("z" "Super zaen view"
          ((agenda "" )
-          (alltodo "=" (;(org-agenda-overriding-header "")
-                           (org-super-agenda-groups
-                            '((:name "ssdd"
-                               :tag ("tt" "fm" "fuckme" "lol" "yolo" "ssdd")
-                               :order 1)
-                              (:name "fun maximization"
-                               :tag ("fun")
-                               :order 2)
-                              (:name "WWSCD"
-                               :tag ("wwscd")
-                               :order 3)
-                              (:name "Projects"
-                               :todo "PROJ"
-                               :order 4)
-                              (:name "don't be a cunt"
-                               :tag "dbac"
-                               :order 5)
-                              (:name ".*"
-                               :order 6
-                               :anything t
-                               )
-                              ))))))
+          (alltodo "=" ((org-agenda-overriding-header "")
+                        (org-super-agenda-groups
+                         '((:name "ssdd"
+                            :tag ("tt" "fm" "fuckme" "lol" "yolo" "ssdd")
+                            :order 1)
+                           (:name "fun maximization"
+                            :tag ("fun")
+                            :order 2)
+                           (:name "WWSCD"
+                            :tag ("wwscd")
+                            :order 3)
+                           (:name "Projects"
+                            :todo "PROJ"
+                            :order 4)
+                           (:name "don't be a cunt"
+                            :tag "dbac"
+                            :order 5)
+                           (:name ".*"
+                            :order 6
+                            :anything t
+                            )
+                           ))))))
         ))
