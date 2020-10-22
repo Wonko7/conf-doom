@@ -38,46 +38,33 @@
   (setq org-journal-dir "~/conf/private/org/the-road-so-far/"
         org-journal-enable-agenda-integration t
         org-journal-enable-cache t
-        org-journal-carryover-items "next|lol|yolo|kkt|work|bs|TODO=\"TODO\"|TODO=\"[ ]\"|TODO=\"[ ]\"|TODO=\"\\[ \\]\"|TODO=\"\\[\\\\]\"" ;; checkboxes do not work FIXME
+        org-journal-carryover-items "next|lol|yolo|kkt|work|bs|TODO=\"PROJ\"|TODO=\"TODO\"|TODO=\"[ ]\"|TODO=\"[ ]\"|TODO=\"\\[ \\]\"|TODO=\"\\[\\\\]\"" ;; checkboxes do not work FIXME
         org-journal-file-format "%F_%A.org"
-        org-journal-date-format "%F"))
+        org-journal-date-format "%F %A"))
 
-(setq org-tags-column 72)
-(after! org
-  (setq org-tags-column 72))
+;; (setq org-tags-column 72)
+;; (after! org
+;;   (setq org-tags-column 72))
+;;
 
 (use-package! org-super-agenda
   :after org-agenda
+  ;;      ;; org-agenda-skip-scheduled-if-done t
+  ;;      ;; org-agenda-skip-deadline-if-done t
+  ;;       ;; org-agenda-start-with-log-mode t
+  ;;       ;;org-agenda-start-with-follow-mode t
+  ;;      org-agenda-compact-blocks nil
+  ;;      org-agenda-block-separator nil
+  ;;       )
   :init
-  (setq org-super-agenda-groups '((:name "ssdd"
-                                   ;:time-grid t
-                                   ;:date today
-                                   ;:todo "TODAY"
-                                   :tag ("next" "lol" "yolo" "kkt" "work" "bs")
-                                   )
-                                  (:name "ssdd"
-                                   ;:tag ("fuckme" "today" "urg" "urgent" "lol" "yolo" "ssdd")
-                                   :time-grid t)
-                                  (:name "don't be a cunt"
-                                   :time-grid t
-                                   :tag "dbac")
-                                  (:name "WWSCD"
-                                   :time-grid t
-                                   :tag ("wwscd"))
-                                  (:name "Projects"
-                                   :time-grid t
-                                   :todo "PROJ")
-                                  )
-
-       ;; org-agenda-skip-scheduled-if-done t
-       ;; org-agenda-skip-deadline-if-done t
-        ;; org-agenda-start-with-log-mode t
-        ;;org-agenda-start-with-follow-mode t
-       org-agenda-compact-blocks nil
-       org-agenda-block-separator nil
+  (setq org-agenda-compact-blocks t
+        org-super-agenda-header-separator "\n"
+        ;org-super-agenda-header-separator nil
+        ;org-agenda-block-separator nil
         )
   :config
   (org-super-agenda-mode))
+
 
 (setq org-directory "~/conf/private/org/")
 (setq org-agenda-file-regexp "\\`\\\([^.].*\\.org\\\|[0-9]\\\{8\\\}\\\(\\.gpg\\\)?\\\)\\'")
@@ -169,6 +156,19 @@
 
 ;; (setq evil-cleverparens-use-additional-movement-keys nil)
 
+
+
+(setq org-agenda-prefix-format
+      (quote
+       ((agenda . "%-20c%?-12t% s")
+        (timeline . "% s")
+        (todo . "%-12c")
+        (tags . "%-12c")
+        (search . "%-12c"))))
+(setq org-agenda-deadline-leaders (quote ("!D!: " "D%2d: " "")))
+(setq org-agenda-scheduled-leaders (quote ("" "S%3d: ")))
+
+
 (map! :map evil-cleverparens-mode-map
       :nvm "}" #'evil-cp-up-sexp
       :nvm "{" #'evil-cp-backward-up-sexp
@@ -178,19 +178,21 @@
       :nvm "&" #'evil-cp-next-opening
       :nvm "M-t"  #'sp-transpose-sexp
       :nvm "M-T"  (lambda() (interactive) (sp-transpose-sexp -1))
-      :nv "M-g p" #'evil-cp-wrap-next-round
-      :nv "M-g P" #'evil-cp-wrap-previous-round
-      :nv "M-g c" #'evil-cp-wrap-next-curly
-      :nv "M-g C" #'evil-cp-wrap-previous-curly
-      :nv "M-g s" #'evil-cp-wrap-next-square
-      :nv "M-g S" #'evil-cp-wrap-previous-square
+      :nvm "M-g p" #'evil-cp-wrap-next-round
+      :nvm "M-g P" #'evil-cp-wrap-previous-round
+      :nvm "M-g c" #'evil-cp-wrap-next-curly
+      :nvm "M-g C" #'evil-cp-wrap-previous-curly
+      :nvm "M-g s" #'evil-cp-wrap-next-square
+      :nvm "M-g S" #'evil-cp-wrap-previous-square
+      :nvm "s"  #'evil-aavy-goto-char-2
       )
 
 (map! :map clojure-mode-map
       :localleader
       :nvm "RET" #'cider-eval-defun-at-point)
+
 (map! :map clojure-mode-map
-      :nv "s"  #'evil-avy-goto-char-2
+      :nvm "s"  #'evil-avy-goto-char-2
       )
 
 ;; org
@@ -229,6 +231,8 @@
 
 ;; global:
 (map! :nv "s"  #'evil-avy-goto-char-2
+      ;; :nv "C->" #'transpose-sexps
+      ;; :nv "C-<" #'(lambda() (interactive) (transpose-sexps -1))
       :nv "g>" #'transpose-words
       :nv "g<" #'(lambda() (interactive) (transpose-words -1))
       :nv "C-*" #'evil-multiedit-match-symbol-and-prev
@@ -240,7 +244,8 @@
 ;; org
 (map! :leader
       :nvm "SPC"  #'ivy-switch-buffer
-      :nvm "<" #'+ivy/projectile-find-file
+      :nvm "<"    #'+ivy/projectile-find-file
+      :nvm "ng" #'counsel-org-goto-all ;; nG in split buffer?
       :nvm "jt" #'org-journal-open-current-journal-file
       :nvm "jn" #'org-journal-new-entry
       :nvm "jN" #'org-journal-new-date-entry
@@ -248,10 +253,32 @@
       :nvm "jj" #'org-journal-next-entry
       :nvm "jk" #'org-journal-previous-entry)
 
-(map! :map org-agenda
-      :nvm "j" #'org-agenda-next-line
-      :nvm "k" #'org-agenda-previous-line
+(map! :map org-super-agenda-header-map;org-agenda-mode-map ;org-agenda-keymap;evil-org-agenda-mode-map
+      ;:nvm "j" #'org-agenda-next-line
+      :nvm "j" #'evil-next-line
+      :nvm "k" #'evil-previous-line
       )
+(map! :map org-agenda-mode-map ;org-agenda-keymap;evil-org-agenda-mode-map
+      ;:nvm "j" #'org-agenda-next-line
+      :nvm "j" #'evil-next-line
+      :nvm "k" #'evil-previous-line
+      )
+(map! :map org-agenda-keymap;evil-org-agenda-mode-map
+      ;:nvm "j" #'org-agenda-next-line
+      :nvm "j" #'evil-next-line
+      :nvm "k" #'evil-previous-line
+      )
+(map! :map evil-org-agenda-mode-map
+      ;:nvm "j" #'org-agenda-next-line
+      :nvm "j" #'evil-next-line
+      :nvm "k" #'evil-previous-line
+      )
+
+;; evil-org-agenda-mode-map <motion-state> g d
+;; org-agenda-keymap j
+;; org-agenda-mode-map j
+;; org-super-agenda-header-map j
+;;
 ;; wip
 ;; (let ((org-super-agenda-groups
 ;;        '(;; Each group has an implicit boolean OR operator between its selectors.
@@ -312,37 +339,31 @@
 ;;       org-agenda-start-with-log-mode t)
 
 (setq org-agenda-custom-commands
-      '(("z" "Super zaen view"
-         ((agenda "test" ((org-agenda-span 'day)
-                          (org-super-agenda-groups
-                           '((:name "Today"
-                              :time-grid t
-                              :date today
-                              :scheduled today
-                              :order 1)))))
-          (alltodo "" (;(org-agenda-overriding-header "")
-                       (org-super-agenda-groups
-                        '((:name "fuckme"
-                           :time-grid t
-                           :scheduled today
-                           )
-                          (:name "ssdd"
-                           :tag ("fuckme" "today" "urg" "urgent" "lol" "yolo" "ssdd")
-                           :time-grid t)
-                          (:name "don't be a cunt"
-                           :time-grid t
-                           :tag "dbac")
-                          (:name "WWSCD"
-                           :time-grid t
-                           :tag ("wwscd"))
-                          (:name "Projects"
-                           :time-grid t
-                           :todo "PROJ")
-                          ))))))
-
-        ))
-
-(setq org-agenda-custom-commands
       '(("c" "Simple agenda view"
          ((agenda "")
-          (alltodo "")))))
+          (alltodo "" )))
+        ("z" "Super zaen view"
+         ((agenda "" )
+          (alltodo "=" (;(org-agenda-overriding-header "")
+                           (org-super-agenda-groups
+                            '((:name "ssdd"
+                               :tag ("tt" "fm" "fuckme" "lol" "yolo" "ssdd")
+                               :order 1)
+                              (:name "fun maximization"
+                               :tag ("fun")
+                               :order 2)
+                              (:name "WWSCD"
+                               :tag ("wwscd")
+                               :order 3)
+                              (:name "Projects"
+                               :todo "PROJ"
+                               :order 4)
+                              (:name "don't be a cunt"
+                               :tag "dbac"
+                               :order 5)
+                              (:name ".*"
+                               :order 6
+                               :anything t
+                               )
+                              ))))))
+        ))
