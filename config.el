@@ -33,6 +33,7 @@
 
 ;; erf, dupe code testing order:
 
+
 (use-package! org-journal
   :init
   (setq org-journal-dir "~/conf/private/org/the-road-so-far/"
@@ -52,12 +53,12 @@
   ;;      ;; org-agenda-skip-scheduled-if-done t
   ;;      ;; org-agenda-skip-deadline-if-done t
   ;;       ;; org-agenda-start-with-log-mode t
-  ;;       ;;org-agenda-start-with-follow-mode t
   ;;      org-agenda-compact-blocks nil
   ;;      org-agenda-block-separator nil
   ;;       )
   :init
   (setq org-agenda-compact-blocks t
+        org-agenda-start-with-follow-mode t
         org-super-agenda-header-separator "\n"
         ;org-super-agenda-header-separator nil
         ;org-agenda-block-separator nil
@@ -68,7 +69,6 @@
 
 (setq org-directory "~/conf/private/org/")
 (setq org-agenda-file-regexp "\\`\\\([^.].*\\.org\\\|[0-9]\\\{8\\\}\\\(\\.gpg\\\)?\\\)\\'")
-(setq org-agenda-files '("~/conf/private/org/" "~/conf/private/org/the-road-so-far/"))
 
 ;; org advice newline bug:
 ;; https://github.com/hlissner/doom-emacs/issues/3172
@@ -253,75 +253,8 @@
       :nvm "jj" #'org-journal-next-entry
       :nvm "jk" #'org-journal-previous-entry)
 
-(map! :map org-super-agenda-header-map;org-agenda-mode-map ;org-agenda-keymap;evil-org-agenda-mode-map
-      ;:nvm "j" #'org-agenda-next-line
-      :nvm "j" #'evil-next-line
-      :nvm "k" #'evil-previous-line
-      )
-(map! :map org-agenda-mode-map ;org-agenda-keymap;evil-org-agenda-mode-map
-      ;:nvm "j" #'org-agenda-next-line
-      :nvm "j" #'evil-next-line
-      :nvm "k" #'evil-previous-line
-      )
-(map! :map org-agenda-keymap;evil-org-agenda-mode-map
-      ;:nvm "j" #'org-agenda-next-line
-      :nvm "j" #'evil-next-line
-      :nvm "k" #'evil-previous-line
-      )
-(map! :map evil-org-agenda-mode-map
-      ;:nvm "j" #'org-agenda-next-line
-      :nvm "j" #'evil-next-line
-      :nvm "k" #'evil-previous-line
-      )
-
-;; evil-org-agenda-mode-map <motion-state> g d
-;; org-agenda-keymap j
-;; org-agenda-mode-map j
-;; org-super-agenda-header-map j
-;;
-;; wip
-;; (let ((org-super-agenda-groups
-;;        '(;; Each group has an implicit boolean OR operator between its selectors.
-;;          (:name "Today"  ; Optionally specify section name
-;;                 :time-grid t  ; Items that appear on the time grid
-;;                 :todo "TODAY")  ; Items that have this TODO keyword
-;;          (:name "Important"
-;;                 ;; Single arguments given alone
-;;                 :tag "bills"
-;;                 :priority "A")
-;;          ;; Set order of multiple groups at once
-;;          (:order-multi (2 (:name "Shopping in town"
-;;                                  ;; Boolean AND group matches items that match all subgroups
-;;                                  :and (:tag "shopping" :tag "@town"))
-;;                           (:name "Food-related"
-;;                                  ;; Multiple args given in list with implicit OR
-;;                                  :tag ("food" "dinner"))
-;;                           (:name "Personal"
-;;                                  :habit t
-;;                                  :tag "personal")
-;;                           (:name "Space-related (non-moon-or-planet-related)"
-;;                                  ;; Regexps match case-insensitively on the entire entry
-;;                                  :and (:regexp ("space" "NASA")
-;;                                                ;; Boolean NOT also has implicit OR between selectors
-;;                                                :not (:regexp "moon" :tag "planet")))))
-;;          ;; Groups supply their own section names when none are given
-;;          (:todo "WAITING" :order 8)  ; Set order of this section
-;;          (:todo ("SOMEDAY" "TO-READ" "CHECK" "TO-WATCH" "WATCHING")
-;;                 ;; Show this group at the end of the agenda (since it has the
-;;                 ;; highest number). If you specified this group last, items
-;;                 ;; with these todo keywords that e.g. have priority A would be
-;;                 ;; displayed in that group instead, because items are grouped
-;;                 ;; out in the order the groups are listed.
-;;                 :order 9)
-;;          (:priority<= "B"
-;;                       ;; Show this section after "Today" and "Important", because
-;;                       ;; their order is unspecified, defaulting to 0. Sections
-;;                       ;; are displayed lowest-number-first.
-;;                       :order 1)
-;;          ;; After the last group, the agenda will display items that didn't
-;;          ;; match any of these groups, with the default order position of 99
-;;          )))
-;;   (org-agenda-list))
+;; fixes fucky binding on jk on an agenda header:
+(setq org-super-agenda-header-map (make-sparse-keymap))
 
 (let ((org-super-agenda-groups
        '((:name "Projects"
@@ -367,3 +300,6 @@
                             )
                            ))))))
         ))
+
+(with-eval-after-load 'org
+  (setq org-agenda-files '("~/conf/private/org/" "~/conf/private/org/wip/" "~/conf/private/org/the-road-so-far/")))
