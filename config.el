@@ -182,6 +182,18 @@
       :nvm "s"  #'evil-aavy-goto-char-2
       )
 
+(map! :map evil-cleverparens-mode-map
+      :localleader
+      :nvm "t"  #'sp-transpose-sexp
+      :nvm "--T"  (lambda() (interactive) (sp-transpose-sexp -1))
+      :nvm "g p" #'evil-cp-wrap-next-round
+      :nvm "g P" #'evil-cp-wrap-previous-round
+      :nvm "g c" #'evil-cp-wrap-next-curly
+      :nvm "g C" #'evil-cp-wrap-previous-curly
+      :nvm "g s" #'evil-cp-wrap-next-square
+      :nvm "g S" #'evil-cp-wrap-previous-square
+      )
+
 (map! :map clojure-mode-map
       :localleader
       :nvm "RET" #'cider-eval-defun-at-point)
