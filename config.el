@@ -39,6 +39,7 @@
         org-journal-enable-agenda-integration t
         org-journal-enable-cache t
         org-journal-time-format ""
+        org-journal-time-prefix "*** "
         org-journal-hide-entries-p nil
         org-journal-carryover-items "next|TODO=\"PROJ\"|TODO=\"TODO\"|TODO=\"[ ]\"|TODO=\"[ ]\"|TODO=\"\\[ \\]\"|TODO=\"\\[\\\\]\"" ;; checkboxes do not work FIXME
         org-journal-file-format "%F_%A.org"
@@ -137,19 +138,6 @@
   (add-hook 'clojure-mode-hook #'electric-indent-mode)
   (setq clojure-indent-style 'align-arguments)
   (setq clojure-align-forms-automatically t))
-
-;; nothing works:
-;; (after! org
-;;   (setq doom-localleader-key "SPC m")
-;;   (evil-set-leader 'normal (kbd "SPC m") t)
-;;   )
-
-;; (map! :leader
-;;       :map org-mode-map
-;;       :nv "m" #'evil-send-localleader)
-
-;; (map! :map general-override-mode-map
-;;       :nvm "SPC m" #'doom/localleader)
 
 ;; (setq evil-cleverparens-use-additional-movement-keys nil)
 
