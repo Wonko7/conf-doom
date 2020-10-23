@@ -33,20 +33,16 @@
 
 ;; erf, dupe code testing order:
 
-
 (use-package! org-journal
   :init
   (setq org-journal-dir "~/conf/private/org/the-road-so-far/"
         org-journal-enable-agenda-integration t
         org-journal-enable-cache t
-        org-journal-carryover-items "next|lol|yolo|kkt|work|bs|TODO=\"PROJ\"|TODO=\"TODO\"|TODO=\"[ ]\"|TODO=\"[ ]\"|TODO=\"\\[ \\]\"|TODO=\"\\[\\\\]\"" ;; checkboxes do not work FIXME
+        org-journal-time-format ""
+        org-journal-hide-entries-p nil
+        org-journal-carryover-items "next|TODO=\"PROJ\"|TODO=\"TODO\"|TODO=\"[ ]\"|TODO=\"[ ]\"|TODO=\"\\[ \\]\"|TODO=\"\\[\\\\]\"" ;; checkboxes do not work FIXME
         org-journal-file-format "%F_%A.org"
         org-journal-date-format "%F %A"))
-
-;; (setq org-tags-column 72)
-;; (after! org
-;;   (setq org-tags-column 72))
-;;
 
 (use-package! org-super-agenda
   :after org-agenda
@@ -66,9 +62,10 @@
   :config
   (org-super-agenda-mode))
 
-
+(setq org-tags-column 72)
 (setq org-directory "~/conf/private/org/")
 (setq org-agenda-file-regexp "\\`\\\([^.].*\\.org\\\|[0-9]\\\{8\\\}\\\(\\.gpg\\\)?\\\)\\'")
+(setq org-agenda-files '("~/conf/private/org/" "~/conf/private/org/wip/" "~/conf/private/org/work/" "~/conf/private/org/the-road-so-far/"))
 
 ;; org advice newline bug:
 ;; https://github.com/hlissner/doom-emacs/issues/3172
@@ -158,6 +155,7 @@
 
 
 
+(setq org-auto-align-tags t)
 (setq org-agenda-prefix-format
       (quote
        ((agenda . "%-20c%?-12t% s")
@@ -209,9 +207,14 @@
       :nv   "<up>" #'org-move-subtree-up
       :nv   "<right>" #'org-demote-subtree)
 
+(defun my/journal-new-todo ()
+         (interactive)
+         (org-journal-new-scheduled-entry nil (format-time-string "%Y-%m-%d %a" (current-time)))
+         (evil-append 0))
+
 (map! :map org-journal-mode-map
       :localleader
-      :nvm "n" #'org-journal-new-entry
+      :nvm "n" #'my/journal-new-todo
       :nvm "N" #'org-journal-new-date-entry
       :nvm "r" #'org-journal-new-scheduled-entry
       :nvm "j" #'org-journal-next-entry
@@ -248,6 +251,7 @@
       :nvm "ng" #'counsel-org-goto-all ;; nG in split buffer?
       :nvm "jt" #'org-journal-open-current-journal-file
       :nvm "jn" #'org-journal-new-entry
+      :nvm "jn" #'my/journal-new-todo
       :nvm "jN" #'org-journal-new-date-entry
       :nvm "jr" #'org-journal-new-scheduled-entry
       :nvm "jj" #'org-journal-next-entry
@@ -262,7 +266,31 @@
          (:discard (:anything t)))))
   (org-todo-list))
 
-
+;; wip
+;; (defun my/org-journal-on-state-done-return-agenda ()
+;;   (save-excursion
+;;     (when (or (string= org-state "DONE") (string= org-state "[X]"))
+;;       (print (org-heading-components))
+;;       (setq init-buffer (current-buffer)) ;; initial buffer
+;;       (setq task-title (nth 4 (org-heading-components)))
+;;       (print (buffer-file-name))
+;;       (print init-buffer)
+;;       ;(find-file "~/conf/private/org/the-road-so-far/2020-10-23_Friday.org")
+;;       (print task-title )
+;;       (org-journal-new-scheduled-entry nil (format-time-string "%Y-%m-%d %a" (current-time)))
+;;       (insert task-title)
+;;       ;(print task-title)
+;;       ;(message task-title)
+;;       ;(org-capture nil "j")
+;;       ;(insert task-title)
+;;       ;(org-capture-finalize)
+;;       (switch-to-buffer init-buffer) ;; somehow switch to buffer after C-c C-c is called for the org-capture
+;;      )))
+;;
+;; (add-hook!
+;;  'org-after-todo-state-change-hook
+;;  #'my/org-journal-on-state-done-return-agenda
+;;  )
 ;; (setq org-agenda-time-grid '((daily today require-timed) "----------------------" nil)
 ;;       org-agenda-skip-scheduled-if-done t
 ;;       org-agenda-skip-deadline-if-done t
@@ -270,6 +298,12 @@
 ;;       org-agenda-block-separator nil
 ;;       org-agenda-compact-blocks t
 ;;       org-agenda-start-with-log-mode t)
+;;
+
+
+(setq org-agenda-skip-scheduled-if-done nil
+      org-agenda-skip-deadline-if-done nil
+      org-agenda-include-deadlines t)
 
 (setq org-agenda-custom-commands
       '(("c" "Simple agenda view"
@@ -280,7 +314,7 @@
           (alltodo "=" ((org-agenda-overriding-header "")
                         (org-super-agenda-groups
                          '((:name "ssdd"
-                            :tag ("tt" "fm" "fuckme" "lol" "yolo" "ssdd")
+                            :tag ("tt" "bs" "fm" "fuckme" "lol" "yolo" "ssdd")
                             :order 1)
                            (:name "fun maximization"
                             :tag ("fun")
@@ -291,15 +325,15 @@
                            (:name "Projects"
                             :todo "PROJ"
                             :order 4)
+                           (:name "next steps"
+                            :tag "next"
+                            :order 5)
                            (:name "don't be a cunt"
                             :tag "dbac"
-                            :order 5)
+                            :order 6)
                            (:name ".*"
-                            :order 6
+                            :order 7
                             :anything t
                             )
                            ))))))
         ))
-
-(with-eval-after-load 'org
-  (setq org-agenda-files '("~/conf/private/org/" "~/conf/private/org/wip/" "~/conf/private/org/the-road-so-far/")))

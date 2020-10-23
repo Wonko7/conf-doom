@@ -55,3 +55,4 @@
 
 (package! org-super-agenda)
 (package! org-journal)
+;(package! org-plus-contrib)
