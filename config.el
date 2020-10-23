@@ -140,8 +140,17 @@
   (setq clojure-align-forms-automatically t))
 
 ;; (setq evil-cleverparens-use-additional-movement-keys nil)
-
-
+(add-hook 'emacs-lisp-mode-hook #'evil-cleverparens-mode)
+;(evil-cleverparens-mode)
+;; (after! elisp-mode)
+;;
+;; TODO: test this: cleverparens
+;; (defun my-after-evil ()
+;;   (global-evil-surround-mode)
+;;   (eyebrowse-mode)
+;;   (eyebrowse-setup-opinionated-keys)
+;;   (require 'evil-cleverparens-text-objects))
+;; (add-hook 'evil-mode-hook 'my-after-evil)
 
 (setq org-auto-align-tags t)
 (setq org-agenda-prefix-format
@@ -160,7 +169,7 @@
       :nvm "{" #'evil-cp-backward-up-sexp
       :nvm ")" #'evil-cp-previous-closing
       :nvm "(" #'evil-cp-next-opening
-      :nvm "é" #'evil-cp-previous-opening
+      :nvm "é" #'evil-cp-previous-opening ; FIXME put this in global map?
       :nvm "&" #'evil-cp-next-opening
       :nvm "M-t"  #'sp-transpose-sexp
       :nvm "M-T"  (lambda() (interactive) (sp-transpose-sexp -1))
@@ -242,8 +251,7 @@
       :nvm "jn" #'my/journal-new-todo
       :nvm "jN" #'org-journal-new-date-entry
       :nvm "jr" #'org-journal-new-scheduled-entry
-      :nvm "jj" #'org-journal-next-entry
-      :nvm "jk" #'org-journal-previous-entry)
+      )
 
 ;; fixes fucky binding on jk on an agenda header:
 (setq org-super-agenda-header-map (make-sparse-keymap))
