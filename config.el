@@ -152,6 +152,11 @@
 ;;   (require 'evil-cleverparens-text-objects))
 ;; (add-hook 'evil-mode-hook 'my-after-evil)
 
+(defun my/reset-paragraph-variables ()
+  (kill-local-variable 'paragraph-start)
+  (kill-local-variable 'paragraph-separate))
+(add-hook 'org-mode-hook 'my/reset-paragraph-variables)
+
 (setq org-auto-align-tags t)
 (setq org-agenda-prefix-format
       (quote
@@ -163,10 +168,9 @@
 (setq org-agenda-deadline-leaders (quote ("!D!: " "D%2d: " "")))
 (setq org-agenda-scheduled-leaders (quote ("" "S%3d: ")))
 
-
 (map! :map evil-cleverparens-mode-map
-      :nvm "}" #'evil-cp-up-sexp
-      :nvm "{" #'evil-cp-backward-up-sexp
+      :nvm "{" #'evil-backward-paragraph
+      :nvm "}" #'evil-forward-paragraph
       :nvm ")" #'evil-cp-previous-closing
       :nvm "(" #'evil-cp-next-opening
       :nvm "é" #'evil-cp-previous-opening ; FIXME put this in global map?
@@ -211,6 +215,8 @@
       :nv "RET" #'+org/dwim-at-point)
 
 (map! :map org-mode-map
+      :nvm "{" #'evil-backward-paragraph
+      :nvm "}" #'evil-forward-paragraph
       :nv   "<left>" #'org-promote-subtree
       :nv   "<down>" #'org-move-subtree-down
       :nv   "<up>" #'org-move-subtree-up
