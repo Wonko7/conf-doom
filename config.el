@@ -44,6 +44,8 @@
         org-journal-carryover-items "next|TODO=\"PROJ\"|TODO=\"TODO\"|TODO=\"[ ]\"|TODO=\"[ ]\"|TODO=\"\\[ \\]\"|TODO=\"\\[\\\\]\"" ;; checkboxes do not work FIXME
         org-journal-file-format "%F_%A.org"
         org-journal-date-format "%F %A"))
+;; show past:
+;;  https://github.com/bastibe/org-journal/issues/260
 
 (use-package! org-super-agenda
   :after org-agenda
@@ -210,12 +212,26 @@
 (setq org-use-property-inheritance t) ;; FIXME test this
 
 
+;; keyboard macros, for reference: https://www.emacswiki.org/emacs/KeyboardMacrosTricks
+;; kmacro-name-last-macro
+;; insert-kbd-macro
 (map! :localleader
       :map org-mode-map
-      :nvm "ga"  (fset 'archive-send-jt
-                       (kmacro-lambda-form [return return ?y ?a ?r ?  ?j ?t ?G ?p ?c ?e ?* ?* ?* ?j ?j return ?t ?d ?\C-w ?\C-w] 0 "%d"))
-      :nvm "gst" (fset 'send-jt
-                       (kmacro-lambda-form [?y ?a ?r ?  ?j ?t ?G ?p ?c ?e ?* ?* ?* ?j ?j ?\C-w ?\C-w] 0 "%d"))
+      ;; send title (current line)
+      :nvm "ga"   (fset 'archive-send-jt
+                        (kmacro-lambda-form [return return ?y ?y ?  ?j ?t ?G ?p ?c ?e ?* ?* ?* ?j ?j return ?t ?d ?o ?\C-c ?. return ?j ?j ?\C-w ?\C-w] 0 "%d"))
+      ;; send tree (this sometimes does BS on small lists)
+      :nvm "gAr"  (fset 'r-archive-send-jt
+                        (kmacro-lambda-form [return return ?y ?a ?r ?  ?j ?t ?G ?p ?c ?e ?* ?* ?* ?j ?j return ?t ?d ?o ?\C-c ?. return ?j ?j ?\C-w ?\C-w] 0 "%d"))
+      ;; send tree (this sometimes does BS on small lists) without marking current as done
+      :nvm "gAs"  (fset 'r-send-jt
+                        (kmacro-lambda-form [?y ?a ?r ?  ?j ?t ?G ?p ?c ?e ?* ?* ?* ?j ?j return ?t ?d ?o ?\C-c ?. return ?j ?j ?\C-w ?\C-w] 0 "%d"))
+      ;; make checkbox of this
+      :nvm "gt"   (fset 'mk-todo
+                        (kmacro-lambda-form [return ?* return ?t ?t] 0 "%d"))
+      ;; make todo of this
+      :nvm "gT"   (fset 'mk-todo
+                        (kmacro-lambda-form [return ?* return ?t ?T] 0 "%d"))
       :nv "RET" #'+org/dwim-at-point)
 
 (map! :map org-mode-map
@@ -284,31 +300,6 @@
          (:discard (:anything t)))))
   (org-todo-list))
 
-;; wip
-;; (defun my/org-journal-on-state-done-return-agenda ()
-;;   (save-excursion
-;;     (when (or (string= org-state "DONE") (string= org-state "[X]"))
-;;       (print (org-heading-components))
-;;       (setq init-buffer (current-buffer)) ;; initial buffer
-;;       (setq task-title (nth 4 (org-heading-components)))
-;;       (print (buffer-file-name))
-;;       (print init-buffer)
-;;       ;(find-file "~/conf/private/org/the-road-so-far/2020-10-23_Friday.org")
-;;       (print task-title )
-;;       (org-journal-new-scheduled-entry nil (format-time-string "%Y-%m-%d %a" (current-time)))
-;;       (insert task-title)
-;;       ;(print task-title)
-;;       ;(message task-title)
-;;       ;(org-capture nil "j")
-;;       ;(insert task-title)
-;;       ;(org-capture-finalize)
-;;       (switch-to-buffer init-buffer) ;; somehow switch to buffer after C-c C-c is called for the org-capture
-;;      )))
-;;
-;; (add-hook!
-;;  'org-after-todo-state-change-hook
-;;  #'my/org-journal-on-state-done-return-agenda
-;;  )
 ;; (setq org-agenda-time-grid '((daily today require-timed) "----------------------" nil)
 ;;       org-agenda-skip-scheduled-if-done t
 ;;       org-agenda-skip-deadline-if-done t
