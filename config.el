@@ -331,18 +331,20 @@
                            (:name "WWSCD"
                             :tag ("wwscd")
                             :order 3)
-                           (:name "Projects"
-                            :todo "PROJ"
-                            :order 4)
+                           (:name "innerspace"
+                            :tag ("is" "h" "habit" "focus")
+                            :order 5)
                            (:name "next steps"
                             :tag "next"
-                            :order 5)
+                            :order 6)
+                           (:name "Projects"
+                            :todo "PROJ"
+                            :order 7)
                            (:name "don't be a cunt"
                             :tag "dbac"
-                            :order 6)
+                            :order 8)
                            (:name ".*"
-                            :order 7
+                            :order 9
                             :anything t
                             )
-                           ))))))
-        ))
+                           ))))))))
