@@ -212,6 +212,10 @@
 
 (map! :localleader
       :map org-mode-map
+      :nvm "ga"  (fset 'archive-send-jt
+                       (kmacro-lambda-form [return return ?y ?a ?r ?  ?j ?t ?G ?p ?c ?e ?* ?* ?* ?j ?j return ?t ?d ?\C-w ?\C-w] 0 "%d"))
+      :nvm "gst" (fset 'send-jt
+                       (kmacro-lambda-form [?y ?a ?r ?  ?j ?t ?G ?p ?c ?e ?* ?* ?* ?j ?j ?\C-w ?\C-w] 0 "%d"))
       :nv "RET" #'+org/dwim-at-point)
 
 (map! :map org-mode-map
@@ -223,9 +227,9 @@
       :nv   "<right>" #'org-demote-subtree)
 
 (defun my/journal-new-todo ()
-         (interactive)
-         (org-journal-new-scheduled-entry nil (format-time-string "%Y-%m-%d %a" (current-time)))
-         (evil-append 0))
+  (interactive)
+  (org-journal-new-scheduled-entry nil (format-time-string "%Y-%m-%d %a" (current-time)))
+  (evil-append 0))
 
 (map! :map org-journal-mode-map
       :localleader
@@ -276,7 +280,7 @@
 
 (let ((org-super-agenda-groups
        '((:name "Projects"
-                :children t)
+          :children t)
          (:discard (:anything t)))))
   (org-todo-list))
 
