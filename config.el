@@ -22,7 +22,6 @@
 
 (setq x-super-keysym 'meta)
 
-
 ;; Place your private configuration here! Remember, you do not need to run 'doom
 ;; sync' after modifying this file!
 
@@ -33,10 +32,77 @@
 
 ;; erf, dupe code testing order:
 
+(setq org-directory "~/conf/private/org/")
+(setq org-journal-dir "~/conf/private/org/the-road-so-far/")
+(setq org-agenda-files '("~/conf/private/org/" "~/conf/private/org/wip/" "~/conf/private/org/work/" "~/conf/private/org/the-road-so-far/"))
+
 (use-package! org-journal
+  )
+;; show past:
+;;  https://github.com/bastibe/org-journal/issues/260
+
+(use-package! org-super-agenda
+  :after org-agenda
   :init
-  (setq org-journal-dir "~/conf/private/org/the-road-so-far/"
-        org-journal-enable-agenda-integration t
+  (setq org-agenda-compact-blocks t
+        org-agenda-start-with-follow-mode t
+        org-super-agenda-header-separator "\n"
+                                        ;org-super-agenda-header-separator nil
+                                        ;org-agenda-block-separator nil
+        )
+  :config
+  (org-super-agenda-mode))
+
+(use-package! org-crypt
+  :config
+  (org-crypt-use-before-save-magic))
+
+
+(after! org
+  (setq org-todo-keywords
+        '((sequence
+           "NEXT(n/!)"  ; A task that recuring
+           "TODO(t)"  ; A task that needs doing & is ready to do
+           "PROJ(p)"  ; A project, which usually contains other tasks
+           "GOGO(g/!)"  ; A task that is in progress
+           "WAIT(w/!)"  ; Something external is holding up this task
+           "HOLD(h/!)"  ; This task is paused/on hold because of me
+           "ADD(a)"  ; feature
+           "FIX(f)"  ; feature
+           "BUG(b)"  ; feature
+           "|"
+           "DONE(d/!)"  ; Task successfully completed
+           "KILL(k)") ; Task was cancelled, aborted or is no longer applicable
+          (sequence
+           "[ ](T)"   ; A task that needs doing
+           "[-](S)"   ; Task is in progress
+           "[?](W)"   ; Task is being held up or paused
+           "|"
+           "[X](D)")) ; Task was completed
+        org-todo-keyword-faces
+        '(("[-]"  . +org-todo-active)
+          ("NEXT" . +org-todo-active)
+          ("GOGO" . +org-todo-active)
+          ("[?]"  . +org-todo-onhold)
+          ("WAIT" . +org-todo-onhold)
+          ("HOLD" . +org-todo-onhold)
+          ("PROJ" . +org-todo-project))))
+
+(after! org-crypt
+  (setq org-tags-exclude-from-inheritance (quote ("crypt"))
+        org-crypt-key "william@underage.wang"))
+
+
+(after! org-habit
+  (setq org-habit-graph-column 60))
+
+(after! org
+  (setq org-log-into-drawer t
+        org-auto-align-tags t
+        org-tags-column 72))
+
+(after! org-journal
+  (setq org-journal-enable-agenda-integration t
         org-journal-enable-cache t
         org-journal-time-format ""
         org-journal-time-prefix "*** "
@@ -44,31 +110,71 @@
         org-journal-carryover-items "next|TODO=\"PROJ\"|TODO=\"TODO\"|TODO=\"[ ]\"|TODO=\"[ ]\"|TODO=\"\\[ \\]\"|TODO=\"\\[\\\\]\"" ;; checkboxes do not work FIXME
         org-journal-file-format "%F_%A.org"
         org-journal-date-format "%F %A"))
-;; show past:
-;;  https://github.com/bastibe/org-journal/issues/260
 
-(use-package! org-super-agenda
-  :after org-agenda
-  ;;      ;; org-agenda-skip-scheduled-if-done t
-  ;;      ;; org-agenda-skip-deadline-if-done t
-  ;;       ;; org-agenda-start-with-log-mode t
-  ;;      org-agenda-compact-blocks nil
-  ;;      org-agenda-block-separator nil
-  ;;       )
-  :init
-  (setq org-agenda-compact-blocks t
-        org-agenda-start-with-follow-mode t
-        org-super-agenda-header-separator "\n"
-        ;org-super-agenda-header-separator nil
-        ;org-agenda-block-separator nil
-        )
-  :config
-  (org-super-agenda-mode))
+(after! org-agenda
+  (setq org-agenda-file-regexp "\\`\\\([^.].*\\.org\\\|[0-9]\\\{8\\\}\\\(\\.gpg\\\)?\\\)\\'"
+        org-agenda-prefix-format (quote
+                                  ((agenda . "%-20c%?-12t% s")
+                                   (timeline . "% s")
+                                   (todo . "%-20c")
+                                   (tags . "%-12c")
+                                   (search . "%-12c")))
+        org-agenda-deadline-leaders (quote ("!D!: " "D%2d: " ""))
+        org-agenda-scheduled-leaders (quote ("" "S%3d: "))
+        ;; fixes fucky binding on jk on an agenda header:
+        org-super-agenda-header-map (make-sparse-keymap)
 
-(setq org-tags-column 72)
-(setq org-directory "~/conf/private/org/")
-(setq org-agenda-file-regexp "\\`\\\([^.].*\\.org\\\|[0-9]\\\{8\\\}\\\(\\.gpg\\\)?\\\)\\'")
-(setq org-agenda-files '("~/conf/private/org/" "~/conf/private/org/wip/" "~/conf/private/org/work/" "~/conf/private/org/the-road-so-far/"))
+        ;; (setq org-agenda-time-grid '((daily today require-timed) "----------------------" nil)
+        ;;       org-agenda-skip-scheduled-if-done t
+        ;;       org-agenda-skip-deadline-if-done t
+        ;;       org-agenda-include-deadlines t
+        ;;       org-agenda-block-separator nil
+        ;;       org-agenda-compact-blocks t
+        ;;       org-agenda-start-with-log-mode t)
+        ;;
+
+
+        org-agenda-skip-scheduled-if-done nil
+        org-agenda-skip-deadline-if-done nil
+        org-agenda-include-deadlines t
+
+        org-agenda-custom-commands '(("c" "Simple agenda view"
+                                      ((agenda "")
+                                       (alltodo "" )))
+                                     ("z" "Super zaen view"
+                                      ((agenda "" )
+                                       (alltodo "=" ((org-agenda-overriding-header "")
+                                                     (org-super-agenda-groups
+                                                      '((:name "ssdd"
+                                                         :tag ("tt" "bs" "fm" "fuckme" "lol" "yolo" "ssdd")
+                                                         :order 1)
+                                                        (:name "fun maximization"
+                                                         :tag ("fun")
+                                                         :order 2)
+                                                        (:name "WWSCD"
+                                                         :tag ("wwscd")
+                                                         :order 3)
+                                                        (:name "innerspace"
+                                                         :tag ("is" "h" "habit" "focus")
+                                                         :order 5)
+                                                        (:name "next steps"
+                                                         :tag "next"
+                                                         :order 6)
+                                                        (:name "Projects"
+                                                         :todo "PROJ"
+                                                         :order 7)
+                                                        (:name "don't be a cunt"
+                                                         :tag "dbac"
+                                                         :order 8)
+                                                        ;; (:name "repeat after me"
+                                                        ;;  :order 9
+                                                        ;;  :habit t
+                                                        ;;  )
+                                                        (:name ".*"
+                                                         :order 10
+                                                         :anything t
+                                                         )
+                                                        )))))))))
 
 ;; org advice newline bug:
 ;; https://github.com/hlissner/doom-emacs/issues/3172
@@ -80,22 +186,6 @@
 (setq user-full-name "William"
       user-mail-address "john@doe.com")
 
-;; Doom exposes five (optional) variables for controlling fonts in Doom. Here
-;; are the three important ones:
-;;
-;; + `doom-font'
-;; + `doom-variable-pitch-font'
-;; + `doom-big-font' -- used for `doom-big-font-mode'; use this for
-;;   presentations or streaming.
-;;
-;; They all accept either a font-spec, font string ("Input Mono-12"), or xlfd
-;; font string. You generally only need these two:
-;; (setq doom-font (font-spec :family "Fira Mono" :size 14)
-;;      )
-
-;; There are two ways to load a theme. Both assume the theme is installed and
-;; available. You can either set `doom-theme' or manually load a theme with the
-;; `load-theme' function. This is the default:
 (setq doom-theme 'doom-solarized-dark)
 (setq doom-font (font-spec :family "Fira Mono for Powerline" :size 16))
 ; j(setq doom-font (font . "Fira Mono for Powerline-14"))
@@ -107,32 +197,11 @@
 (after! evil-snipe
   (evil-snipe-mode -1))
 
-(setq avy-keys '(?o ?e ?u ?i ?d ?h ?t ?n ?p ?g ?c ?. ?w ?j ?m ?k))
+(setq avy-keys '(?u ?h ?e ?t ?. ?c ?i ?d ?k ?m ?j ?w ?o ?n ?p ?g))
 
 ;; parens & clojure:
 
-;; (after! smartparens
-;;         ;; (add-hook! clojure-mode #'smartparens-strict-mode)
-;;
-;;         ;; (setq evil-cleverparens-use-s-and-S nil)
-;;
-;;         (use-package! evil-cleverparens
-;;                       :init
-;;                       (setq evil-move-beyond-eol t
-;;                             evil-cleverparens-use-additional-bindings nil
-;;                             ;; evil-cleverparens-swap-move-by-word-and-symbol t
-;;                             ;; evil-cleverparens-use-regular-insert t
-;;                             )
-;;
-;;                       ;; (add-hook! clojure-mode #'evil-cleverparens-mode)
-;;                       ;; (add-hook! 'clojure-mode #'rainbow-delimiters-mode
-;;                       ;; (add-hook! 'smartparens-enabled-hook #'evil-smartparens-mode)
-;;                       ))
-
-;;  (add-hook 'clojure-mode-hook #'rainbow-delimiters-mode)
-;;  (add-hook 'clojure-mode-hook #'evil-cleverparens-mode)
-;;  (add-hook 'clojure-mode-hook #'aggressive-indent-mode)
-
+;; elisp mode wants most of this too:
 (after! clojure-mode
   (add-hook 'clojure-mode-hook #'rainbow-delimiters-mode)
   (add-hook 'clojure-mode-hook #'evil-cleverparens-mode)
@@ -143,7 +212,8 @@
 
 ;; (setq evil-cleverparens-use-additional-movement-keys nil)
 (add-hook 'emacs-lisp-mode-hook #'evil-cleverparens-mode)
-;(evil-cleverparens-mode)
+(add-hook 'emacs-lisp-mode-hook #'aggressive-indent)
+                                        ;(evil-cleverparens-mode)
 ;; (after! elisp-mode)
 ;;
 ;; TODO: test this: cleverparens
@@ -159,16 +229,6 @@
   (kill-local-variable 'paragraph-separate))
 (add-hook 'org-mode-hook 'my/reset-paragraph-variables)
 
-(setq org-auto-align-tags t)
-(setq org-agenda-prefix-format
-      (quote
-       ((agenda . "%-20c%?-12t% s")
-        (timeline . "% s")
-        (todo . "%-20c")
-        (tags . "%-12c")
-        (search . "%-12c"))))
-(setq org-agenda-deadline-leaders (quote ("!D!: " "D%2d: " "")))
-(setq org-agenda-scheduled-leaders (quote ("" "S%3d: ")))
 
 (map! :map evil-cleverparens-mode-map
       :nvm "{" #'evil-backward-paragraph
@@ -207,10 +267,6 @@
 (map! :map clojure-mode-map
       :nvm "s"  #'evil-avy-goto-char-2
       )
-
-;; org
-(setq org-use-property-inheritance t) ;; FIXME test this
-
 
 ;; keyboard macros, for reference: https://www.emacswiki.org/emacs/KeyboardMacrosTricks
 ;; kmacro-name-last-macro
@@ -285,66 +341,12 @@
       :nvm "<"    #'+ivy/projectile-find-file
       :nvm "ng" #'counsel-org-goto-all ;; nG in split buffer?
       :nvm "jt" #'org-journal-open-current-journal-file
-      :nvm "jn" #'org-journal-new-entry
       :nvm "jn" #'my/journal-new-todo
-      :nvm "jN" #'org-journal-new-date-entry
+      :nvm "jN" #'org-journal-new-entry
+      ;; fixme what if day does not exist yet?
+      ;; should this be jN new?
+      :nvm "jC" (fset 'carry
+                      (kmacro-lambda-form [?  ?j ?t ?G ?c ?c ?* ?* ?  ?s ?s ?d ?d ?j ?j ?: ?o ?r ?g ?- ?j ?o ?u ?r ?n ?a ?l ?- ?- ?c ?a ?r ?r ?y ?o ?v ?e ?r return] 0 "%d"))
       :nvm "jr" #'org-journal-new-scheduled-entry
       )
 
-;; fixes fucky binding on jk on an agenda header:
-(setq org-super-agenda-header-map (make-sparse-keymap))
-
-(let ((org-super-agenda-groups
-       '((:name "Projects"
-          :children t)
-         (:discard (:anything t)))))
-  (org-todo-list))
-
-;; (setq org-agenda-time-grid '((daily today require-timed) "----------------------" nil)
-;;       org-agenda-skip-scheduled-if-done t
-;;       org-agenda-skip-deadline-if-done t
-;;       org-agenda-include-deadlines t
-;;       org-agenda-block-separator nil
-;;       org-agenda-compact-blocks t
-;;       org-agenda-start-with-log-mode t)
-;;
-
-
-(setq org-agenda-skip-scheduled-if-done nil
-      org-agenda-skip-deadline-if-done nil
-      org-agenda-include-deadlines t)
-
-(setq org-agenda-custom-commands
-      '(("c" "Simple agenda view"
-         ((agenda "")
-          (alltodo "" )))
-        ("z" "Super zaen view"
-         ((agenda "" )
-          (alltodo "=" ((org-agenda-overriding-header "")
-                        (org-super-agenda-groups
-                         '((:name "ssdd"
-                            :tag ("tt" "bs" "fm" "fuckme" "lol" "yolo" "ssdd")
-                            :order 1)
-                           (:name "fun maximization"
-                            :tag ("fun")
-                            :order 2)
-                           (:name "WWSCD"
-                            :tag ("wwscd")
-                            :order 3)
-                           (:name "innerspace"
-                            :tag ("is" "h" "habit" "focus")
-                            :order 5)
-                           (:name "next steps"
-                            :tag "next"
-                            :order 6)
-                           (:name "Projects"
-                            :todo "PROJ"
-                            :order 7)
-                           (:name "don't be a cunt"
-                            :tag "dbac"
-                            :order 8)
-                           (:name ".*"
-                            :order 9
-                            :anything t
-                            )
-                           ))))))))
