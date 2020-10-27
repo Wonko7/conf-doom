@@ -110,63 +110,125 @@
         ;; log is => day todo in log
         ;; inbox =>
         ;; raw =>
+        ;; live with this for a while and then review
+        ;;
+        ;; add RDV. add
         org-capture-templates
-        '(("f" "Templates for notes from files")
+        `(("d" "ssdd" entry (file+olp
+                             ,(expand-file-name (format-time-string "%F_%A.org") org-journal-dir)
+                             ,(format-time-string "%F %A")
+                             "ssdd")
+           "* TODO %?\n%t" :prepend t)
+          ("t" "todo to inbox" entry
+           (file+headline "lol.org" "inbox")
+           "* TODO %?\n%U\n")
+          ("n" "note to inbox" entry
+           (file+headline "lol.org" "inbox")
+           "* %?\n%U\n")
+          ("N" "note to inbox" entry
+           (file+headline "lol.org" "inbox")
+           "* %?\n%U\n")
+
+          ("f" "Templates for notes from files")
           ("ft" "todo from file" entry
-          (file+headline "lol.org" "inbox")
-          "* TODO %?\n%i\n%a")
-         ("fn" "note from file" entry
-          (file+headline "lol.org" "inbox")
-          "* %u %?\n%i\n%a")
+           (file+headline "lol.org" "inbox")
+           "* TODO %?\n%a")
+          ("fn" "note from file" entry
+           (file+headline "lol.org" "inbox")
+           "* %U %?\n%a")
 
-         ("s" "ssdd" entry (file+olp
-                            (expand-file-name (concat (format-time-string "%F_%A.org") ".org") org-journal-dir)
-                            "ssdd")
-          "* [ ] %?\n%t"
-          :preprend t)
 
-         ;;("j" "Journal" entry
-         ;; (file+olp+datetree +org-capture-journal-file)
-         ;; "* %U %?\n%i\n%a" :prepend t)
+          ("j" "journal")
+          ("jw" "witness the fitness" entry (file+olp
+                                             ,(expand-file-name (format-time-string "%F_%A.org") org-journal-dir)
+                                             ,(format-time-string "%F %A")
+                                             "witness the fitness")
+           "* %?\n")
+          ("jy" "ty" entry (file+olp
+                            ,(expand-file-name (format-time-string "%F_%A.org") org-journal-dir)
+                            ,(format-time-string "%F %A")
+                            "ty")
+           "* %?\n")
+          ("ji" "innerspace" entry (file+olp
+                                    ,(expand-file-name (format-time-string "%F_%A.org") org-journal-dir)
+                                    ,(format-time-string "%F %A")
+                                    "innerspace")
+           "* %?\n")
 
-         ;; TODO these look nice, look into this:
-         ;;
+          ("l" "log")
+          ("lw" "witness the fitness" entry (file+olp
+                                             ,(expand-file-name (format-time-string "%F_%A.org") org-journal-dir)
+                                             ,(format-time-string "%F %A")
+                                             "log"
+                                             "witness the fitness")
+           "* %?\n")
+          ("li" "innerspace" entry (file+olp
+                                    ,(expand-file-name (format-time-string "%F_%A.org") org-journal-dir)
+                                    ,(format-time-string "%F %A")
+                                    "log"
+                                    "innerspace")
+           "* %?\n")
+          ("lk" "work" entry (file+olp
+                              ,(expand-file-name (format-time-string "%F_%A.org") org-journal-dir)
+                              ,(format-time-string "%F %A")
+                              "log"
+                              "work")
+           "* %?\n")
+          ("lc" "chores" entry (file+olp
+                                ,(expand-file-name (format-time-string "%F_%A.org") org-journal-dir)
+                                ,(format-time-string "%F %A")
+                                "log"
+                                "chores")
+           "* %?\n")
+          ("lb" "bs" entry (file+olp
+                            ,(expand-file-name (format-time-string "%F_%A.org") org-journal-dir)
+                            ,(format-time-string "%F %A")
+                            "log"
+                            "bullshit")
+           "* %?\n")
 
-         ;; Will use {project-root}/{todo,notes,changelog}.org, unless a
-         ;; {todo,notes,changelog}.org file is found in a parent directory.
-         ;; Uses the basename from `+org-capture-todo-file',
-         ;; `+org-capture-changelog-file' and `+org-capture-notes-file'.
-         ("p" "Templates for projects")
-         ("pt" "Project-local todo" entry  ; {project-root}/todo.org
-          (file+headline +org-capture-project-todo-file "Inbox")
-          "* TODO %?\n%i\n%a" :prepend t)
-         ("pn" "Project-local notes" entry  ; {project-root}/notes.org
-          (file+headline +org-capture-project-notes-file "Inbox")
-          "* %U %?\n%i\n%a" :prepend t)
-         ("pc" "Project-local changelog" entry  ; {project-root}/changelog.org
-          (file+headline +org-capture-project-changelog-file "Unreleased")
-          "* %U %?\n%i\n%a" :prepend t)
+          ;;("j" "Journal" entry
+          ;; (file+olp+datetree +org-capture-journal-file)
+          ;; "* %U %?\n%i\n%a" :prepend t)
 
-         ;; Will use {org-directory}/{+org-capture-projects-file} and store
-         ;; these under {ProjectName}/{Tasks,Notes,Changelog} headings. They
-         ;; support `:parents' to specify what headings to put them under, e.g.
-         ;; :parents ("Projects")
-         ("o" "Centralized templates for projects")
-         ("ot" "Project todo" entry
-          (function +org-capture-central-project-todo-file)
-          "* TODO %?\n %i\n %a"
-          :heading "Tasks"
-          :prepend nil)
-         ("on" "Project notes" entry
-          (function +org-capture-central-project-notes-file)
-          "* %U %?\n %i\n %a"
-          :heading "Notes"
-          :prepend t)
-         ("oc" "Project changelog" entry
-          (function +org-capture-central-project-changelog-file)
-          "* %U %?\n %i\n %a"
-          :heading "Changelog"
-          :prepend t))))
+          ;; TODO these look nice, look into this:
+          ;;
+
+          ;; Will use {project-root}/{todo,notes,changelog}.org, unless a
+          ;; {todo,notes,changelog}.org file is found in a parent directory.
+          ;; Uses the basename from `+org-capture-todo-file',
+          ;; `+org-capture-changelog-file' and `+org-capture-notes-file'.
+          ("p" "Templates for projects")
+          ("pt" "Project-local todo" entry  ; {project-root}/todo.org
+           (file+headline +org-capture-project-todo-file "Inbox")
+           "* TODO %?\n%i\n%a" :prepend t)
+          ("pn" "Project-local notes" entry  ; {project-root}/notes.org
+           (file+headline +org-capture-project-notes-file "Inbox")
+           "* %U %?\n%i\n%a" :prepend t)
+          ("pc" "Project-local changelog" entry  ; {project-root}/changelog.org
+           (file+headline +org-capture-project-changelog-file "Unreleased")
+           "* %U %?\n%i\n%a" :prepend t)
+
+          ;; Will use {org-directory}/{+org-capture-projects-file} and store
+          ;; these under {ProjectName}/{Tasks,Notes,Changelog} headings. They
+          ;; support `:parents' to specify what headings to put them under, e.g.
+          ;; :parents ("Projects")
+          ("o" "Centralized templates for projects")
+          ("ot" "Project todo" entry
+           (function +org-capture-central-project-todo-file)
+           "* TODO %?\n %i\n %a"
+           :heading "Tasks"
+           :prepend nil)
+          ("on" "Project notes" entry
+           (function +org-capture-central-project-notes-file)
+           "* %U %?\n %i\n %a"
+           :heading "Notes"
+           :prepend t)
+          ("oc" "Project changelog" entry
+           (function +org-capture-central-project-changelog-file)
+           "* %U %?\n %i\n %a"
+           :heading "Changelog"
+           :prepend t))))
 
 (after! org-journal
   (setq org-journal-enable-agenda-integration t
