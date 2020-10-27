@@ -90,6 +90,7 @@
 
 (after! org-crypt
   (setq org-tags-exclude-from-inheritance (quote ("crypt"))
+        org-crypt-disable-auto-save "encrypt"
         org-crypt-key "william@underage.wang"))
 
 
@@ -100,6 +101,72 @@
   (setq org-log-into-drawer t
         org-auto-align-tags t
         org-tags-column 72))
+
+(after! org-capture ;; ?
+  (setq org-capture-projects-file "dev"
+        ;; todo => day todo in jt ssdd
+        ;; log chore => day todo in log
+        ;; log work => day todo in log
+        ;; log is => day todo in log
+        ;; inbox =>
+        ;; raw =>
+        org-capture-templates
+        '(("f" "Templates for notes from files")
+          ("ft" "todo from file" entry
+          (file+headline "lol.org" "inbox")
+          "* TODO %?\n%i\n%a")
+         ("fn" "note from file" entry
+          (file+headline "lol.org" "inbox")
+          "* %u %?\n%i\n%a")
+
+         ("s" "ssdd" entry (file+olp
+                            (expand-file-name (concat (format-time-string "%F_%A.org") ".org") org-journal-dir)
+                            "ssdd")
+          "* [ ] %?\n%t"
+          :preprend t)
+
+         ;;("j" "Journal" entry
+         ;; (file+olp+datetree +org-capture-journal-file)
+         ;; "* %U %?\n%i\n%a" :prepend t)
+
+         ;; TODO these look nice, look into this:
+         ;;
+
+         ;; Will use {project-root}/{todo,notes,changelog}.org, unless a
+         ;; {todo,notes,changelog}.org file is found in a parent directory.
+         ;; Uses the basename from `+org-capture-todo-file',
+         ;; `+org-capture-changelog-file' and `+org-capture-notes-file'.
+         ("p" "Templates for projects")
+         ("pt" "Project-local todo" entry  ; {project-root}/todo.org
+          (file+headline +org-capture-project-todo-file "Inbox")
+          "* TODO %?\n%i\n%a" :prepend t)
+         ("pn" "Project-local notes" entry  ; {project-root}/notes.org
+          (file+headline +org-capture-project-notes-file "Inbox")
+          "* %U %?\n%i\n%a" :prepend t)
+         ("pc" "Project-local changelog" entry  ; {project-root}/changelog.org
+          (file+headline +org-capture-project-changelog-file "Unreleased")
+          "* %U %?\n%i\n%a" :prepend t)
+
+         ;; Will use {org-directory}/{+org-capture-projects-file} and store
+         ;; these under {ProjectName}/{Tasks,Notes,Changelog} headings. They
+         ;; support `:parents' to specify what headings to put them under, e.g.
+         ;; :parents ("Projects")
+         ("o" "Centralized templates for projects")
+         ("ot" "Project todo" entry
+          (function +org-capture-central-project-todo-file)
+          "* TODO %?\n %i\n %a"
+          :heading "Tasks"
+          :prepend nil)
+         ("on" "Project notes" entry
+          (function +org-capture-central-project-notes-file)
+          "* %U %?\n %i\n %a"
+          :heading "Notes"
+          :prepend t)
+         ("oc" "Project changelog" entry
+          (function +org-capture-central-project-changelog-file)
+          "* %U %?\n %i\n %a"
+          :heading "Changelog"
+          :prepend t))))
 
 (after! org-journal
   (setq org-journal-enable-agenda-integration t
@@ -178,6 +245,8 @@
 
 ;; org advice newline bug:
 ;; https://github.com/hlissner/doom-emacs/issues/3172
+(setq evil-search-wrap nil)
+;;
 (setq avy-all-windows t)
 (setq projectile-project-search-path '("~/conf" "~/conf/private" "~/work/2morrow" "~/work/gentoo/overlays" "~/work/ocaml"))
 
@@ -212,7 +281,7 @@
 
 ;; (setq evil-cleverparens-use-additional-movement-keys nil)
 (add-hook 'emacs-lisp-mode-hook #'evil-cleverparens-mode)
-(add-hook 'emacs-lisp-mode-hook #'aggressive-indent)
+;(add-hook 'emacs-lisp-mode-hook #'aggressive-indent)
                                         ;(evil-cleverparens-mode)
 ;; (after! elisp-mode)
 ;;
@@ -274,6 +343,7 @@
 (map! :localleader
       :map org-mode-map
       ;; send title (current line)
+      :nvm "D"    #'org-decrypt-entries
       :nvm "ga"   (fset 'archive-send-jt
                         (kmacro-lambda-form [return return ?y ?y ?  ?j ?t ?G ?p ?c ?e ?* ?* ?* ?j ?j return ?t ?d ?o ?\C-c ?. return ?j ?j ?\C-w ?\C-w] 0 "%d"))
       ;; send tree (this sometimes does BS on small lists)
@@ -284,19 +354,28 @@
                         (kmacro-lambda-form [?y ?a ?r ?  ?j ?t ?G ?p ?c ?e ?* ?* ?* ?j ?j return ?t ?d ?o ?\C-c ?. return ?j ?j ?\C-w ?\C-w] 0 "%d"))
       ;; make checkbox of this
       :nvm "gt"   (fset 'mk-todo
-                        (kmacro-lambda-form [return ?* return ?t ?t] 0 "%d"))
+                        (kmacro-lambda-form [return ?* return ?t ?t ?< ?< ?$] 0 "%d"))
       ;; make todo of this
       :nvm "gT"   (fset 'mk-todo
-                        (kmacro-lambda-form [return ?* return ?t ?T] 0 "%d"))
-      :nv "RET" #'+org/dwim-at-point)
+                        (kmacro-lambda-form [return ?* return ?t ?T ?< ?< ?$] 0 "%d"))
+      :nvm "RET" #'+org/dwim-at-point
+      ;; tables
+      :nvm "b>" #'org-table-move-column-right
+      :nvm "b<" #'org-table-move-column-left
+      :nvm "h" (lambda()
+                 (interactive)
+                 (org-toggle-heading)
+                 (outline-promote)))
 
 (map! :map org-mode-map
+      :nvm "zD"    #'org-decrypt-entries
       :nvm "{" #'evil-backward-paragraph
       :nvm "}" #'evil-forward-paragraph
       :nv   "<left>" #'org-promote-subtree
       :nv   "<down>" #'org-move-subtree-down
       :nv   "<up>" #'org-move-subtree-up
-      :nv   "<right>" #'org-demote-subtree)
+      :nv   "<right>" #'org-demote-subtree
+      )
 
 (defun my/journal-new-todo ()
   (interactive)

@@ -55,4 +55,5 @@
 
 (package! org-super-agenda)
 (package! org-journal)
+(package! org-crypt)
 ;(package! org-plus-contrib)
