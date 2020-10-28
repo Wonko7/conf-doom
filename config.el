@@ -37,8 +37,7 @@
 (setq org-agenda-files '("~/conf/private/org/" "~/conf/private/org/wip/" "~/conf/private/org/work/" "~/conf/private/org/the-road-so-far/"))
 
 (use-package! org-journal)
-
-;; show past:
+;; FIXME/review show past:
 ;;  https://github.com/bastibe/org-journal/issues/260
 
 (use-package! org-super-agenda
@@ -46,10 +45,7 @@
   :init
   (setq org-agenda-compact-blocks t
         org-agenda-start-with-follow-mode t
-        org-super-agenda-header-separator "\n"
-                                        ;org-super-agenda-header-separator nil
-                                        ;org-agenda-block-separator nil
-        )
+        org-super-agenda-header-separator "\n")
   :config
   (org-super-agenda-mode))
 
@@ -121,17 +117,17 @@
         org-tags-column 72))
 
 
-(defun my/log-entry ()
-
+(defun my/log-entry (olp-path)
+  (print "yep")
+  (print olp-path)
   (let ((fpath (expand-file-name (format-time-string "%F_%A.org") org-journal-dir)))
-    (find-file fpath)
+    (find-file fpath);; FIXME template create if empty?
     (org-decrypt-entries)
     (let ((date  (format-time-string "%F %A"))
           (m     (org-find-olp (cons (org-capture-expand-file fpath)
                                      (cons (format-time-string "%F %A")
-                                           '("log" "work"))))))
-      (goto-char m))
-    ))
+                                           olp-path)))))
+      (goto-char m))))
 
 ;; (defun open-new-project-file ()
 ;;   (let ((fpath (read-file-name "Project file name: "
@@ -150,15 +146,9 @@
 
 (after! org-capture ;; ?
   (setq org-capture-projects-file "dev"
-        ;; todo => day todo in jt ssdd
-        ;; log chore => day todo in log
-        ;; log work => day todo in log
-        ;; log is => day todo in log
-        ;; inbox =>
-        ;; raw =>
         ;; live with this for a while and then review
-        ;;
-        ;; add RDV. add
+
+        ;; add RDV, project stuff.
         org-capture-templates
         `(("d" "ssdd" entry (file+olp
                              ,(expand-file-name (format-time-string "%F_%A.org") org-journal-dir)
@@ -216,8 +206,11 @@
                                     "innerspace")
            "* %?\n")
 
-          ("lk" "work" entry (function my/log-entry)
-           "* %?\n")
+          ("lk" "work" entry (function (lambda ()
+                                         (my/log-entry '("log" "work"))) )
+           "* %?\n"
+           :clock-in t ;:clock-resume t
+           )
 
           ("lc" "chores" entry (file+olp
                                 ,(expand-file-name (format-time-string "%F_%A.org") org-journal-dir)
@@ -288,7 +281,7 @@
 (after! org-agenda
   (setq org-agenda-file-regexp "\\`\\\([^.].*\\.org\\\|[0-9]\\\{8\\\}\\\(\\.gpg\\\)?\\\)\\'"
         org-agenda-prefix-format (quote
-                                  ((agenda . "%-20c%?-12t% s")
+                                  ((agenda . "%-21c%?-12t% s")
                                    (timeline . "% s")
                                    (todo . "%-20c")
                                    (tags . "%-12c")
