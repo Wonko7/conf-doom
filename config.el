@@ -36,8 +36,8 @@
 (setq org-journal-dir "~/conf/private/org/the-road-so-far/")
 (setq org-agenda-files '("~/conf/private/org/" "~/conf/private/org/wip/" "~/conf/private/org/work/" "~/conf/private/org/the-road-so-far/"))
 
-(use-package! org-journal
-  )
+(use-package! org-journal)
+
 ;; show past:
 ;;  https://github.com/bastibe/org-journal/issues/260
 
@@ -88,11 +88,29 @@
           ("HOLD" . +org-todo-onhold)
           ("PROJ" . +org-todo-project))))
 
+
+;; make decrypting a bit more magical: decrypt after save
+;; use this to toggle feature: (remove-hook 'after-save-hook 'restore-point t)
+(defun save-point ()
+  (setq-local my/yolo (point)))
+
+(defun restore-point ()
+    (org-decrypt-entries)
+    (goto-char my/yolo))
+
+(add-hook
+ 'org-mode-hook
+ (lambda ()
+   (add-hook 'after-save-hook 'restore-point nil t)
+   (add-hook 'before-save-hook 'save-point (- 42) t)))
+
+
+;(add-hook! 'before-save-hook #'save-point)
+
 (after! org-crypt
   (setq org-tags-exclude-from-inheritance (quote ("crypt"))
         org-crypt-disable-auto-save "encrypt"
         org-crypt-key "william@underage.wang"))
-
 
 (after! org-habit
   (setq org-habit-graph-column 60))
@@ -102,18 +120,16 @@
         org-auto-align-tags t
         org-tags-column 72))
 
+
 (defun my/log-entry ()
+
   (let ((fpath (expand-file-name (format-time-string "%F_%A.org") org-journal-dir)))
-    (print "wtf")
-    (print fpath)
     (find-file fpath)
     (org-decrypt-entries)
     (let ((date  (format-time-string "%F %A"))
           (m     (org-find-olp (cons (org-capture-expand-file fpath)
                                      (cons (format-time-string "%F %A")
                                            '("log" "work"))))))
-      (print m)
-      (print "done")
       (goto-char m))
     ))
 
