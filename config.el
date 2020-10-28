@@ -30,15 +30,13 @@
   (setq-default evil-escape-delay 0.3)
   (setq evil-escape-key-sequence "jj"))
 
-;; erf, dupe code testing order:
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; org files:
 
 (setq org-directory "~/conf/private/org/")
 (setq org-journal-dir "~/conf/private/org/the-road-so-far/")
 (setq org-agenda-files '("~/conf/private/org/" "~/conf/private/org/wip/" "~/conf/private/org/work/" "~/conf/private/org/the-road-so-far/"))
 
-(use-package! org-journal)
-;; FIXME/review show past:
-;;  https://github.com/bastibe/org-journal/issues/260
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; org packages:
 
 (use-package! org-super-agenda
   :after org-agenda
@@ -53,6 +51,11 @@
   :config
   (org-crypt-use-before-save-magic))
 
+(use-package! org-journal)
+;; FIXME/review show past:
+;;  https://github.com/bastibe/org-journal/issues/260
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; org conf:
 
 (after! org
   (setq org-todo-keywords
@@ -84,6 +87,7 @@
           ("HOLD" . +org-todo-onhold)
           ("PROJ" . +org-todo-project))))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; org-crypt, habbit, & related:
 
 ;; make decrypting a bit more magical: decrypt after save
 ;; use this to toggle feature: (remove-hook 'after-save-hook 'restore-point t)
@@ -100,9 +104,6 @@
    (add-hook 'after-save-hook 'restore-point nil t)
    (add-hook 'before-save-hook 'save-point (- 42) t)))
 
-
-;(add-hook! 'before-save-hook #'save-point)
-
 (after! org-crypt
   (setq org-tags-exclude-from-inheritance (quote ("crypt"))
         org-crypt-disable-auto-save "encrypt"
@@ -116,10 +117,9 @@
         org-auto-align-tags t
         org-tags-column 72))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; capture
 
 (defun my/log-entry (olp-path)
-  (print "yep")
-  (print olp-path)
   (let ((fpath (expand-file-name (format-time-string "%F_%A.org") org-journal-dir)))
     (find-file fpath);; FIXME template create if empty?
     (org-decrypt-entries)
@@ -129,32 +129,27 @@
                                            olp-path)))))
       (goto-char m))))
 
-;; (defun open-new-project-file ()
-;;   (let ((fpath (read-file-name "Project file name: "
-;;                                (org-subdir "/projects")
-;;                                nil nil nil)))
-;;                (find-file fpath)
-;;                (goto-char (point-min))))
-
-;; (let ((m (org-find-olp (cons (org-capture-expand-file path)
-;;                                       outline-path))))
-;;   (set-buffer (marker-buffer m))
-;;   (org-capture-put-target-region-and-position)
-;;   (widen)
-;;   (goto-char m)
-;;   (set-marker m nil))
-
 (after! org-capture ;; ?
   (setq org-capture-projects-file "dev"
         ;; live with this for a while and then review
 
         ;; add RDV, project stuff.
         org-capture-templates
-        `(("d" "ssdd" entry (file+olp
-                             ,(expand-file-name (format-time-string "%F_%A.org") org-journal-dir)
-                             ,(format-time-string "%F %A")
-                             "ssdd")
+        `(("d" "ssdd" entry (function (lambda ()
+                                        (my/log-entry '("ssdd"))))
+
            "* TODO %?\n%t" :prepend t)
+          ("w" "log work" entry (function (lambda ()
+                                         (my/log-entry '("log" "work"))) )
+           "* %?\n"
+           :clock-in t)
+
+          ("r" "RDV" entry
+           (file+headline ;; FIXME make it scheduled, ask date then time?
+            ,(expand-file-name "future.org" org-journal-dir)
+            "inbox")
+           "* %?\n%^T\n")
+
           ("t" "todo to inbox" entry
            (file+headline "lol.org" "inbox")
            "* TODO %?\n%U\n")
@@ -175,55 +170,47 @@
 
 
           ("j" "journal")
-          ("jw" "witness the fitness" entry (file+olp
-                                             ,(expand-file-name (format-time-string "%F_%A.org") org-journal-dir)
-                                             ,(format-time-string "%F %A")
-                                             "witness the fitness")
+          ("jw" "witness the fitness" entry (function (lambda ()
+                                                        (my/log-entry '("witness the fitness"))))
            "* %?\n")
-          ("jy" "ty" entry (file+olp
-                            ,(expand-file-name (format-time-string "%F_%A.org") org-journal-dir)
-                            ,(format-time-string "%F %A")
-                            "ty")
+
+          ("jy" "ty" entry (function (lambda ()
+                                       (my/log-entry '("ty"))))
            "* %?\n")
-          ("ji" "innerspace" entry (file+olp
-                                    ,(expand-file-name (format-time-string "%F_%A.org") org-journal-dir)
-                                    ,(format-time-string "%F %A")
-                                    "innerspace")
+
+          ("ji" "innerspace" entry (function (lambda ()
+                                               (my/log-entry '("innerspace"))))
            "* %?\n")
+
 
           ("l" "log")
-          ("lw" "witness the fitness" entry (file+olp
-                                             ,(expand-file-name (format-time-string "%F_%A.org") org-journal-dir)
-                                             ,(format-time-string "%F %A")
-                                             "log"
-                                             "witness the fitness")
-           "* %?\n")
+          ("lf" "witness the fitness" entry (function (lambda ()
+                                                        (my/log-entry '("log" "witness the fitness"))))
+           "* %?\n"
+           :clock-in t)
 
-          ("li" "innerspace" entry (file+olp
-                                    ,(expand-file-name (format-time-string "%F_%A.org") org-journal-dir)
-                                    ,(format-time-string "%F %A")
-                                    "log"
-                                    "innerspace")
-           "* %?\n")
 
-          ("lk" "work" entry (function (lambda ()
+          ("li" "innerspace" entry (function (lambda ()
+                                               (my/log-entry '("log" "innerspace"))))
+           "* %?\n"
+           :clock-in t)
+
+
+          ("lw" "work" entry (function (lambda ()
                                          (my/log-entry '("log" "work"))) )
            "* %?\n"
-           :clock-in t ;:clock-resume t
-           )
+           :clock-in t)
 
-          ("lc" "chores" entry (file+olp
-                                ,(expand-file-name (format-time-string "%F_%A.org") org-journal-dir)
-                                ,(format-time-string "%F %A")
-                                "log"
-                                "chores")
-           "* %?\n")
-          ("lb" "bs" entry (file+olp
-                            ,(expand-file-name (format-time-string "%F_%A.org") org-journal-dir)
-                            ,(format-time-string "%F %A")
-                            "log"
-                            "bullshit")
-           "* %?\n")
+          ("lc" "chores" entry (function (lambda ()
+                                           (my/log-entry '("log" "chores"))))
+           "* %?\n"
+           :clock-in t)
+
+          ("lb" "bs" entry (function (lambda ()
+                                       (my/log-entry '("log" "bs"))))
+           "* %?\n"
+           :clock-in t)
+
 
           ;;("j" "Journal" entry
           ;; (file+olp+datetree +org-capture-journal-file)
