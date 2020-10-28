@@ -102,6 +102,36 @@
         org-auto-align-tags t
         org-tags-column 72))
 
+(defun my/log-entry ()
+  (let ((fpath (expand-file-name (format-time-string "%F_%A.org") org-journal-dir)))
+    (print "wtf")
+    (print fpath)
+    (find-file fpath)
+    (org-decrypt-entries)
+    (let ((date  (format-time-string "%F %A"))
+          (m     (org-find-olp (cons (org-capture-expand-file fpath)
+                                     (cons (format-time-string "%F %A")
+                                           '("log" "work"))))))
+      (print m)
+      (print "done")
+      (goto-char m))
+    ))
+
+;; (defun open-new-project-file ()
+;;   (let ((fpath (read-file-name "Project file name: "
+;;                                (org-subdir "/projects")
+;;                                nil nil nil)))
+;;                (find-file fpath)
+;;                (goto-char (point-min))))
+
+;; (let ((m (org-find-olp (cons (org-capture-expand-file path)
+;;                                       outline-path))))
+;;   (set-buffer (marker-buffer m))
+;;   (org-capture-put-target-region-and-position)
+;;   (widen)
+;;   (goto-char m)
+;;   (set-marker m nil))
+
 (after! org-capture ;; ?
   (setq org-capture-projects-file "dev"
         ;; todo => day todo in jt ssdd
@@ -162,18 +192,17 @@
                                              "log"
                                              "witness the fitness")
            "* %?\n")
+
           ("li" "innerspace" entry (file+olp
                                     ,(expand-file-name (format-time-string "%F_%A.org") org-journal-dir)
                                     ,(format-time-string "%F %A")
                                     "log"
                                     "innerspace")
            "* %?\n")
-          ("lk" "work" entry (file+olp
-                              ,(expand-file-name (format-time-string "%F_%A.org") org-journal-dir)
-                              ,(format-time-string "%F %A")
-                              "log"
-                              "work")
+
+          ("lk" "work" entry (function my/log-entry)
            "* %?\n")
+
           ("lc" "chores" entry (file+olp
                                 ,(expand-file-name (format-time-string "%F_%A.org") org-journal-dir)
                                 ,(format-time-string "%F %A")
