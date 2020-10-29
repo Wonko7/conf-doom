@@ -30,11 +30,6 @@
   (setq-default evil-escape-delay 0.3)
   (setq evil-escape-key-sequence "jj"))
 
-(set-file-template! "/20[-[:digit:]]+_[[:alpha:]]+\\.org$"
-  ;:trigger "__"
-  :mode 'org-journal-mode
-  )
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; org files:
 
 (setq org-directory "~/conf/private/org/")
@@ -56,9 +51,14 @@
   :config
   (org-crypt-use-before-save-magic))
 
-(use-package! org-journal)
 ;; FIXME/review show past:
 ;;  https://github.com/bastibe/org-journal/issues/260
+(use-package! org-journal)
+
+;; org journal template:
+(set-file-template! "/20[-[:digit:]]+_[[:alpha:]]+\\.org$"
+  ;:trigger "__"
+  :mode 'org-journal-mode)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; org conf:
 
@@ -124,16 +124,22 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; capture
 
-(defun my/log-entry (olp-path)
+(defun my/journal-open-today ()
   (let ((fpath (expand-file-name (format-time-string "%F_%A.org") org-journal-dir)))
-    (find-file fpath);; FIXME template create if empty?
-    (org-decrypt-entries)
-    (let ((date  (format-time-string "%F %A"))
-          (m     (org-find-olp (cons (org-capture-expand-file fpath)
+    (find-file fpath)
+    (org-decrypt-entries) ;; decrypt org entries before trying to add stuff in them, olp can't work on opaque gpg.
+    (when (<= (point-max) 300) ;; FIXME yeahhhhhhh there's probably a better test.
+      (message "need init!")
+      (print (point-max))
+      (org-journal--carryover))
+    fpath))
+
+(defun my/log-entry (olp-path)
+  (let ((fpath (my/journal-open-today))) ;; FIXME
+    (let ((m     (org-find-olp (cons (org-capture-expand-file fpath)
                                      (cons (format-time-string "%F %A")
                                            olp-path)))))
       (goto-char m))))
-
 
 (after! org-capture ;; ?
   (setq org-capture-projects-file "dev"
@@ -529,8 +535,8 @@
       :nvm "SPC"  #'ivy-switch-buffer
       :nvm "<"    #'+ivy/projectile-find-file
       :nvm "ng" #'counsel-org-goto-all ;; nG in split buffer?
-      :nvm "jt" #'org-journal-open-current-journal-file
-      :nvm "jn" #'my/journal-new-todo
+      :nvm "jt" #'(lambda() (interactive) (my/journal-open-today))
+      :nvm "jn" #'my/journal-new-todo ;; FIXME remove/or call capture instead?
       :nvm "jN" #'org-journal-new-entry
       ;; fixme what if day does not exist yet?
       ;; should this be jN new?
