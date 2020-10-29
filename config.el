@@ -30,6 +30,11 @@
   (setq-default evil-escape-delay 0.3)
   (setq evil-escape-key-sequence "jj"))
 
+(set-file-template! "/20[-[:digit:]]+_[[:alpha:]]+\\.org$"
+  ;:trigger "__"
+  :mode 'org-journal-mode
+  )
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; org files:
 
 (setq org-directory "~/conf/private/org/")
@@ -129,6 +134,7 @@
                                            olp-path)))))
       (goto-char m))))
 
+
 (after! org-capture ;; ?
   (setq org-capture-projects-file "dev"
         ;; live with this for a while and then review
@@ -173,7 +179,6 @@
           ("fn" "note from file" entry
            (file+headline "lol.org" "inbox")
            "* %U %?\n%a")
-
 
           ("j" "journal")
           ("jw" "witness the fitness" entry (function (lambda ()
