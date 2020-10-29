@@ -142,6 +142,12 @@
           ("w" "log work" entry (function (lambda ()
                                          (my/log-entry '("log" "work"))) )
            "* %?\n"
+           :no-save t
+           :jump-to-captured t
+           :clock-in t)
+          ("W" "log work quick" entry (function (lambda ()
+                                         (my/log-entry '("log" "work"))) )
+           "* %?\n"
            :clock-in t)
 
           ("r" "RDV" entry
@@ -172,7 +178,9 @@
           ("j" "journal")
           ("jw" "witness the fitness" entry (function (lambda ()
                                                         (my/log-entry '("witness the fitness"))))
-           "* %?\n")
+           "* %?\n"
+           :no-save t
+           :jump-to-captured t)
 
           ("jy" "ty" entry (function (lambda ()
                                        (my/log-entry '("ty"))))
@@ -187,28 +195,38 @@
           ("lf" "witness the fitness" entry (function (lambda ()
                                                         (my/log-entry '("log" "witness the fitness"))))
            "* %?\n"
+           :no-save t
+           :jump-to-captured t
            :clock-in t)
 
 
           ("li" "innerspace" entry (function (lambda ()
                                                (my/log-entry '("log" "innerspace"))))
            "* %?\n"
+           :no-save t
+           :jump-to-captured t
            :clock-in t)
 
 
           ("lw" "work" entry (function (lambda ()
                                          (my/log-entry '("log" "work"))) )
            "* %?\n"
+           :no-save t
+           :jump-to-captured t
            :clock-in t)
 
           ("lc" "chores" entry (function (lambda ()
                                            (my/log-entry '("log" "chores"))))
            "* %?\n"
+           :no-save t
+           :jump-to-captured t
            :clock-in t)
 
           ("lb" "bs" entry (function (lambda ()
                                        (my/log-entry '("log" "bs"))))
            "* %?\n"
+           :no-save t
+           :jump-to-captured t
            :clock-in t)
 
 
