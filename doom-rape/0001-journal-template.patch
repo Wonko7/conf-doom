@@ -1,0 +1,31 @@
+From 74103fca3d520905e4b546d4e55cf219057dd35f Mon Sep 17 00:00:00 2001
+From: William <william@undefined.re>
+Date: Thu, 29 Oct 2020 13:49:12 +0100
+Subject: [PATCH] journal template
+
+---
+ .../file-templates/templates/org-journal-mode/__     | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+ create mode 100644 modules/editor/file-templates/templates/org-journal-mode/__
+
+diff --git a/modules/editor/file-templates/templates/org-journal-mode/__ b/modules/editor/file-templates/templates/org-journal-mode/__
+new file mode 100644
+index 000000000..87a725701
+--- /dev/null
++++ b/modules/editor/file-templates/templates/org-journal-mode/__
+@@ -0,0 +1,12 @@
++* `(format-time-string "%F %A")`
++** log                                                                 :crypt:
++*** innerspace
++*** bs
++*** chores
++*** work
++
++** innerspace                                                          :crypt:
++
++** ty
++
++** ssdd
+-- 
+2.29.1
+
