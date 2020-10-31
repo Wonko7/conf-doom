@@ -34,7 +34,7 @@
 
 (setq org-directory "~/conf/private/org/")
 (setq org-journal-dir "~/conf/private/org/the-road-so-far/")
-(setq org-agenda-files '("~/conf/private/org/" "~/conf/private/org/wip/" "~/conf/private/org/work/" "~/conf/private/org/the-road-so-far/"))
+(setq org-agenda-files '("~/conf/private/org/" "~/conf/private/org/people/" "~/conf/private/org/wip/" "~/conf/private/org/work/" "~/conf/private/org/the-road-so-far/"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; org packages:
 
