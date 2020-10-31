@@ -489,6 +489,7 @@
 
 (map! :map org-mode-map
       :nvm "zD"    #'org-decrypt-entries
+      :nvm "zq"    #'(lambda() (interactive) (org-show-branches-buffer))
       :nvm "{" #'evil-backward-paragraph
       :nvm "}" #'evil-forward-paragraph
       :nv   "<left>" #'org-promote-subtree
