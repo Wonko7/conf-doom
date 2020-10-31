@@ -135,11 +135,10 @@
     fpath))
 
 (defun my/log-entry (olp-path)
-  (let ((fpath (my/journal-open-today))) ;; FIXME
-    (let ((m     (org-find-olp (cons (org-capture-expand-file fpath)
-                                     (cons (format-time-string "%F %A")
-                                           olp-path)))))
-      (goto-char m))))
+  (let ((m (org-find-olp (cons (org-capture-expand-file (my/journal-open-today))
+                               (cons (format-time-string "%F %A")
+                                     olp-path)))))
+    (goto-char m)))
 
 (after! org-capture ;; ?
   (setq org-capture-projects-file "dev"
@@ -151,6 +150,11 @@
                                         (my/log-entry '("ssdd"))))
 
            "* TODO %?\n%t" :prepend t)
+          ("s" "ssdd" entry (function (lambda () ;; I appear to prefer s
+                                        (my/log-entry '("ssdd"))))
+
+           "* TODO %?\n%t" :prepend t)
+
           ("w" "log work" entry (function (lambda ()
                                          (my/log-entry '("log" "work"))) )
            "* %?\n"
@@ -202,8 +206,8 @@
            "* %?\n")
 
 
-          ("l" "log")
-          ("lf" "witness the fitness" entry (function (lambda ()
+          ("c" "log")
+          ("cf" "witness the fitness" entry (function (lambda ()
                                                         (my/log-entry '("log" "witness the fitness"))))
            "* %?\n"
            :no-save t
@@ -211,7 +215,7 @@
            :clock-in t)
 
 
-          ("li" "innerspace" entry (function (lambda ()
+          ("ci" "innerspace" entry (function (lambda ()
                                                (my/log-entry '("log" "innerspace"))))
            "* %?\n"
            :no-save t
@@ -219,21 +223,21 @@
            :clock-in t)
 
 
-          ("lw" "work" entry (function (lambda ()
+          ("cw" "work" entry (function (lambda ()
                                          (my/log-entry '("log" "work"))) )
            "* %?\n"
            :no-save t
            :jump-to-captured t
            :clock-in t)
 
-          ("lc" "chores" entry (function (lambda ()
+          ("cc" "chores" entry (function (lambda ()
                                            (my/log-entry '("log" "chores"))))
            "* %?\n"
            :no-save t
            :jump-to-captured t
            :clock-in t)
 
-          ("lb" "bs" entry (function (lambda ()
+          ("cb" "bs" entry (function (lambda ()
                                        (my/log-entry '("log" "bs"))))
            "* %?\n"
            :no-save t
