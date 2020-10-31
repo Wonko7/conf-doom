@@ -550,3 +550,7 @@
       :nvm "jr" #'org-journal-new-scheduled-entry
       )
 
+;; dired
+(map! :localleader
+      :map dired-mode-map
+      :nvm "RET" #'dired-find-file)
