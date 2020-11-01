@@ -52,8 +52,10 @@
 
 (package! evil-cleverparens)
 (package! aggressive-indent)
+;(package! auth-source)
 
 (package! org-super-agenda)
 (package! org-journal)
-(package! org-crypt)
+(package! org-roam)
+;(package! org-protocol)
 ;(package! org-plus-contrib)

@@ -17,6 +17,57 @@
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
+;;; lol:
+
+(setq fancy-splash-image "~/.doom.d/home.png")
+(remove-hook '+doom-dashboard-functions #'doom-dashboard-widget-banner)
+(add-hook '+doom-dashboard-functions #'chika-widget-banner)
+(defun chika-widget-banner ()
+  (let ((point (point)))
+    (mapc (lambda (line)
+            (insert (propertize (+doom-dashboard--center +doom-dashboard--width line)
+                                'face 'doom-dashboard-banner) " ")
+            (insert "\n"))
+          '("                                      :                                 :       "
+            "                                    :                                   :       "
+            "                                    :  RRVIttIti+==iiii++iii++=;:,       :      "
+            "                                    : IBMMMMWWWWMMMMMBXXVVYYIi=;:,        :     "
+            "                                    : tBBMMMWWWMMMMMMBXXXVYIti;;;:,,      :     "
+            "                                    t YXIXBMMWMMBMBBRXVIi+==;::;::::       ,    "
+            "live long & prosper                ;t IVYt+=+iIIVMBYi=:,,,=i+=;:::::,      ;;   "
+            "                                   YX=YVIt+=,,:=VWBt;::::=,,:::;;;:;:     ;;;   "
+            "                                   VMiXRttItIVRBBWRi:.tXXVVYItiIi==;:   ;;;;    "
+            "                                   =XIBWMMMBBBMRMBXi;,tXXRRXXXVYYt+;;: ;;;;;    "
+            "                                    =iBWWMMBBMBBWBY;;;,YXRRRRXXVIi;;;:;,;;;=    "
+            "                                     iXMMMMMWWBMWMY+;=+IXRRXXVYIi;:;;:,,;;=     "
+            "                                     iBRBBMMMMYYXV+:,:;+XRXXVIt+;;:;++::;;;     "
+            "                                     =MRRRBMMBBYtt;::::;+VXVIi=;;;:;=+;;;;=     "
+            "                                      XBRBBBBBMMBRRVItttYYYYt=;;;;;;==:;=       "
+            "                                       VRRRRRBRRRRXRVYYIttiti=::;:::=;=         "
+            "                                        YRRRRXXVIIYIiitt+++ii=:;:::;==          "
+            "                                        +XRRXIIIIYVVI;i+=;=tt=;::::;:;          "
+            "                                         tRRXXVYti++==;;;=iYt;:::::,;;          "
+            "                                          IXRRXVVVVYYItiitIIi=:::;,::;          "
+            "                                           tVXRRRBBRXVYYYIti;::::,::::          "
+            "                                            YVYVYYYYYItti+=:,,,,,:::::;         "
+            "                                            YRVI+==;;;;;:,,,,,,,:::::::         "
+            ))
+    (when (and (display-graphic-p)
+               (stringp fancy-splash-image)
+               (file-readable-p fancy-splash-image))
+      (let ((image (create-image (fancy-splash-image-file))))
+        (add-text-properties
+         point (point) `(display ,image rear-nonsticky (display)))
+        (save-excursion
+          (goto-char point)
+          (insert (make-string
+                   (truncate
+                    (max 0 (+ 1 (/ (- +doom-dashboard--width
+                                      (car (image-size image nil)))
+                                   2))))
+                   ? ))))
+      (insert (make-string (or (cdr +doom-dashboard-banner-padding) 0)
+                           ?\n)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; global config:
 
@@ -57,7 +108,7 @@
 
 ;; org journal template:
 (set-file-template! "/20[-[:digit:]]+_[[:alpha:]]+\\.org$"
-  ;:trigger "__"
+                                        ;:trigger "__"
   :mode 'org-journal-mode)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; org conf:
@@ -100,8 +151,8 @@
   (setq-local my/yolo (point)))
 
 (defun restore-point ()
-    (org-decrypt-entries)
-    (goto-char my/yolo))
+  (org-decrypt-entries)
+  (goto-char my/yolo))
 
 (add-hook
  'org-mode-hook
@@ -156,38 +207,38 @@
            "* TODO %?\n%t")
 
           ("w" "log work" entry (function (lambda ()
-                                         (my/log-entry '("log" "work"))) )
+                                            (my/log-entry '("log" "work"))) )
            "* %?\n"
            :no-save t
            :jump-to-captured t
            :clock-in t)
           ("W" "log work quick" entry (function (lambda ()
-                                         (my/log-entry '("log" "work"))) )
+                                                  (my/log-entry '("log" "work"))) )
            "* %?\n"
            :clock-in t)
 
           ("r" "RDV" entry
-           (file+headline ;; FIXME make it scheduled, ask date then time?
+           (file+olp ;; FIXME make it scheduled, ask date then time?
             ,(expand-file-name "future.org" org-journal-dir)
-            "inbox")
+            "future" "inbox")
            "* %?\n%^T\n")
 
           ("t" "todo to inbox" entry
-           (file+headline "lol.org" "inbox")
+           (file+olp "lol.org" "lol" "inbox")
            "* TODO %?\n%U\n")
           ("n" "note to inbox" entry
-           (file+headline "lol.org" "inbox")
+           (file+olp "lol.org" "lol" "inbox")
            "* %?\n%U\n")
           ("N" "note to inbox" entry
-           (file+headline "lol.org" "inbox")
+           (file+olp "lol.org" "lol" "inbox")
            "* %?\n%U\n")
 
           ("f" "Templates for notes from files")
           ("ft" "todo from file" entry
-           (file+headline "lol.org" "inbox")
+           (file+olp "lol.org" "lol" "inbox")
            "* TODO %?\n%a")
           ("fn" "note from file" entry
-           (file+headline "lol.org" "inbox")
+           (file+olp "lol.org" "lol" "inbox")
            "* %U %?\n%a")
 
           ("j" "journal")
@@ -244,10 +295,12 @@
            :jump-to-captured t
            :clock-in t)
 
-          ("p" "Protocol" entry (file+headline "lol.org" "inbox")
-           "* %^{Title}\nSource: %u, %c\n #+BEGIN_QUOTE\n%i\n#+END_QUOTE\n\n\n%?")
-          ("L" "Protocol Link" entry (file+headline "lol.org" "inbox")
-           "* %? [[%:link][%:description]] \n%U")
+          ("Qp" "Protocol" entry
+           (file+olp "lol.org" "lol" "inbox")
+           "* %?\n[[%:link][%:description]]\n%u, %c\n#+BEGIN_QUOTE\n%i\n#+END_QUOTE")
+          ("Ql" "Protocol Link" entry
+           (file+olp "lol.org" "lol" "inbox")
+           "* %?\n[[%:link][%:description]] \n%U")
 
           ;;("j" "Journal" entry
           ;; (file+olp+datetree +org-capture-journal-file)
@@ -313,7 +366,7 @@
         org-agenda-deadline-leaders (quote ("!D!: " "D%2d: " ""))
         org-agenda-scheduled-leaders (quote ("" "S%3d: "))
         ;; fixes fucky binding on jk on an agenda header:
-        ;org-super-agenda-header-map (make-sparse-keymap)
+                                        ;org-super-agenda-header-map (make-sparse-keymap)
 
         ;; (setq org-agenda-time-grid '((daily today require-timed) "----------------------" nil)
         ;;       org-agenda-skip-scheduled-if-done t
@@ -381,7 +434,7 @@
 
 (setq doom-theme 'doom-solarized-dark)
 (setq doom-font (font-spec :family "Fira Mono for Powerline" :size 16))
-; j(setq doom-font (font . "Fira Mono for Powerline-14"))
+                                        ; j(setq doom-font (font . "Fira Mono for Powerline-14"))
 
 ;; nil numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type t)
@@ -405,7 +458,7 @@
 
 ;; (setq evil-cleverparens-use-additional-movement-keys nil)
 (add-hook 'emacs-lisp-mode-hook #'evil-cleverparens-mode)
-;(add-hook 'emacs-lisp-mode-hook #'aggressive-indent)
+                                        ;(add-hook 'emacs-lisp-mode-hook #'aggressive-indent)
                                         ;(evil-cleverparens-mode)
 ;; (after! elisp-mode)
 ;;
