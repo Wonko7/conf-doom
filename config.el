@@ -153,7 +153,7 @@
           ("s" "ssdd" entry (function (lambda () ;; I appear to prefer s
                                         (my/log-entry '("ssdd"))))
 
-           "* TODO %?\n%t" :prepend t)
+           "* TODO %?\n%t")
 
           ("w" "log work" entry (function (lambda ()
                                          (my/log-entry '("log" "work"))) )
@@ -244,6 +244,10 @@
            :jump-to-captured t
            :clock-in t)
 
+          ("p" "Protocol" entry (file+headline "lol.org" "inbox")
+           "* %^{Title}\nSource: %u, %c\n #+BEGIN_QUOTE\n%i\n#+END_QUOTE\n\n\n%?")
+          ("L" "Protocol Link" entry (file+headline "lol.org" "inbox")
+           "* %? [[%:link][%:description]] \n%U")
 
           ;;("j" "Journal" entry
           ;; (file+olp+datetree +org-capture-journal-file)
@@ -309,7 +313,7 @@
         org-agenda-deadline-leaders (quote ("!D!: " "D%2d: " ""))
         org-agenda-scheduled-leaders (quote ("" "S%3d: "))
         ;; fixes fucky binding on jk on an agenda header:
-        org-super-agenda-header-map (make-sparse-keymap)
+        ;org-super-agenda-header-map (make-sparse-keymap)
 
         ;; (setq org-agenda-time-grid '((daily today require-timed) "----------------------" nil)
         ;;       org-agenda-skip-scheduled-if-done t
