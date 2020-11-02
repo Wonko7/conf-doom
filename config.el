@@ -86,6 +86,7 @@
       company-idle-delay 0.0)
 
 (add-hook 'prog-mode-hook 'rainbow-identifiers-mode)
+(add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; org files:
 
@@ -97,7 +98,10 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; org packages:
 
 
+;; (use-package! org-roam
+;;   :hook (after-init . org-roam-mode))
 (use-package! org-roam
+  :after org
   :hook (after-init . org-roam-mode))
 
 ;; (use-package! org-roam-protocol
@@ -485,7 +489,6 @@
 ;; elisp mode wants most of this too:
 (after! clojure-mode
   (add-hook 'clojure-mode-hook #'eval-sexp-fu-flash-mode)
-  (add-hook 'clojure-mode-hook #'rainbow-delimiters-mode)
   (add-hook 'clojure-mode-hook #'evil-cleverparens-mode)
   (add-hook 'clojure-mode-hook #'aggressive-indent-mode) ;; difficult to use with trace-form cljsrn fn tracing
   (add-hook 'clojure-mode-hook #'electric-indent-mode)
@@ -519,6 +522,7 @@
       :nvm "(" #'sp-backward-up-sexp
       :nvm "é" #'evil-cp-previous-opening ; FIXME put this in global map?
       :nvm "&" #'evil-cp-next-opening
+      :nvm "M-r" #'paredit-raise-sexp
       :nvm "M-t"  #'sp-transpose-sexp
       :nvm "M-T"  (lambda() (interactive) (sp-transpose-sexp -1))
       :nvm "M-g p" #'evil-cp-wrap-next-round
@@ -532,8 +536,10 @@
 
 (map! :map evil-cleverparens-mode-map
       :localleader
+      :nvm "r" #'paredit-raise-sexp
       :nvm "t"  #'sp-transpose-sexp
-      :nvm "--T"  (lambda() (interactive) (sp-transpose-sexp -1))
+      :nvm "T"  (lambda() (interactive) (sp-transpose-sexp -1))
+      :nvm "M-T"  (lambda() (interactive) (sp-transpose-sexp -1))
       :nvm "g p" #'evil-cp-wrap-next-round
       :nvm "g P" #'evil-cp-wrap-previous-round
       :nvm "g c" #'evil-cp-wrap-next-curly
@@ -615,7 +621,6 @@
       "TAB" #'tuareg-complete
       "K"   #'tuareg-kill-ocaml)
 
-(add-hook 'tuareg-mode-hook #'rainbow-delimiters-mode)
 (add-hook 'tuareg-mode-hook #'(lambda() (setq mode-name "🐫")))
 
 ;; global:
