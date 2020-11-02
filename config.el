@@ -19,7 +19,7 @@
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 ;;; lol:
 
-(setq fancy-splash-image "~/.doom.d/home.png")
+(setq fancy-splash-image "~/pics/wallpapers/spock.jpg")
 (remove-hook '+doom-dashboard-functions #'doom-dashboard-widget-banner)
 (add-hook '+doom-dashboard-functions #'chika-widget-banner)
 (defun chika-widget-banner ()
@@ -81,13 +81,42 @@
   (setq-default evil-escape-delay 0.3)
   (setq evil-escape-key-sequence "jj"))
 
+;; (remove-hook 'flyspell-mode-hook #'+spellcheck|immediately)
+(setq company-minimum-prefix-length 1
+      company-idle-delay 0.0)
+
+(add-hook 'prog-mode-hook 'rainbow-identifiers-mode)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; org files:
 
 (setq org-directory "~/conf/private/org/")
+(setq org-roam-directory "~/conf/private/org/here-be-dragons/")
 (setq org-journal-dir "~/conf/private/org/the-road-so-far/")
 (setq org-agenda-files '("~/conf/private/org/" "~/conf/private/org/people/" "~/conf/private/org/wip/" "~/conf/private/org/work/" "~/conf/private/org/the-road-so-far/"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; org packages:
+
+
+(use-package! org-roam
+  :hook (after-init . org-roam-mode))
+
+;; (use-package! org-roam-protocol
+;;   :after org-protocol)
+;;
+(map! :map org-agenda-mode-map
+      :nvm "j" #'org-agenda-next-line
+      :nvm "k" #'org-agenda-previous-line)
+(map! :map evil-org-agenda-mode-map
+      :nvm "j" #'org-agenda-next-line
+      :nvm "k" #'org-agenda-previous-line)
+
+(after! org-agenda
+ (map! :map evil-org-agenda-mode-map
+      :nvm "j" #'org-agenda-next-line
+      :nvm "k" #'org-agenda-previous-line)
+ (map! :map org-agenda-mode-map
+      :nvm "j" #'org-agenda-next-line
+      :nvm "k" #'org-agenda-previous-line))
 
 (use-package! org-super-agenda
   :after org-agenda
@@ -108,7 +137,7 @@
 
 ;; org journal template:
 (set-file-template! "/20[-[:digit:]]+_[[:alpha:]]+\\.org$"
-                                        ;:trigger "__"
+  ;; :trigger "__"
   :mode 'org-journal-mode)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; org conf:
@@ -447,8 +476,15 @@
 
 ;; parens & clojure:
 
+(use-package! eval-sexp-fu
+  ;:defer t
+  ;:hook ((emacs-lisp-mode . eval-sexp-fu-flash-mode))
+  )
+(use-package! cider-eval-sexp-fu)
+
 ;; elisp mode wants most of this too:
 (after! clojure-mode
+  (add-hook 'clojure-mode-hook #'eval-sexp-fu-flash-mode)
   (add-hook 'clojure-mode-hook #'rainbow-delimiters-mode)
   (add-hook 'clojure-mode-hook #'evil-cleverparens-mode)
   (add-hook 'clojure-mode-hook #'aggressive-indent-mode) ;; difficult to use with trace-form cljsrn fn tracing
@@ -479,8 +515,8 @@
 (map! :map evil-cleverparens-mode-map
       :nvm "{" #'evil-backward-paragraph
       :nvm "}" #'evil-forward-paragraph
-      :nvm ")" #'evil-cp-previous-closing
-      :nvm "(" #'evil-cp-next-opening
+      :nvm ")" #'evil-cp-next-closing
+      :nvm "(" #'sp-backward-up-sexp
       :nvm "é" #'evil-cp-previous-opening ; FIXME put this in global map?
       :nvm "&" #'evil-cp-next-opening
       :nvm "M-t"  #'sp-transpose-sexp
@@ -508,7 +544,9 @@
 
 (map! :map clojure-mode-map
       :localleader
-      :nvm "RET" #'cider-eval-defun-at-point)
+      ;:nvm "RET" #'cider-eval-last-sexp
+      :nvm "RET" #'cider-eval-list-at-point
+      )
 
 (map! :map clojure-mode-map
       :nvm "s"  #'evil-avy-goto-char-2
@@ -606,6 +644,10 @@
                       (kmacro-lambda-form [?  ?j ?t ?G ?c ?c ?* ?* ?  ?s ?s ?d ?d ?j ?j ?: ?o ?r ?g ?- ?j ?o ?u ?r ?n ?a ?l ?- ?- ?c ?a ?r ?r ?y ?o ?v ?e ?r return] 0 "%d"))
       :nvm "jr" #'org-journal-new-scheduled-entry
       )
+
+(map! :map org-agenda-mode-map
+      :nvm "j" #'org-agenda-next-line
+      :nvm "k" #'org-agenda-previous-line)
 
 ;; dired
 (map! :localleader

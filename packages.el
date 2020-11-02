@@ -57,5 +57,9 @@
 (package! org-super-agenda)
 (package! org-journal)
 (package! org-roam)
+
 ;(package! org-protocol)
 ;(package! org-plus-contrib)
+
+(package! eval-sexp-fu)
+(package! cider-eval-sexp-fu)
