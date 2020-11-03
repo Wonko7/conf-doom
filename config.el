@@ -210,7 +210,7 @@
 
 (defun my/journal-open-today ()
   (let ((fpath (expand-file-name (format-time-string "%F_%A.org") org-journal-dir)))
-    (find-file fpath)
+    (find-file-other-window fpath)
     (org-decrypt-entries) ;; decrypt org entries before trying to add stuff in them, olp can't work on opaque gpg.
     (when (<= (point-max) 300) ;; FIXME yeahhhhhhh there's probably a better test.
       (message "need init!")
@@ -399,7 +399,8 @@
         org-agenda-deadline-leaders (quote ("!D!: " "D%2d: " ""))
         org-agenda-scheduled-leaders (quote ("" "S%3d: "))
         ;; fixes fucky binding on jk on an agenda header:
-                                        ;org-super-agenda-header-map (make-sparse-keymap)
+        ;; https://github.com/alphapapa/org-super-agenda/issues/50
+        org-super-agenda-header-map (make-sparse-keymap)
 
         ;; (setq org-agenda-time-grid '((daily today require-timed) "----------------------" nil)
         ;;       org-agenda-skip-scheduled-if-done t
@@ -606,7 +607,7 @@
 
 (map! :map org-journal-mode-map
       :localleader
-      :nvm "n" #'my/journal-new-todo
+      :nvm "n" #'my/journal-new-todo ;; FIXME trigger capture
       :nvm "N" #'org-journal-new-date-entry
       :nvm "r" #'org-journal-new-scheduled-entry
       :nvm "j" #'org-journal-next-entry
@@ -640,14 +641,24 @@
       :nvm "SPC"  #'ivy-switch-buffer
       :nvm "<"    #'+ivy/projectile-find-file
       :nvm "ng" #'counsel-org-goto-all ;; nG in split buffer?
-      :nvm "jt" #'(lambda() (interactive) (my/journal-open-today))
+
+      :desc "today" :nvm "jt" #'(lambda() (interactive) (my/journal-open-today))
       :nvm "jn" #'my/journal-new-todo ;; FIXME remove/or call capture instead?
       :nvm "jN" #'org-journal-new-entry
-      ;; fixme what if day does not exist yet?
-      ;; should this be jN new?
-      :nvm "jC" (fset 'carry
-                      (kmacro-lambda-form [?  ?j ?t ?G ?c ?c ?* ?* ?  ?s ?s ?d ?d ?j ?j ?: ?o ?r ?g ?- ?j ?o ?u ?r ?n ?a ?l ?- ?- ?c ?a ?r ?r ?y ?o ?v ?e ?r return] 0 "%d"))
       :nvm "jr" #'org-journal-new-scheduled-entry
+
+      :nvm "P"  #'ivy-pass
+      :desc "Switch to buffer"              :nvm "rb" #'org-roam-switch-to-buffer
+      :desc "Org Roam Capture"              :nvm "rc" #'org-roam-capture
+      :desc "Find file"                     :nvm "rf" #'org-roam-find-file
+      :desc "Show graph"                    :nvm "rg" #'org-roam-graph
+      :desc "Insert"                        :nvm "ri" #'org-roam-insert
+      :desc "Insert (skipping org-capture)" :nvm "rI" #'org-roam-insert-immediate
+      :desc "Org Roam"                      :nvm "rr" #'org-roam
+      :desc "Arbitrary date"                :nvm "rdd" #'org-roam-dailies-date
+      :desc "Today"                         :nvm "rdt" #'org-roam-dailies-today
+      :desc "Tomorrow"                      :nvm "rdm" #'org-roam-dailies-tomorrow
+      :desc "Yesterday"                     :nvm "rdy" #'org-roam-dailies-yesterday
       )
 
 (map! :map org-agenda-mode-map
