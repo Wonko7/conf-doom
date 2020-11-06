@@ -565,6 +565,10 @@
       :nvm "s"  #'evil-avy-goto-char-2
       )
 
+(map! :map emacs-lisp-mode-map
+      :localleader
+      :nvm "RET" #'eval-defun)
+
 ;; keyboard macros, for reference: https://www.emacswiki.org/emacs/KeyboardMacrosTricks
 ;; kmacro-name-last-macro
 ;; insert-kbd-macro
@@ -676,3 +680,16 @@
 (map! :localleader
       :map dired-mode-map
       :nvm "RET" #'dired-find-file)
+
+
+;; helper:
+(defun my/keymap-symbol ()
+  "Return the symbol to which KEYMAP is bound, or nil if no such symbol exists."
+  (interactive)
+  (let ((keymap (current-local-map)))
+    (print (catch 'gotit
+             (mapatoms (lambda (sym)
+                   (and (boundp sym)
+                        (eq (symbol-value sym) keymap)
+                        (not (eq sym 'keymap))
+                        (throw 'gotit sym))))))))
