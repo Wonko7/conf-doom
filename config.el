@@ -19,6 +19,10 @@
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 ;;; lol:
 
+(setq org-roam-directory "~/conf/private/org/here-be-dragons/")
+(use-package! org-protocol)
+(server-start)
+
 (setq fancy-splash-image "~/pics/wallpapers/spock.jpg")
 (remove-hook '+doom-dashboard-functions #'doom-dashboard-widget-banner)
 (add-hook '+doom-dashboard-functions #'chika-widget-banner)
@@ -102,7 +106,8 @@
 ;;   :hook (after-init . org-roam-mode))
 (use-package! org-roam
   :after org
-  :hook (after-init . org-roam-mode))
+  :hook (after-init . org-roam-mode)
+  )
 
 ;; (use-package! org-roam-protocol
 ;;   :after org-protocol)
@@ -393,7 +398,7 @@
         org-agenda-prefix-format (quote
                                   ((agenda . "%-21c%?-12t% s")
                                    (timeline . "% s")
-                                   (todo . "%-20c")
+                                   (todo . "%-21c")
                                    (tags . "%-12c")
                                    (search . "%-12c")))
         org-agenda-deadline-leaders (quote ("!D!: " "D%2d: " ""))
@@ -538,6 +543,7 @@
 (map! :map evil-cleverparens-mode-map
       :localleader
       :nvm "r" #'paredit-raise-sexp
+      :nvm "R" #'evil-cp-raise-form
       :nvm "t"  #'sp-transpose-sexp
       :nvm "T"  (lambda() (interactive) (sp-transpose-sexp -1))
       :nvm "M-T"  (lambda() (interactive) (sp-transpose-sexp -1))
@@ -655,6 +661,7 @@
       :desc "Insert"                        :nvm "ri" #'org-roam-insert
       :desc "Insert (skipping org-capture)" :nvm "rI" #'org-roam-insert-immediate
       :desc "Org Roam"                      :nvm "rr" #'org-roam
+      :desc "Roam tag"                      :nvm "rq" #'org-roam-tag-add
       :desc "Arbitrary date"                :nvm "rdd" #'org-roam-dailies-date
       :desc "Today"                         :nvm "rdt" #'org-roam-dailies-today
       :desc "Tomorrow"                      :nvm "rdm" #'org-roam-dailies-tomorrow
