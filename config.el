@@ -231,6 +231,27 @@
 
 (after! org-capture ;; ?
   (setq org-capture-projects-file "dev"
+        org-roam-capture-templates
+        `(
+          ("c" "file" entry (function org-roam--capture-get-point)
+           "* %?"
+           :head "#+title: ${title}\n\n"
+           :file-name "%<%F_%H%M%S>-${slug}"
+           :unnarrowed t
+           )
+
+          ("Q" "Protocol")
+          ("Qq" "Protocol quote" entry
+           (function org-roam--capture-get-point)
+           "* %?\n[[%:link][%:description]]\n%u\n#+BEGIN_QUOTE\n%i\n#+END_QUOTE"
+           :file-name "bookmark/%<%F_%H%M%S>-${slug}"
+           :head "#+title: ${title}\n"
+           :unnarrowed t)
+          ("Ql" "Protocol Link" entry
+           (file+olp "lol.org" "lol" "inbox")
+           "* %?\n[[%:link][%:description]] \n%U")
+          :immediate-finish t
+          )
         ;; live with this for a while and then review
 
         ;; add RDV, project stuff.
@@ -335,7 +356,7 @@
 
           ("Qp" "Protocol" entry
            (file+olp "lol.org" "lol" "inbox")
-           "* %?\n[[%:link][%:description]]\n%u, %c\n#+BEGIN_QUOTE\n%i\n#+END_QUOTE")
+           "* %?\n[[%:link][%:description]]\n%u\n#+BEGIN_QUOTE\n%i\n#+END_QUOTE")
           ("Ql" "Protocol Link" entry
            (file+olp "lol.org" "lol" "inbox")
            "* %?\n[[%:link][%:description]] \n%U")
