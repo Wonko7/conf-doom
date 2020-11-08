@@ -231,27 +231,27 @@
 
 (after! org-capture ;; ?
   (setq org-capture-projects-file "dev"
-        org-roam-capture-templates
-        `(
-          ("c" "file" entry (function org-roam--capture-get-point)
-           "* %?"
-           :head "#+title: ${title}\n\n"
-           :file-name "%<%F_%H%M%S>-${slug}"
-           :unnarrowed t
-           )
+        ;; org-roam-capture-templates
+        ;; `(
+        ;;   ("c" "file" entry (function org-roam--capture-get-point)
+        ;;    "* %?"
+        ;;    :head "#+title: ${title}\n\n"
+        ;;    :file-name "%<%F_%H%M%S>-${slug}"
+        ;;    :unnarrowed t
+        ;;    )
 
-          ("Q" "Protocol")
-          ("Qq" "Protocol quote" entry
-           (function org-roam--capture-get-point)
-           "* %?\n[[%:link][%:description]]\n%u\n#+BEGIN_QUOTE\n%i\n#+END_QUOTE"
-           :file-name "bookmark/%<%F_%H%M%S>-${slug}"
-           :head "#+title: ${title}\n"
-           :unnarrowed t)
-          ("Ql" "Protocol Link" entry
-           (file+olp "lol.org" "lol" "inbox")
-           "* %?\n[[%:link][%:description]] \n%U")
-          :immediate-finish t
-          )
+        ;;   ("Q" "Protocol")
+        ;;   ("Qq" "Protocol quote" entry
+        ;;    (function org-roam--capture-get-point)
+        ;;    "* %?\n[[%:link][%:description]]\n%u\n#+BEGIN_QUOTE\n%i\n#+END_QUOTE"
+        ;;    :file-name "bookmark/%<%F_%H%M%S>-${slug}"
+        ;;    :head "#+title: ${title}\n"
+        ;;    :unnarrowed t)
+        ;;   ("Ql" "Protocol Link" entry
+        ;;    (file+olp "lol.org" "lol" "inbox")
+        ;;    "* %?\n[[%:link][%:description]] \n%U")
+        ;;   ;:immediate-finish t
+        ;;   )
         ;; live with this for a while and then review
 
         ;; add RDV, project stuff.
@@ -500,8 +500,9 @@
 (setq display-line-numbers-type t)
 (setq scroll-margin 8)
 
-(after! evil-snipe
-  (evil-snipe-mode -1))
+;; (after! evil-snipe
+;;   (evil-snipe-mode -1))
+(setq evil-snipe-scope 'whole-visible)
 
 (setq avy-keys '(?u ?h ?e ?t ?. ?c ?i ?d ?k ?m ?j ?w ?o ?n ?p ?g))
 
@@ -518,7 +519,7 @@
   (add-hook 'clojure-mode-hook #'eval-sexp-fu-flash-mode)
   (add-hook 'clojure-mode-hook #'evil-cleverparens-mode)
   (add-hook 'clojure-mode-hook #'aggressive-indent-mode) ;; difficult to use with trace-form cljsrn fn tracing
-  (add-hook 'clojure-mode-hook #'electric-indent-mode)
+  ;(add-hook 'clojure-mode-hook #'electric-indent-mode)
   (setq clojure-indent-style 'align-arguments)
   (setq clojure-align-forms-automatically t))
 
@@ -558,7 +559,7 @@
       :nvm "M-g C" #'evil-cp-wrap-previous-curly
       :nvm "M-g s" #'evil-cp-wrap-next-square
       :nvm "M-g S" #'evil-cp-wrap-previous-square
-      :nvm "s"  #'evil-aavy-goto-char-2
+      ;:nvm "s"  #'evil-aavy-goto-char-2 use: gss
       )
 
 (map! :map evil-cleverparens-mode-map
@@ -623,6 +624,8 @@
 (map! :map org-mode-map
       :nvm "zD"    #'org-decrypt-entries
       :nvm "zq"    #'(lambda() (interactive) (org-show-branches-buffer))
+      :nvm "(" #'org-previous-visible-heading
+      :nvm ")" #'org-next-visible-heading
       :nvm "{" #'evil-backward-paragraph
       :nvm "}" #'evil-forward-paragraph
       :nv   "<left>" #'org-promote-subtree
@@ -656,18 +659,20 @@
 (add-hook 'tuareg-mode-hook #'(lambda() (setq mode-name "🐫")))
 
 ;; global:
-(map! :nv "s"  #'evil-avy-goto-char-2
+(map! ;; :nv "s"  #'evil-avy-goto-char-2
       ;; :nv "C->" #'transpose-sexps
       ;; :nv "C-<" #'(lambda() (interactive) (transpose-sexps -1))
       :nv "g>" #'transpose-words
       :nv "g<" #'(lambda() (interactive) (transpose-words -1))
       :nv "C-*" #'evil-multiedit-match-symbol-and-prev
       :nv "C-8" #'evil-multiedit-match-symbol-and-next
+      :nvm "é" #'evil-cp-previous-opening ; FIXME put this in global map?
+      :nvm "&" #'evil-cp-next-opening
       :i  "C-v" #'evil-paste-after
       :i  "C-V" #'evil-paste-after
       )
 
-;; org
+;; global
 (map! :leader
       :nvm "SPC"  #'ivy-switch-buffer
       :nvm "<"    #'+ivy/projectile-find-file
