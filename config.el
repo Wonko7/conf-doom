@@ -23,7 +23,7 @@
 (use-package! org-protocol)
 (server-start)
 
-(setq fancy-splash-image "~/pics/wallpapers/spock.jpg")
+(setq fancy-splash-image "~/docs/wallpapers/misc/spock.jpg")
 (remove-hook '+doom-dashboard-functions #'doom-dashboard-widget-banner)
 (add-hook '+doom-dashboard-functions #'chika-widget-banner)
 (defun chika-widget-banner ()
@@ -97,7 +97,9 @@
 (setq org-directory "~/conf/private/org/")
 (setq org-roam-directory "~/conf/private/org/here-be-dragons/")
 (setq org-journal-dir "~/conf/private/org/the-road-so-far/")
-(setq org-agenda-files '("~/conf/private/org/" "~/conf/private/org/people/" "~/conf/private/org/wip/" "~/conf/private/org/work/" "~/conf/private/org/the-road-so-far/"))
+(setq org-agenda-files '("~/conf/private/org/" "~/conf/private/org/people/"
+                         "~/conf/private/org/wip/" "~/conf/private/org/work/"
+                         "~/conf/private/org/the-road-so-far/"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; org packages:
 
@@ -131,7 +133,7 @@
   :after org-agenda
   :init
   (setq org-agenda-compact-blocks t
-        org-agenda-start-with-follow-mode t
+        ;org-agenda-start-with-follow-mode t
         org-super-agenda-header-separator "\n")
   :config
   (org-super-agenda-mode))
@@ -357,6 +359,10 @@
           ("Qp" "Protocol" entry
            (file+olp "lol.org" "lol" "inbox")
            "* %?\n[[%:link][%:description]]\n%u\n#+BEGIN_QUOTE\n%i\n#+END_QUOTE")
+          ("Qd" "Protocol Link direct" entry
+           (file+olp "lol.org" "lol" "inbox")
+           "* %?\n[[%:link][%:description]] \n%U"
+          :immediate-finish t)
           ("Ql" "Protocol Link" entry
            (file+olp "lol.org" "lol" "inbox")
            "* %?\n[[%:link][%:description]] \n%U")
@@ -682,6 +688,8 @@
       :nvm "jn" #'my/journal-new-todo ;; FIXME remove/or call capture instead?
       :nvm "jN" #'org-journal-new-entry
       :nvm "jr" #'org-journal-new-scheduled-entry
+
+      :desc "follow" :nvm "taf" #'org-agenda-follow-mode
 
       :nvm "P"  #'ivy-pass
       :desc "Switch to buffer"              :nvm "rb" #'org-roam-switch-to-buffer
