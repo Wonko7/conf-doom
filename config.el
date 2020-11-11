@@ -114,12 +114,12 @@
 ;; (use-package! org-roam-protocol
 ;;   :after org-protocol)
 ;;
-(map! :map org-agenda-mode-map
-      :nvm "j" #'org-agenda-next-line
-      :nvm "k" #'org-agenda-previous-line)
-(map! :map evil-org-agenda-mode-map
-      :nvm "j" #'org-agenda-next-line
-      :nvm "k" #'org-agenda-previous-line)
+;; (map! :map org-agenda-mode-map
+;;       :nvm "j" #'org-agenda-next-line
+;;       :nvm "k" #'org-agenda-previous-line)
+;; (map! :map evil-org-agenda-mode-map
+;;       :nvm "j" #'org-agenda-next-line
+;;       :nvm "k" #'org-agenda-previous-line)
 
 (after! org-agenda
  (map! :map evil-org-agenda-mode-map
@@ -154,7 +154,9 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; org conf:
 
 (after! org
-  (setq org-todo-keywords
+  (setq
+   org-extend-today-until 3
+   org-todo-keywords
         '((sequence
            "NEXT(n/!)"  ; A task that recuring
            "TODO(t)"  ; A task that needs doing & is ready to do
@@ -416,7 +418,7 @@
         org-journal-time-format ""
         org-journal-time-prefix "*** "
         org-journal-hide-entries-p nil
-        org-journal-carryover-items "next|TODO=\"PROJ\"|TODO=\"TODO\"|TODO=\"[ ]\"|TODO=\"[ ]\"|TODO=\"\\[ \\]\"|TODO=\"\\[\\\\]\"" ;; checkboxes do not work FIXME
+        org-journal-carryover-items "next|TODO=\"PROJ\"|TODO=\"TODO\"|TODO=\"GOGO\"|TODO=\"[ ]\"|TODO=\"\\[ \\]\"|TODO=\"\\[\\\\]\"" ;; checkboxes do not work FIXME
         org-journal-file-format "%F_%A.org"
         org-journal-date-format "%F %A"))
 
