@@ -6,9 +6,14 @@
 ;;;; Functions
 (defun yolobolo-save (info)
   (interactive "P")
-  (message "hi")
-  (message "> loooooool")
-  (print info))
+  (print "yes this is it")
+  (print info)
+  (print "car" (car info))
+  (print "cdr" (cdr info))
+  (print "cadr" (cadr info))
+  (let ((thing (org-protocol-split-data (cdr info) t)))
+    (print "decoded" thing))
+  nil)
 
 ;; so the filtering of data should happen in emacs really. ff dumps max data.
 ;; so. column viewer might be helpful here.
