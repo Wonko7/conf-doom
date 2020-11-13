@@ -446,8 +446,8 @@
         ;;
 
 
-        org-agenda-skip-scheduled-if-done nil
-        org-agenda-skip-deadline-if-done nil
+        org-agenda-skip-scheduled-if-done t
+        org-agenda-skip-deadline-if-done t
         org-agenda-include-deadlines t
 
         org-agenda-custom-commands '(("c" "Simple agenda view"
@@ -500,8 +500,14 @@
 (setq user-full-name "William"
       user-mail-address "john@doe.com")
 
+(setq my/font-size
+      (let ((host (system-name)))
+        (cond ((string-equal host "daban-urnud") 20)
+              ((string-equal host "yggdrasill")  35)
+              (t                                 16))))
+
+(setq doom-font (font-spec :family "Fira Mono for Powerline" :size my/font-size))
 (setq doom-theme 'doom-solarized-dark)
-(setq doom-font (font-spec :family "Fira Mono for Powerline" :size 16))
                                         ; j(setq doom-font (font . "Fira Mono for Powerline-14"))
 
 ;; nil numbers are disabled. For relative line numbers, set this to `relative'.
