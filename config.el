@@ -361,11 +361,11 @@
           ("Qp" "Protocol" entry
            (file+olp "lol.org" "lol" "inbox")
            "* %?\n[[%:link][%:description]]\n%u\n#+BEGIN_QUOTE\n%i\n#+END_QUOTE")
-          ("Qd" "Protocol Link direct" entry
+          ("Ql" "Protocol Link direct" entry
            (file+olp "lol.org" "lol" "inbox")
-           "* %?\n[[%:link][%:description]] \n%U"
-          :immediate-finish t)
-          ("Ql" "Protocol Link" entry
+           "* [[%:link][%:description]] \n%U"
+           :immediate-finish t)
+          ("QL" "Protocol Link" entry
            (file+olp "lol.org" "lol" "inbox")
            "* %?\n[[%:link][%:description]] \n%U")
 
@@ -492,8 +492,10 @@
 ;; https://github.com/hlissner/doom-emacs/issues/3172
 (setq evil-search-wrap nil)
 ;;
-(setq avy-all-windows t)
 (setq projectile-project-search-path '("~/conf" "~/conf/private" "~/work/2morrow" "~/work/gentoo/overlays" "~/work/ocaml"))
+
+(when (fboundp 'winner-mode)
+  (winner-mode 1))
 
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
 ;; clients, file templates and snippets.
@@ -514,11 +516,10 @@
 (setq display-line-numbers-type t)
 (setq scroll-margin 8)
 
-;; (after! evil-snipe
-;;   (evil-snipe-mode -1))
 (setq evil-snipe-scope 'whole-visible)
 
 (setq avy-keys '(?u ?h ?e ?t ?. ?c ?i ?d ?k ?m ?j ?w ?o ?n ?p ?g))
+(setq avy-all-windows t)
 
 ;; parens & clojure:
 
@@ -597,9 +598,9 @@
       :nvm "RET" #'cider-eval-list-at-point
       )
 
-(map! :map clojure-mode-map
-      :nvm "s"  #'evil-avy-goto-char-2
-      )
+;; (map! :map clojure-mode-map
+;;       :nvm "s"  #'evil-avy-goto-char-2
+;;       )
 
 (map! :map emacs-lisp-mode-map
       :localleader

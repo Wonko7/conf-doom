@@ -3,21 +3,24 @@
 (require 'org-protocol)
 (require 'ol) ;; for org-link-decode
 
+(defun make-tab-entry (title url)
+  (let ((stars     (make-string 2 ?*))
+        (timestamp (format-time-string "[%F %a %H:%M]\n")))
+    (concat stars " [[" url "][" title "]]\n"
+            timestamp)))
+
 ;;;; Functions
-(defun yolobolo-save (info)
+(defun yolobolo-save (tab-list)
   (interactive "P")
-  (print "yes this is it")
-  (pp info)
-  (pp info)
-  (print "car")
-  (pp (car info))
-  (print "cdr")
-  (pp (cdr info))
-  (print "cadr")
-  (pp (cadr info))
-  (let ((thing (org-protocol-split-data (cdr info) t)))
-    (print "decoded" thing))
-  nil)
+  (message "yep")
+  (let* ((session (cadr tab-list))
+         (tabs (cl-loop for (a title c url) in (seq-partition (cddr tab-list) 4)
+                        collect (make-tab-entry title url)))
+         (tabs2 (apply #'concat tabs)))
+    (print session)
+    (print tabs2)
+    (print session)
+    nil))
 
 ;; so the filtering of data should happen in emacs really. ff dumps max data.
 ;; so. column viewer might be helpful here.
