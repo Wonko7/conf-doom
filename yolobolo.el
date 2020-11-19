@@ -16,9 +16,10 @@
   (let* ((session (cadr tab-list))
          (tabs (cl-loop for (a title c url) in (seq-partition (cddr tab-list) 4)
                         collect (make-tab-entry title url)))
-         (tabs2 (apply #'concat tabs)))
+         (tabs (cons (concat "* " session "   :browsing-session:\n") tabs))
+         (tabs (apply #'concat tabs)))
     (print session)
-    (print tabs2)
+    (print tabs)
     (print session)
     nil))
 
