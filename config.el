@@ -360,7 +360,8 @@
 
           ("Qp" "Protocol" entry
            (file+olp "lol.org" "lol" "inbox")
-           "* %?\n[[%:link][%:description]]\n%u\n#+BEGIN_QUOTE\n%i\n#+END_QUOTE")
+           "* [[%:link][%:description]]\n%u\n#+BEGIN_QUOTE\n%i\n#+END_QUOTE"
+           :immediate-finish t)
           ("Ql" "Protocol Link direct" entry
            (file+olp "lol.org" "lol" "inbox")
            "* [[%:link][%:description]] \n%U"
@@ -490,6 +491,9 @@
 
 ;; org advice newline bug:
 ;; https://github.com/hlissner/doom-emacs/issues/3172
+;;(remove-hook! org-mode-hook #'electric-indent-mode)
+(add-hook 'org-mode-hook (lambda () (electric-indent-mode -1)))
+
 (setq evil-search-wrap nil)
 ;;
 (setq projectile-project-search-path '("~/conf" "~/conf/private" "~/work/2morrow" "~/work/gentoo/overlays" "~/work/ocaml"))
@@ -637,6 +641,7 @@
                  (outline-promote)))
 
 (map! :map org-mode-map
+      ;;:i "RET" #'org-return-and-maybe-indent
       :nvm "zD"    #'org-decrypt-entries
       :nvm "zq"    #'(lambda() (interactive) (org-show-branches-buffer))
       :nvm "(" #'org-previous-visible-heading
