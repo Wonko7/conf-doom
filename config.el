@@ -82,8 +82,10 @@
 
 (use-package! evil-escape
   :init
-  (setq-default evil-escape-delay 0.3)
-  (setq evil-escape-key-sequence "jj"))
+  (setq evil-escape-delay 0.3
+        evil-escape-key-sequence "jj"
+        ;; evil-cross-lines t
+        ))
 
 ;; (remove-hook 'flyspell-mode-hook #'+spellcheck|immediately)
 (setq company-minimum-prefix-length 1
@@ -642,17 +644,18 @@
 
 (map! :map org-mode-map
       ;;:i "RET" #'org-return-and-maybe-indent
-      :nvm "zD"    #'org-decrypt-entries
-      :nvm "zq"    #'(lambda() (interactive) (org-show-branches-buffer))
-      :nvm "(" #'org-previous-visible-heading
-      :nvm ")" #'org-next-visible-heading
-      :nvm "{" #'evil-backward-paragraph
-      :nvm "}" #'evil-forward-paragraph
-      :nv   "<left>" #'org-promote-subtree
-      :nv   "<down>" #'org-move-subtree-down
-      :nv   "<up>" #'org-move-subtree-up
-      :nv   "<right>" #'org-demote-subtree
-      )
+      :v   "O"        #'evil-org-open-links
+      :nvm "zD"       #'org-decrypt-entries
+      :nvm "zq"       #'(lambda() (interactive) (org-show-branches-buffer))
+      :nvm "("        #'org-previous-visible-heading
+      :nvm ")"        #'org-next-visible-heading
+      :nvm "{"        #'evil-backward-paragraph
+      :nvm "}"        #'evil-forward-paragraph
+      :nvm "$"        #'evil-end-of-line
+      :nv   "<left>"  #'org-promote-subtree
+      :nv   "<down>"  #'org-move-subtree-down
+      :nv   "<up>"    #'org-move-subtree-up
+      :nv   "<right>" #'org-demote-subtree)
 
 (defun my/journal-new-todo ()
   (interactive)

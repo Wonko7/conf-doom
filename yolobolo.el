@@ -14,7 +14,6 @@
   (interactive "P")
   (save-excursion
     (let ((session (cadr tab-list)))
-      (message "yep")
       ;; goto correct point:
       (with-current-buffer (find-file-noselect (concat org-directory "lol.org"))
         (goto-char (max-char))
