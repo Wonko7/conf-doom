@@ -219,6 +219,10 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; capture
 
+(defun my/insert-inactive-timestamp
+    (interactive)
+    (insert (format-time-string "[%F %A %H:%M]")))
+
 (defun my/journal-open-today ()
   (let ((fpath (expand-file-name (format-time-string "%F_%A.org") org-journal-dir)))
     (find-file-other-window fpath)
@@ -640,7 +644,10 @@
       :nvm "h" (lambda()
                  (interactive)
                  (org-toggle-heading)
-                 (outline-promote)))
+                 (outline-promote))
+      ;; dates:
+      :desc "inactive timestamp"            :nvm "dn" #'my/insert-inactive-timestamp
+      )
 
 (map! :map org-mode-map
       ;;:i "RET" #'org-return-and-maybe-indent
@@ -708,7 +715,9 @@
 
       :desc "follow" :nvm "taf" #'org-agenda-follow-mode
 
-      :nvm "P"  #'ivy-pass
+      ;; maybe not global?
+      :desc "inactive timestamp"            :nvm "dn" #'my/insert-inactive-timestamp
+      :desc "password-store"                :nvm "P"  #'ivy-pass
       :desc "Switch to buffer"              :nvm "rb" #'org-roam-switch-to-buffer
       :desc "Org Roam Capture"              :nvm "rc" #'org-roam-capture
       :desc "Find file"                     :nvm "rf" #'org-roam-find-file
