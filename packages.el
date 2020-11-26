@@ -57,6 +57,7 @@
 (package! org-super-agenda)
 (package! org-journal)
 (package! org-roam)
+(package! org-ql)
 
 ;(package! org-protocol)
 ;(package! org-plus-contrib)

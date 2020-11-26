@@ -123,13 +123,13 @@
 ;;       :nvm "j" #'org-agenda-next-line
 ;;       :nvm "k" #'org-agenda-previous-line)
 
-(after! org-agenda
- (map! :map evil-org-agenda-mode-map
-      :nvm "j" #'org-agenda-next-line
-      :nvm "k" #'org-agenda-previous-line)
- (map! :map org-agenda-mode-map
-      :nvm "j" #'org-agenda-next-line
-      :nvm "k" #'org-agenda-previous-line))
+;; (after! org-agenda
+;;  (map! :map evil-org-agenda-mode-map
+;;       :nvm "j" #'org-agenda-next-line
+;;       :nvm "k" #'org-agenda-previous-line)
+;;  (map! :map org-agenda-mode-map
+;;       :nvm "j" #'org-agenda-next-line
+;;       :nvm "k" #'org-agenda-previous-line))
 
 (use-package! org-super-agenda
   :after org-agenda
@@ -219,17 +219,17 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; capture
 
-(defun my/insert-inactive-timestamp
-    (interactive)
-    (insert (format-time-string "[%F %A %H:%M]")))
+(defun my/insert-inactive-timestamp ()
+  (interactive)
+  (insert (format-time-string "[%F %a %H:%M]")))
 
-(defun my/journal-open-today ()
+(defun my/journal-open-today (&optional other-window)
   (let ((fpath (expand-file-name (format-time-string "%F_%A.org") org-journal-dir)))
-    (find-file-other-window fpath)
+    (if other-window
+        (find-file-other-window fpath)
+      (find-file fpath))
     (org-decrypt-entries) ;; decrypt org entries before trying to add stuff in them, olp can't work on opaque gpg.
     (when (<= (point-max) 300) ;; FIXME yeahhhhhhh there's probably a better test.
-      (message "need init!")
-      (print (point-max))
       (org-journal--carryover))
     fpath))
 
@@ -692,6 +692,7 @@
 (map! ;; :nv "s"  #'evil-avy-goto-char-2
       ;; :nv "C->" #'transpose-sexps
       ;; :nv "C-<" #'(lambda() (interactive) (transpose-sexps -1))
+      :nv "C-t" #'transpose-words
       :nv "g>" #'transpose-words
       :nv "g<" #'(lambda() (interactive) (transpose-words -1))
       :nv "C-*" #'evil-multiedit-match-symbol-and-prev
@@ -708,7 +709,9 @@
       :nvm "<"    #'+ivy/projectile-find-file
       :nvm "ng" #'counsel-org-goto-all ;; nG in split buffer?
 
-      :desc "today" :nvm "jt" #'(lambda() (interactive) (my/journal-open-today))
+      :desc "today"              :nvm "jt" #'(lambda() (interactive) (my/journal-open-today))
+      :desc "today other window" :nvm "jT" #'(lambda() (interactive) (my/journal-open-today t))
+
       :nvm "jn" #'my/journal-new-todo ;; FIXME remove/or call capture instead?
       :nvm "jN" #'org-journal-new-entry
       :nvm "jr" #'org-journal-new-scheduled-entry
