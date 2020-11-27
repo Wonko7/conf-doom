@@ -366,15 +366,15 @@
 
           ("Qp" "Protocol" entry
            (file+olp "lol.org" "lol" "inbox")
-           "* [[%:link][%:description]]\n%u\n#+BEGIN_QUOTE\n%i\n#+END_QUOTE"
+           "* [[%:link][%:description]]\n%U\n#+BEGIN_QUOTE\n%i\n#+END_QUOTE"
            :immediate-finish t)
           ("Ql" "Protocol Link direct" entry
            (file+olp "lol.org" "lol" "inbox")
-           "* [[%:link][%:description]] \n%U"
+           "* [[%:link][%:description]]\n%U"
            :immediate-finish t)
           ("QL" "Protocol Link" entry
            (file+olp "lol.org" "lol" "inbox")
-           "* %?\n[[%:link][%:description]] \n%U")
+           "* %?\n[[%:link][%:description]]\n%U")
 
           ;;("j" "Journal" entry
           ;; (file+olp+datetree +org-capture-journal-file)
