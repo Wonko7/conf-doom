@@ -21,7 +21,12 @@
 
 (setq org-roam-directory "~/conf/private/org/here-be-dragons/")
 (use-package! org-protocol)
-(server-start)
+
+(setq server-name (getenv "EMACS_SERVER"))
+(if (string= "DANCE_COMMANDER" server-name)
+    (server-start))
+
+;(require 'ol)
 
 (setq fancy-splash-image "~/docs/wallpapers/misc/spock.jpg")
 (remove-hook '+doom-dashboard-functions #'doom-dashboard-widget-banner)
@@ -157,6 +162,7 @@
 
 (after! org
   (setq
+   org-plantuml-jar-path "/usr/share/plantuml/lib/plantuml.jar"
    org-extend-today-until 3
    org-todo-keywords
         '((sequence
@@ -589,11 +595,11 @@
 
 (map! :map evil-cleverparens-mode-map
       :localleader
-      :nvm "r" #'paredit-raise-sexp
-      :nvm "R" #'evil-cp-raise-form
-      :nvm "t"  #'sp-transpose-sexp
-      :nvm "T"  (lambda() (interactive) (sp-transpose-sexp -1))
-      :nvm "M-T"  (lambda() (interactive) (sp-transpose-sexp -1))
+      :nvm "r"   #'paredit-raise-sexp
+      :nvm "R"   #'evil-cp-raise-form
+      :nvm "t"   #'sp-transpose-sexp
+      :nvm "T"   (lambda() (interactive) (sp-transpose-sexp -1))
+      :nvm "M-T" (lambda() (interactive) (sp-transpose-sexp -1))
       :nvm "g p" #'evil-cp-wrap-next-round
       :nvm "g P" #'evil-cp-wrap-previous-round
       :nvm "g c" #'evil-cp-wrap-next-curly
@@ -637,6 +643,9 @@
       ;; make todo of this
       :nvm "gT"   (fset 'mk-todo
                         (kmacro-lambda-form [return ?* return ?t ?T ?< ?< ?$] 0 "%d"))
+      ;; clock resolve keep
+      :nm  "ck"       (fset 'clock-resolve
+                            (kmacro-lambda-form [return ?c ?r ?K] 0 "%d"))
       :nvm "RET" #'+org/dwim-at-point
       ;; tables
       :nvm "b>" #'org-table-move-column-right
@@ -647,6 +656,8 @@
                  (outline-promote))
       ;; dates:
       :desc "inactive timestamp"            :nvm "dn" #'my/insert-inactive-timestamp
+      ;; subtree
+      :desc "refile copy"                   :nvm "sc" #'org-refile-copy
       )
 
 (map! :map org-mode-map
@@ -691,23 +702,25 @@
 ;; global:
 (map! ;; :nv "s"  #'evil-avy-goto-char-2
       ;; :nv "C->" #'transpose-sexps
-      ;; :nv "C-<" #'(lambda() (interactive) (transpose-sexps -1))
-      :nv "C-t" #'transpose-words
-      :nv "g>" #'transpose-words
-      :nv "g<" #'(lambda() (interactive) (transpose-words -1))
-      :nv "C-*" #'evil-multiedit-match-symbol-and-prev
-      :nv "C-8" #'evil-multiedit-match-symbol-and-next
-      :nvm "é" #'evil-cp-previous-opening ; FIXME put this in global map?
-      :nvm "&" #'evil-cp-next-opening
-      :i  "C-v" #'evil-paste-after
-      :i  "C-V" #'evil-paste-after
-      )
+ ;; :nv "C-<" #'(lambda() (interactive) (transpose-sexps -1))
+ :n   "-d"          #'delete-trailing-whitespace
+ :n   "C-S-<left>"  #'winner-undo
+ :n   "C-S-<right>" #'winner-redo
+ :nv  "C-t"         #'transpose-words
+ :nv  "g>"          #'transpose-words
+ :nv  "g<"          #'(lambda() (interactive) (transpose-words -1))
+ :nv  "C-*"         #'evil-multiedit-match-symbol-and-prev
+ :nv  "C-8"         #'evil-multiedit-match-symbol-and-next
+ :nvm "é"           #'evil-cp-previous-opening ; FIXME put this in global map?
+ :nvm "&"           #'evil-cp-next-opening
+ :i   "C-v"         #'evil-paste-after
+ :i   "C-V"         #'evil-paste-after)
 
 ;; global
 (map! :leader
       :nvm "SPC"  #'ivy-switch-buffer
       :nvm "<"    #'+ivy/projectile-find-file
-      :nvm "ng" #'counsel-org-goto-all ;; nG in split buffer?
+      :nvm "ng"   #'counsel-org-goto-all ;; nG in split buffer?
 
       :desc "today"              :nvm "jt" #'(lambda() (interactive) (my/journal-open-today))
       :desc "today other window" :nvm "jT" #'(lambda() (interactive) (my/journal-open-today t))

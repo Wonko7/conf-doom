@@ -7,11 +7,20 @@
   (let ((stars     (make-string indentation-level ?*))
         (timestamp (format-time-string "[%F %a %H:%M]\n")))
     (insert stars " [[" url "][" title "]]\n"
+            ":PROPERTIES:"
+            ":URL:      " url "\n"
+            ":URL:      " (replace-regexp-in-string "^\\(.*://[^/]*\\).*$" "\3" "https://nicrunicuit.com/faire/fermenter/comment-faire-un-ginger-bug-levain-de-gingembre-pour-fermenter-jus-de-fruits-ou-de-legumes/") "\n"
+            ":URL:      "  "\n"
+            ":TITLE:    " title "\n"
+            ":DATE:     " timestamp "\n"
+            ":ICON:     [" icon "]\n"
+            ":END:"
             timestamp)))
-
+(replace-regexp-in-string "^.*\\(AB\\)" "\1" "A_AB_B" t nil)
 ;;;; Functions
 (defun yolobolo-save (tab-list)
   (interactive "P")
+  (message "hola")
   (save-excursion
     (let ((session (cadr tab-list)))
       ;; goto correct point:
@@ -20,7 +29,7 @@
         ;; insert session header
         (insert "*** " session "   :browsing-session:\n")
         ;; insert each tab
-        (cl-loop for (a title c url) in (seq-partition (cddr tab-list) 4)
+        (cl-loop for (_ title _ url) in (seq-partition (cddr tab-list) 6)
                  do (insert-tab-entry title url 4)))
       (message "captured session %s" session)
       nil)))
