@@ -8,15 +8,13 @@
         (timestamp (format-time-string "[%F %a %H:%M]\n")))
     (insert stars " [[" url "][" title "]]\n"
             ":PROPERTIES:"
+            ":DOMAIN:   " (replace-regexp-in-string "^\\(.*://[^/]*\\).*$" "\\1" url) "\n"
             ":URL:      " url "\n"
-            ":URL:      " (replace-regexp-in-string "^\\(.*://[^/]*\\).*$" "\3" "https://nicrunicuit.com/faire/fermenter/comment-faire-un-ginger-bug-levain-de-gingembre-pour-fermenter-jus-de-fruits-ou-de-legumes/") "\n"
-            ":URL:      "  "\n"
             ":TITLE:    " title "\n"
             ":DATE:     " timestamp "\n"
-            ":ICON:     [" icon "]\n"
             ":END:"
             timestamp)))
-(replace-regexp-in-string "^.*\\(AB\\)" "\1" "A_AB_B" t nil)
+
 ;;;; Functions
 (defun yolobolo-save (tab-list)
   (interactive "P")
