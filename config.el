@@ -281,15 +281,16 @@
 
            "* TODO %?\n%t")
 
-          ("w" "log work" entry (function (lambda ()
+          ("w" "log work quick" entry (function (lambda ()
                                             (my/log-entry '("log" "work"))) )
            "* %?\n"
            :no-save t
-           :jump-to-captured t
            :clock-in t)
-          ("W" "log work quick" entry (function (lambda ()
+          ("W" "log work" entry (function (lambda ()
                                                   (my/log-entry '("log" "work"))) )
            "* %?\n"
+           :no-save t
+           :jump-to-captured t
            :clock-in t)
 
           ("r" "RDV" entry
@@ -325,11 +326,13 @@
 
           ("jy" "ty" entry (function (lambda ()
                                        (my/log-entry '("ty"))))
-           "* %?\n")
+           "* %?\n"
+           :no-save t)
 
           ("ji" "innerspace" entry (function (lambda ()
                                                (my/log-entry '("innerspace"))))
-           "* %?\n")
+           "* %?\n"
+           :no-save t)
 
 
           ("c" "log")
@@ -530,7 +533,7 @@
 
 ;; nil numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type t)
-(setq scroll-margin 8)
+;; (setq scroll-margin 0)
 
 (setq evil-snipe-scope 'whole-visible)
 
