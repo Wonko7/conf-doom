@@ -327,11 +327,13 @@
           ("jy" "ty" entry (function (lambda ()
                                        (my/log-entry '("ty"))))
            "* %?\n"
+           :jump-to-captured t
            :no-save t)
 
           ("ji" "innerspace" entry (function (lambda ()
                                                (my/log-entry '("innerspace"))))
            "* %?\n"
+           :jump-to-captured t
            :no-save t)
 
 
