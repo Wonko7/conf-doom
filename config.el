@@ -318,7 +318,7 @@
            "* %U %?\n%a")
 
           ("j" "journal")
-          ("jw" "witness the fitness" entry (function (lambda ()
+          ("jf" "witness the fitness" entry (function (lambda ()
                                                         (my/log-entry '("witness the fitness"))))
            "* %?\n"
            :no-save t
