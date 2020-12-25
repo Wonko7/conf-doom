@@ -65,4 +65,8 @@
 (package! eval-sexp-fu)
 (package! cider-eval-sexp-fu)
 (package! rainbow-identifiers)
+
 (package! graphql-mode)
+
+;(package! utop)
+(package! ocamlformat)

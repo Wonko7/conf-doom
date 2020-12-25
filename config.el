@@ -23,10 +23,10 @@
 (use-package! org-protocol)
 
 (setq server-name (getenv "EMACS_SERVER"))
-(if (string= "DANCE_COMMANDER" server-name)
-    (server-start))
+;; (if (string= "DANCE_COMMANDER" server-name)
+;;     (server-start))
 
-;(require 'ol)
+(load "~/conf/doom/yolobolo.el")
 
 (setq fancy-splash-image "~/docs/wallpapers/misc/spock.jpg")
 (remove-hook '+doom-dashboard-functions #'doom-dashboard-widget-banner)
@@ -376,15 +376,15 @@
            :clock-in t)
 
           ("Qp" "Protocol" entry
-           (file+olp "lol.org" "lol" "inbox")
+           (file+olp "browsing/inbox.org" "browsing" "inbox")
            "* [[%:link][%:description]]\n%U\n#+BEGIN_QUOTE\n%i\n#+END_QUOTE"
            :immediate-finish t)
           ("Ql" "Protocol Link direct" entry
-           (file+olp "lol.org" "lol" "inbox")
+           (file+olp "browsing/inbox.org" "browsing" "inbox")
            "* [[%:link][%:description]]\n%U"
            :immediate-finish t)
           ("QL" "Protocol Link" entry
-           (file+olp "lol.org" "lol" "inbox")
+           (file+olp "browsing/inbox.org" "browsing" "inbox")
            "* %?\n[[%:link][%:description]]\n%U")
 
           ;;("j" "Journal" entry
@@ -486,7 +486,10 @@
                                                          :order 3)
                                                         (:name "innerspace"
                                                          :tag ("is" "h" "habit" "focus")
-                                                         :order 5)
+                                                         :order 4)
+                                                        (:name "review"
+                                                         :tag ("review" "r")
+                                                         :order 4)
                                                         (:name "next steps"
                                                          :tag "next"
                                                          :order 6)
@@ -703,6 +706,9 @@
       "K"   #'tuareg-kill-ocaml)
 
 (add-hook 'tuareg-mode-hook #'(lambda() (setq mode-name "🐫")))
+(add-hook 'tuareg-mode-hook (lambda ()
+  (define-key tuareg-mode-map (kbd "C-M-<tab>") #'ocamlformat)
+  (add-hook 'before-save-hook #'ocamlformat-before-save)))
 
 ;; global:
 (map! ;; :nv "s"  #'evil-avy-goto-char-2
@@ -753,7 +759,11 @@
       :desc "Yesterday"                     :nvm "rdy" #'org-roam-dailies-yesterday
       )
 
-(map! :map org-agenda-mode-map
+(map! :map org-agenda-mode-map ;; FIXME this is completely ignored :/
+      :nvm "C-n" (lambda () (interactive) (scroll-up 4))
+      :nvm "C-p" (lambda () (interactive) (scroll-down 4))
+      :nvm "C-j" (lambda () (interactive) (scroll-up 1))
+      :nvm "C-k" (lambda () (interactive) (scroll-down 1))
       :nvm "j" #'org-agenda-next-line
       :nvm "k" #'org-agenda-previous-line)
 

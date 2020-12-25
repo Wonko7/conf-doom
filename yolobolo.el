@@ -7,22 +7,24 @@
   (let ((stars     (make-string indentation-level ?*))
         (timestamp (format-time-string "[%F %a %H:%M]\n")))
     (insert stars " [[" url "][" title "]]\n"
-            ":PROPERTIES:"
+            timestamp "\n"
+            ":PROPERTIES:\n"
             ":DOMAIN:   " (replace-regexp-in-string "^\\(.*://[^/]*\\).*$" "\\1" url) "\n"
             ":URL:      " url "\n"
             ":TITLE:    " title "\n"
             ":DATE:     " timestamp "\n"
-            ":END:"
-            timestamp)))
+            ":END:\n"
+            )))
 
 ;;;; Functions
 (defun yolobolo-save (tab-list)
   (interactive "P")
   (message "hola")
   (save-excursion
-    (let ((session (cadr tab-list)))
+    (let ((session (cadr tab-list))
+          (file   (concat org-directory  (format-time-string "browsing/%F_%A.org"))))
       ;; goto correct point:
-      (with-current-buffer (find-file-noselect (concat org-directory "lol.org"))
+      (with-current-buffer (find-file-noselect file)
         (goto-char (max-char))
         ;; insert session header
         (insert "*** " session "   :browsing-session:\n")
