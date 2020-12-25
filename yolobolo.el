@@ -27,10 +27,10 @@
       (with-current-buffer (find-file-noselect file)
         (goto-char (max-char))
         ;; insert session header
-        (insert "*** " session "   :browsing-session:\n")
+        (insert "* " session "   :browsing-session:\n")
         ;; insert each tab
         (cl-loop for (_ title _ url) in (seq-partition (cddr tab-list) 6)
-                 do (insert-tab-entry title url 4)))
+                 do (insert-tab-entry title url 2)))
       (message "captured session %s" session)
       nil)))
 
