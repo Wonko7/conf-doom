@@ -709,7 +709,8 @@
 
 ;(print opam-lisp-dir)
 (add-to-list 'load-path opam-lisp-dir)
-(load (concat opam-lisp-dir "tuareg-site-file"))
+; (load opam-lisp-dir )
+; (load (concat opam-lisp-dir "tuareg-site-file"))
 (require 'merlin)
 (require 'dune)
 (require 'ocamlformat)
