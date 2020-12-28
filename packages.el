@@ -68,5 +68,7 @@
 
 (package! graphql-mode)
 
-;(package! utop)
-(package! ocamlformat)
+; nope these should come from opam:
+;(package! ocamlformat)
+;(package! merlin)
+;(package! dune)

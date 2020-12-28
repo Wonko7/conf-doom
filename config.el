@@ -98,6 +98,7 @@
 
 (add-hook 'prog-mode-hook 'rainbow-identifiers-mode)
 (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
+(add-hook 'prog-mode-hook 'electric-indent-mode)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; org files:
 
@@ -512,7 +513,8 @@
 ;; org advice newline bug:
 ;; https://github.com/hlissner/doom-emacs/issues/3172
 ;;(remove-hook! org-mode-hook #'electric-indent-mode)
-(add-hook 'org-mode-hook (lambda () (electric-indent-mode -1)))
+;; (add-hook 'org-mode-hook (lambda () (electric-indent-mode -1)))
+(add-hook 'org-mode-hook (lambda () (electric-indent-local-mode -1)))
 
 (setq evil-search-wrap nil)
 ;;
@@ -558,7 +560,7 @@
   (add-hook 'clojure-mode-hook #'eval-sexp-fu-flash-mode)
   (add-hook 'clojure-mode-hook #'evil-cleverparens-mode)
   (add-hook 'clojure-mode-hook #'aggressive-indent-mode) ;; difficult to use with trace-form cljsrn fn tracing
-  ;(add-hook 'clojure-mode-hook #'electric-indent-mode)
+  (add-hook 'clojure-mode-hook #'electric-indent-mode)
   (setq clojure-indent-style 'align-arguments)
   (setq clojure-align-forms-automatically t))
 
@@ -698,6 +700,57 @@
       )
 
 ;; ocaml
+
+(defconst opam-lisp-dir
+  (let ((opam-share
+         (ignore-errors (car (process-lines "opam" "config" "var" "share")))))
+    (when (and opam-share (file-directory-p opam-share))
+      (expand-file-name "emacs/site-lisp/" opam-share))))
+
+;(print opam-lisp-dir)
+(add-to-list 'load-path opam-lisp-dir)
+(load (concat opam-lisp-dir "tuareg-site-file"))
+(require 'merlin)
+(require 'dune)
+(require 'ocamlformat)
+
+;; FIXME bikeshedding? 72? final-newline? seems ugly.
+;; (setq-default fill-column 72
+;;               indent-tabs-mode nil
+;;               mode-line-format (remove '(vc-mode vc-mode) mode-line-format)
+;;               require-final-newline t
+;;               scroll-down-aggressively 0
+;;               scroll-up-aggressively 0)
+
+(setq comint-prompt-read-only t ; comint -> repl
+      comment-multi-line t
+      compilation-scroll-output 'first-error
+      compilation-context-lines 0
+      disabled-command-function nil
+      merlin-command 'opam
+      merlin-completion-with-doc t
+      sql-product 'postgres
+      track-eol t
+      tuareg-interactive-read-only-input t
+      view-read-only t
+      vc-follow-symlinks t)
+
+(mapc (lambda (ext) (add-to-list 'completion-ignored-extensions ext))
+      '(".bc" ".byte" ".exe" ".native"))
+
+(mapc (lambda (ext) (add-to-list 'auto-mode-alist ext))
+      '(("dune-project\\'" . dune-mode)
+        ("dune-workspace\\'" . dune-mode)
+        ("README\\'" . text-mode)
+        ("\\.dockerignore\\'" . conf-unix-mode)
+        ("\\.gitignore\\'" . conf-unix-mode)
+        ("\\.merlin\\'" . conf-space-mode)
+        ("\\.ocamlinit\\'" . tuareg-mode)
+        ("\\.top\\'" . tuareg-mode)))
+
+;; Hack to open files like Makefile.local with the right mode.
+(add-to-list 'auto-mode-alist '("\\.[^\\.].*\\'" nil t) t)
+
 (map! :localleader
       :map tuareg-mode-map
       "RET" #'tuareg-eval-phrase
@@ -705,10 +758,28 @@
       "TAB" #'tuareg-complete
       "K"   #'tuareg-kill-ocaml)
 
-(add-hook 'tuareg-mode-hook #'(lambda() (setq mode-name "🐫")))
-(add-hook 'tuareg-mode-hook (lambda ()
-  (define-key tuareg-mode-map (kbd "C-M-<tab>") #'ocamlformat)
-  (add-hook 'before-save-hook #'ocamlformat-before-save)))
+(add-hook 'tuareg-mode-hook #'(lambda ()
+                                (setq mode-name "🐫")
+                                ;; FIXME( integrate this after trying them out.
+                                (define-key tuareg-mode-map (kbd "C-M-<tab>") #'ocamlformat)
+                                (local-set-key (kbd "C-c C-a") 'ff-get-other-file)
+                                ;; FIXME)
+                                (add-hook 'before-save-hook #'ocamlformat-before-save)
+                                (setq ff-other-file-alist '(("\\.mli\\'" (".ml"))
+                                                            ("\\.ml\\'" (".mli"))
+                                                            ("\\.eliomi\\'" (".eliom"))
+                                                            ("\\.eliom\\'" (".eliomi"))))
+                                (setq-local comment-style 'indent)
+                                (setq-local tuareg-interactive-program
+                                            (concat tuareg-interactive-program " -nopromptcont"))
+                                (let ((ext (file-name-extension buffer-file-name)))
+                                  (when (string-equal ext "eliom")
+                                    (setq-local ocamlformat-file-kind 'implementation))
+                                  (when (string-equal ext "eliomi")
+                                    (setq-local ocamlformat-file-kind 'interface)))
+                                (add-hook 'before-save-hook 'ocamlformat-before-save t t)
+                                (merlin-mode)))
+
 
 ;; global:
 (map! ;; :nv "s"  #'evil-avy-goto-char-2

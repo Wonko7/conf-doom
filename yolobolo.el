@@ -22,7 +22,7 @@
   (message "hola")
   (save-excursion
     (let ((session (cadr tab-list))
-          (file   (concat org-directory  (format-time-string "browsing/%F_%A.org"))))
+          (file    (concat org-directory  (format-time-string "browsing/%F_%A.org"))))
       ;; goto correct point:
       (with-current-buffer (find-file-noselect file)
         (goto-char (max-char))
