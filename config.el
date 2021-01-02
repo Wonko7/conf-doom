@@ -814,6 +814,9 @@
       :nvm "jN" #'org-journal-new-entry
       :nvm "jr" #'org-journal-new-scheduled-entry
 
+      :nvm "C-n" (lambda () (interactive) (scroll-up 4))
+      :nvm "C-p" (lambda () (interactive) (scroll-down 4))
+
       :desc "follow" :nvm "taf" #'org-agenda-follow-mode
 
       ;; maybe not global?

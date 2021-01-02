@@ -72,3 +72,5 @@
 ;(package! ocamlformat)
 ;(package! merlin)
 ;(package! dune)
+
+(package! highlight-indent-guides)
