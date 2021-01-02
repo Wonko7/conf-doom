@@ -19,7 +19,6 @@
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 ;;; lol:
 
-(setq org-roam-directory "~/conf/private/org/here-be-dragons/")
 (use-package! org-protocol)
 
 (setq server-name (getenv "EMACS_SERVER"))
@@ -31,6 +30,7 @@
 (setq fancy-splash-image "~/docs/wallpapers/misc/spock.jpg")
 (remove-hook '+doom-dashboard-functions #'doom-dashboard-widget-banner)
 (add-hook '+doom-dashboard-functions #'chika-widget-banner)
+
 (defun chika-widget-banner ()
   (let ((point (point)))
     (mapc (lambda (line)
@@ -102,12 +102,14 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; org files:
 
-(setq org-directory "~/conf/private/org/")
-(setq org-roam-directory "~/conf/private/org/here-be-dragons/")
-(setq org-journal-dir "~/conf/private/org/the-road-so-far/")
-(setq org-agenda-files '("~/conf/private/org/" "~/conf/private/org/people/"
-                         "~/conf/private/org/wip/" "~/conf/private/org/work/"
-                         "~/conf/private/org/the-road-so-far/"))
+(setq org-directory "/data/org/")
+(setq org-roam-directory (concat org-directory "here-be-dragons/"))
+(setq org-journal-dir (concat org-directory "the-road-so-far/"))
+(setq org-agenda-files (cons org-directory (mapcar
+                                            (lambda (d)
+                                              (concat org-directory d))
+                                            '("people/" "wip/" "work/" "the-road-so-far/"))))
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; org packages:
 
