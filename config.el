@@ -19,6 +19,16 @@
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 ;;; lol:
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; org files:
+
+(setq org-directory "/data/org/")
+(setq org-roam-directory (concat org-directory "here-be-dragons/"))
+(setq org-journal-dir (concat org-directory "the-road-so-far/"))
+(setq org-agenda-files (cons org-directory (mapcar
+                                            (lambda (d)
+                                              (concat org-directory d))
+                                            '("people/" "wip/" "work/" "the-road-so-far/"))))
+
 (use-package! org-protocol)
 
 (setq server-name (getenv "EMACS_SERVER"))
@@ -99,16 +109,6 @@
 (add-hook 'prog-mode-hook 'rainbow-identifiers-mode)
 (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
 (add-hook 'prog-mode-hook 'electric-indent-mode)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; org files:
-
-(setq org-directory "/data/org/")
-(setq org-roam-directory (concat org-directory "here-be-dragons/"))
-(setq org-journal-dir (concat org-directory "the-road-so-far/"))
-(setq org-agenda-files (cons org-directory (mapcar
-                                            (lambda (d)
-                                              (concat org-directory d))
-                                            '("people/" "wip/" "work/" "the-road-so-far/"))))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; org packages:
@@ -861,3 +861,17 @@
                         (eq (symbol-value sym) keymap)
                         (not (eq sym 'keymap))
                         (throw 'gotit sym))))))))
+
+;; INBOX
+
+;; Shell mode;
+;
+;; (setq indent-tabs-mode nil)
+;; bullshit none of this works:
+(setq-default sh-indentation 2)
+(setq-default sh-offset 2)
+(setq sh-indent 2)
+(setq sh-basic-offset 2)
+(setq sh-offset 2)
+(use-package! highlight-indent-guides)
+(setq highlight-indent-guides-method 'bitmap)
