@@ -7,13 +7,13 @@
   (let ((stars     (make-string indentation-level ?*))
         (timestamp (format-time-string "[%F %a %H:%M]\n")))
     (insert stars " [[" url "][" title "]]\n"
-            timestamp "\n"
-            ":PROPERTIES:\n"
-            ":DOMAIN:   " (replace-regexp-in-string "^\\(.*://[^/]*\\).*$" "\\1" url) "\n"
-            ":URL:      " url "\n"
-            ":TITLE:    " title "\n"
-            ":DATE:     " timestamp "\n"
-            ":END:\n"
+            timestamp ;; "\n"
+            ;; ":PROPERTIES:\n"
+            ;; ":DOMAIN:   " (replace-regexp-in-string "^\\(.*://[^/]*\\).*$" "\\1" url) "\n"
+            ;; ":URL:      " url "\n"
+            ;; ":TITLE:    " title "\n"
+            ;; ":DATE:     " timestamp "\n"
+            ;; ":END:\n"
             )))
 
 ;;;; Functions
@@ -29,9 +29,10 @@
         ;; insert session header
         (insert "* " session "   :browsing-session:\n")
         ;; insert each tab
-        (cl-loop for (_ title _ url) in (seq-partition (cddr tab-list) 6)
+        (cl-loop for (_ title _ url) in (seq-partition (cddr tab-list) 4)
                  do (insert-tab-entry title url 2)))
       (message "captured session %s" session)
+      (call-process "notif" nil 0 nil "send" "emacs:" "captured session")
       nil)))
 
 ;; so the filtering of data should happen in emacs really. ff dumps max data.

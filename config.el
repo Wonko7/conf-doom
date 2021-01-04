@@ -37,7 +37,7 @@
 
 (load "~/conf/doom/yolobolo.el")
 
-(setq fancy-splash-image "~/docs/wallpapers/misc/spock.jpg")
+(setq fancy-splash-image "/data/docs/pics/web-stuff/spock.jpg")
 (remove-hook '+doom-dashboard-functions #'doom-dashboard-widget-banner)
 (add-hook '+doom-dashboard-functions #'chika-widget-banner)
 
@@ -520,7 +520,7 @@
 
 (setq evil-search-wrap nil)
 ;;
-(setq projectile-project-search-path '("~/conf" "~/conf/private" "~/work/2morrow" "~/work/gentoo/overlays" "~/work/ocaml"))
+(setq projectile-project-search-path '("~/conf" "~/conf/private" "/work/" "/work/besport" "/work/ocaml"))
 
 (when (fboundp 'winner-mode)
   (winner-mode 1))
@@ -768,7 +768,7 @@
                                 (local-set-key (kbd "C-c C-a") 'ff-get-other-file)
                                 ;; FIXME)
                                 (add-hook 'before-save-hook #'ocamlformat-before-save)
-                                (setq ff-other-file-alist '(("\\.mli\\'" (".ml"))
+                                (setq ff-other-file-alist '(("\\.mli\\'" (".ml")) ;; mll
                                                             ("\\.ml\\'" (".mli"))
                                                             ("\\.eliomi\\'" (".eliom"))
                                                             ("\\.eliom\\'" (".eliomi"))))
