@@ -709,10 +709,10 @@
     (when (and opam-share (file-directory-p opam-share))
       (expand-file-name "emacs/site-lisp/" opam-share))))
 
-;(print opam-lisp-dir)
+;; (print opam-lisp-dir)
 (add-to-list 'load-path opam-lisp-dir)
-; (load opam-lisp-dir )
-; (load (concat opam-lisp-dir "tuareg-site-file"))
+;; (load opam-lisp-dir )
+(load (concat opam-lisp-dir "tuareg-site-file"))
 (require 'merlin)
 (require 'dune)
 (require 'ocamlformat)
@@ -761,6 +761,7 @@
       "TAB" #'tuareg-complete
       "K"   #'tuareg-kill-ocaml)
 
+;; for your eval convenience  (remove-hook 'tuareg-mode #'ocamlformat-before-save)
 (add-hook 'tuareg-mode-hook #'(lambda ()
                                 (setq mode-name "🐫")
                                 ;; FIXME( integrate this after trying them out.
