@@ -110,6 +110,19 @@
 (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
 (add-hook 'prog-mode-hook 'electric-indent-mode)
 
+(setq ispell-program-name "/usr/bin/hunspell")
+(setq ispell-dictionary "en_GB,fr_FR")
+;; (print ispell-hunspell-dictionary-alist)
+(add-to-list 'ispell-local-dictionary-alist '("en_GB,fr_FR" "[[:alpha:]]" "[^[:alpha:]]" "[0-9']" t
+                                              ("-d" "en_GB,fr_FR")
+                                              nil utf-8))
+
+
+(use-package flyspell
+  :ensure t
+  :init
+  (add-hook 'org-mode-hook
+            (lambda () (flyspell-mode 1))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; org packages:
 
@@ -284,11 +297,11 @@
 
            "* TODO %?\n%t")
 
-          ("w" "log work quick" entry (function (lambda ()
-                                            (my/log-entry '("log" "work"))) )
-           "* %?\n"
-           :no-save t
-           :clock-in t)
+          ;; ("w" "work quick" entry (function (lambda ()
+          ;;                                   (my/log-entry '("log" "work"))) )
+          ;;  "* %?\n"
+          ;;  :no-save t
+          ;;  :clock-in t)
           ("W" "log work" entry (function (lambda ()
                                                   (my/log-entry '("log" "work"))) )
            "* %?\n"
@@ -298,9 +311,9 @@
 
           ("r" "RDV" entry
            (file+olp ;; FIXME make it scheduled, ask date then time?
-            ,(expand-file-name "future.org" org-journal-dir)
-            "future" "inbox")
-           "* %?\n%^T\n")
+            ,(expand-file-name "wibbly-wobbly.org" org-journal-dir)
+            "wibbly wobbly" "inbox")
+           "* %?\n%^t\n")
 
           ("t" "todo to inbox" entry
            (file+olp "lol.org" "lol" "inbox")
@@ -311,6 +324,19 @@
           ("N" "note to inbox" entry
            (file+olp "lol.org" "lol" "inbox")
            "* %?\n%U\n")
+
+          ;; besport
+          ("b" "BeSport")
+          ("ba" "Agenda/RDV" entry
+           (file+olp "work/besport.org" "besport" "agenda" "inbox")
+           "* 🐫 %?\n%^t\n")
+          ("bn" "Notes" entry
+           (file+datetree "work/blackbox.org")
+           "* %?\n%U\n"
+           :jump-to-captured t)
+          ("bb" "todo" entry
+           (file+olp "work/besport.org" "besport" "inbox")
+           "* TODO %?\n%U\n")
 
           ("f" "Templates for notes from files")
           ("ft" "todo from file" entry
@@ -328,7 +354,7 @@
            :jump-to-captured t)
 
           ("jy" "ty" entry (function (lambda ()
-                                       (my/log-entry '("ty"))))
+                                       (my/log-entry '("innerspace" "ty"))))
            "* %?\n"
            :jump-to-captured t
            :no-save t)
