@@ -110,6 +110,7 @@
 (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
 (add-hook 'prog-mode-hook 'electric-indent-mode)
 
+;; (global-spell-fu-mode 0)
 (setq ispell-program-name "/usr/bin/hunspell")
 (setq ispell-dictionary "en_GB,fr_FR")
 ;; (print ispell-hunspell-dictionary-alist)
