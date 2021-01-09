@@ -240,6 +240,17 @@
         org-auto-align-tags t
         org-tags-column 72))
 
+;; calendar
+
+(use-package org-gcal
+  :ensure t
+  :config
+  (setq org-gcal-client-id (password-store-get "web/google/caldav/client-id")
+        org-gcal-client-secret (password-store-get "web/google/caldav/secret")
+        org-gcal-fetch-file-alist `((,(password-store-get "web/google/caldav/work") .  ,(concat org-directory "work/besport-wobbly.org"))
+                                    (,(password-store-get "web/google/caldav/perso") .  ,(concat org-directory "the-road-so-far/tardis-wibbly.org")))))
+;(add-hook 'org-agenda-mode-hook (lambda () (org-gcal-sync) ))
+;(add-hook 'org-save-all-org-buffers (lambda () (org-gcal-sync) ))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; capture
 
 (defun my/insert-inactive-timestamp ()
@@ -264,30 +275,7 @@
 
 (after! org-capture ;; ?
   (setq org-capture-projects-file "dev"
-        ;; org-roam-capture-templates
-        ;; `(
-        ;;   ("c" "file" entry (function org-roam--capture-get-point)
-        ;;    "* %?"
-        ;;    :head "#+title: ${title}\n\n"
-        ;;    :file-name "%<%F_%H%M%S>-${slug}"
-        ;;    :unnarrowed t
-        ;;    )
-
-        ;;   ("Q" "Protocol")
-        ;;   ("Qq" "Protocol quote" entry
-        ;;    (function org-roam--capture-get-point)
-        ;;    "* %?\n[[%:link][%:description]]\n%u\n#+BEGIN_QUOTE\n%i\n#+END_QUOTE"
-        ;;    :file-name "bookmark/%<%F_%H%M%S>-${slug}"
-        ;;    :head "#+title: ${title}\n"
-        ;;    :unnarrowed t)
-        ;;   ("Ql" "Protocol Link" entry
-        ;;    (file+olp "lol.org" "lol" "inbox")
-        ;;    "* %?\n[[%:link][%:description]] \n%U")
-        ;;   ;:immediate-finish t
-        ;;   )
-        ;; live with this for a while and then review
-
-        ;; add RDV, project stuff.
+        ;; add project stuff.
         org-capture-templates
         `(("d" "ssdd" entry (function (lambda ()
                                         (my/log-entry '("ssdd"))))
@@ -311,10 +299,9 @@
            :clock-in t)
 
           ("r" "RDV" entry
-           (file+olp ;; FIXME make it scheduled, ask date then time?
-            ,(expand-file-name "wibbly-wobbly.org" org-journal-dir)
-            "wibbly wobbly" "inbox")
-           "* %?\n%^t\n")
+           (file+olp ,(expand-file-name "tardis-wibbly.org" org-journal-dir) "wibbly" "inbox")
+           ,(concat "* %?\n :PROPERTIES:\n :calendar-id: " (password-store-get "web/google/caldav/perso") "\n :END:\n:org-gcal:\n%^T\n:END:\n\n")
+           :jump-to-captured t)
 
           ("t" "todo to inbox" entry
            (file+olp "lol.org" "lol" "inbox")
@@ -328,9 +315,15 @@
 
           ;; besport
           ("b" "BeSport")
-          ("ba" "Agenda/RDV" entry
-           (file+olp "work/besport.org" "besport" "agenda" "inbox")
-           "* 🐫 %?\n%^t\n")
+
+          ("br" "RDV" entry
+           (file+olp ,(expand-file-name "work/besport-wobbly.org" org-directory) "wobbly" "inbox")
+           ,(concat "* %?\n :PROPERTIES:\n :calendar-id: " (password-store-get "web/google/caldav/work") "\n :END:\n:org-gcal:\n%^T\n:END:\n\n")
+           :jump-to-captured t)
+
+          ;; ("ba" "Agenda/RDV" entry
+          ;;  (file+olp "work/besport.org" "besport" "agenda" "inbox")
+          ;;  "* 🐫 %?\n%^t\n")
           ("bn" "Notes" entry
            (file+datetree "work/blackbox.org")
            "* %?\n%U\n"
@@ -847,8 +840,11 @@
 
       :desc "follow" :nvm "taf" #'org-agenda-follow-mode
 
-      ;; maybe not global?
+      :desc "Sync Calendar"                 :nvm "dS" #'org-gcal-sync
+      :desc "Delete from calendar"          :nvm "dX" #'org-gcal-delete-at-point
+
       :desc "inactive timestamp"            :nvm "dn" #'my/insert-inactive-timestamp
+
       :desc "password-store"                :nvm "P"  #'ivy-pass
       :desc "Switch to buffer"              :nvm "rb" #'org-roam-switch-to-buffer
       :desc "Org Roam Capture"              :nvm "rc" #'org-roam-capture
