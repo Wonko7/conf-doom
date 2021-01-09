@@ -103,9 +103,13 @@
         ;; evil-cross-lines t
         ))
 
-;; (remove-hook 'flyspell-mode-hook #'+spellcheck|immediately)
 (setq company-minimum-prefix-length 1
       company-idle-delay 0.0)
+;; (global-company-fuzzy-mode 1)
+;; (setq company-fuzzy-prefix-on-top t)
+;; (print completion-styles)
+;; (setq completion-styles
+;;       '(basic partial-completion emacs22 initials))
 
 (add-hook 'prog-mode-hook 'rainbow-identifiers-mode)
 (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
@@ -114,7 +118,6 @@
 ;; (global-spell-fu-mode 0)
 (setq ispell-program-name "/usr/bin/hunspell")
 (setq ispell-dictionary "en_GB,fr_FR")
-;; (print ispell-hunspell-dictionary-alist)
 (add-to-list 'ispell-local-dictionary-alist '("en_GB,fr_FR" "[[:alpha:]]" "[^[:alpha:]]" "[0-9']" t
                                               ("-d" "en_GB,fr_FR")
                                               nil utf-8))
@@ -252,6 +255,19 @@
                                     (,(password-store-get "web/google/caldav/perso") .  ,(concat org-directory "the-road-so-far/tardis-wibbly.org")))))
 ;(add-hook 'org-agenda-mode-hook (lambda () (org-gcal-sync) ))
 ;(add-hook 'org-save-all-org-buffers (lambda () (org-gcal-sync) ))
+(setq cfw:org-agenda-schedule-args '(:timestamp))
+(defun my-open-calendar ()
+  (interactive)
+  (cfw:open-calendar-buffer
+   :contents-sources
+   (list
+    (cfw:org-create-source "Red")  ; orgmode source
+    ;; (cfw:howm-create-source "Blue")  ; howm source
+    ;; (cfw:cal-create-source "Orange") ; diary source
+    ;; (cfw:ical-create-source "Moon" "~/moon.ics" "Gray")  ; ICS source1
+    ;; (cfw:ical-create-source "gcal" "https://..../basic.ics" "IndianRed") ; google calendar ICS
+   )))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; capture
 
 (defun my/insert-inactive-timestamp ()

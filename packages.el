@@ -74,3 +74,4 @@
 ;(package! dune)
 
 (package! highlight-indent-guides)
+(package! company-fuzzy)
