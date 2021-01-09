@@ -90,6 +90,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; global config:
 
+(set-face-attribute 'nobreak-space nil :underline t)
 (setq x-super-keysym 'meta)
 
 ;; Place your private configuration here! Remember, you do not need to run 'doom
