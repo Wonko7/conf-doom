@@ -15,13 +15,8 @@ index 000000000..b5df12536
 +++ b/modules/editor/file-templates/templates/org-journal-mode/__
 @@ -0,1 +1,11 @@
 +* `(format-time-string "%F %A")`
-+** log                                                                 :crypt:
-+*** innerspace
-+*** bs
-+*** chores
-+*** work
-+*** witness the fitness
 +** innerspace                                                          :crypt:
++*** water your buddha
 +*** ty
 +** witness the fitness
 +** ssdd

@@ -1,0 +1,25 @@
+From 6ab1e660b30d5d8fa012fcee36af23965c7ac26e Mon Sep 17 00:00:00 2001
+From: William <william@undefined.re>
+Date: Tue, 12 Jan 2021 11:52:17 +0100
+Subject: [PATCH] calendar default face
+
+---
+ modules/app/calendar/autoload.el | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/modules/app/calendar/autoload.el b/modules/app/calendar/autoload.el
+index 40e239ece..c7928ea58 100644
+--- a/modules/app/calendar/autoload.el
++++ b/modules/app/calendar/autoload.el
+@@ -43,7 +43,7 @@
+    ;; :custom-map cfw:my-cal-map
+    :contents-sources
+    (list
+-    (cfw:org-create-source (face-foreground 'default))  ; orgmode source
++    (cfw:org-create-source "#d81b60")  ; orgmode source
+     )))
+ 
+ ;;;###autoload
+-- 
+2.30.0
+

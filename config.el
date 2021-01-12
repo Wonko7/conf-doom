@@ -31,6 +31,7 @@
 
 (use-package! org-protocol)
 
+(setq gc-cons-threshold 20000000)
 (setq server-name (getenv "EMACS_SERVER"))
 ;; (if (string= "DANCE_COMMANDER" server-name)
 ;;     (server-start))
@@ -105,8 +106,23 @@
 
 (setq company-minimum-prefix-length 1
       company-idle-delay 0.0)
-;; (global-company-fuzzy-mode 1)
-;; (setq company-fuzzy-prefix-on-top t)
+
+(setq company-fuzzy-sorting-backend 'flx
+        company-fuzzy-prefix-on-top nil
+        ;; company-fuzzy-history-backends '(company-yasnippet)
+        ;; company-fuzzy-trigger-symbols '("." "->" "<" "\"" "'")
+        )
+;; (use-package! company-fuzzy
+;;   :init
+;;   (setq company-fuzzy-sorting-backend 'flx
+;;         company-fuzzy-prefix-on-top nil
+;;         ;; company-fuzzy-history-backends '(company-yasnippet)
+;;         ;; company-fuzzy-trigger-symbols '("." "->" "<" "\"" "'")
+;;         )
+;;   (with-eval-after-load 'company (global-company-fuzzy-mode t)))
+;; (after! company
+;;   (global-company-fuzzy-mode t))
+;; (global-company-fuzzy-mode t)
 ;; (print completion-styles)
 ;; (setq completion-styles
 ;;       '(basic partial-completion emacs22 initials))
@@ -240,12 +256,14 @@
   (setq org-habit-graph-column 60))
 
 (after! org
-  (setq org-log-into-drawer t
+  (setq org-agenda-start-on-weekday 1
+        calendar-week-start-day 1
+        org-log-into-drawer t
         org-auto-align-tags t
         org-tags-column 72))
+(setq cfw:org-agenda-schedule-args '(:timestamp))
 
 ;; calendar
-
 (use-package org-gcal
   :ensure t
   :config
@@ -255,7 +273,7 @@
                                     (,(password-store-get "web/google/caldav/perso") .  ,(concat org-directory "the-road-so-far/tardis-wibbly.org")))))
 ;(add-hook 'org-agenda-mode-hook (lambda () (org-gcal-sync) ))
 ;(add-hook 'org-save-all-org-buffers (lambda () (org-gcal-sync) ))
-(setq cfw:org-agenda-schedule-args '(:timestamp))
+
 (defun my-open-calendar ()
   (interactive)
   (cfw:open-calendar-buffer
@@ -503,7 +521,8 @@
         ;;       org-agenda-start-with-log-mode t)
         ;;
 
-
+        ;;       org-agenda-start-with-log-mode t)
+        org-agenda-start-with-log-mode t
         org-agenda-skip-scheduled-if-done t
         org-agenda-skip-deadline-if-done t
         org-agenda-include-deadlines t
@@ -857,6 +876,7 @@
 
       :desc "follow" :nvm "taf" #'org-agenda-follow-mode
 
+      :desc "Open Calendar"                 :nvm "dC" #'=calendar
       :desc "Sync Calendar"                 :nvm "dS" #'org-gcal-sync
       :desc "Delete from calendar"          :nvm "dX" #'org-gcal-delete-at-point
 
@@ -914,5 +934,19 @@
 (setq sh-indent 2)
 (setq sh-basic-offset 2)
 (setq sh-offset 2)
+
 (use-package! highlight-indent-guides)
-(setq highlight-indent-guides-method 'bitmap)
+
+(setq highlight-indent-guides-method 'fill)
+(setq highlight-indent-guides-auto-enabled nil)
+
+;; (set-face-background 'highlight-indent-guides-odd-face "#073642")
+;; (set-face-background 'highlight-indent-guides-even-face "#03282F")
+
+(set-face-background 'highlight-indent-guides-odd-face "#073642")
+;(set-face-background 'highlight-indent-guides-even-face "#073642")
+(set-face-background 'highlight-indent-guides-even-face "#002b36")
+
+;;(set-face-foreground 'highlight-indent-guides-character-face "dimgray")
+
+(add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
