@@ -274,18 +274,6 @@
 ;(add-hook 'org-agenda-mode-hook (lambda () (org-gcal-sync) ))
 ;(add-hook 'org-save-all-org-buffers (lambda () (org-gcal-sync) ))
 
-(defun my-open-calendar ()
-  (interactive)
-  (cfw:open-calendar-buffer
-   :contents-sources
-   (list
-    (cfw:org-create-source "Red")  ; orgmode source
-    ;; (cfw:howm-create-source "Blue")  ; howm source
-    ;; (cfw:cal-create-source "Orange") ; diary source
-    ;; (cfw:ical-create-source "Moon" "~/moon.ics" "Gray")  ; ICS source1
-    ;; (cfw:ical-create-source "gcal" "https://..../basic.ics" "IndianRed") ; google calendar ICS
-   )))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; capture
 
 (defun my/insert-inactive-timestamp ()
@@ -363,6 +351,9 @@
            (file+datetree "work/blackbox.org")
            "* %?\n%U\n"
            :jump-to-captured t)
+          ("bt" "todo" entry
+           (file+olp "work/besport.org" "besport" "inbox")
+           "* TODO %?\n%U\n")
           ("bb" "todo" entry
            (file+olp "work/besport.org" "besport" "inbox")
            "* TODO %?\n%U\n")
@@ -523,6 +514,7 @@
 
         ;;       org-agenda-start-with-log-mode t)
         org-agenda-start-with-log-mode t
+        org-habit-show-habits nil
         org-agenda-skip-scheduled-if-done t
         org-agenda-skip-deadline-if-done t
         org-agenda-include-deadlines t
@@ -774,12 +766,13 @@
 (require 'ocamlformat)
 
 ;; FIXME bikeshedding? 72? final-newline? seems ugly.
-;; (setq-default fill-column 72
-;;               indent-tabs-mode nil
-;;               mode-line-format (remove '(vc-mode vc-mode) mode-line-format)
-;;               require-final-newline t
-;;               scroll-down-aggressively 0
-;;               scroll-up-aggressively 0)
+(setq-default fill-column 80
+              indent-tabs-mode nil
+              mode-line-format (remove '(vc-mode vc-mode) mode-line-format)
+              require-final-newline t
+              scroll-down-aggressively 0
+              scroll-up-aggressively 0)
+(setq fci-rule-color "#073642")
 
 (setq comint-prompt-read-only t ; comint -> repl
       comment-multi-line t
@@ -841,6 +834,13 @@
                                 (merlin-mode)))
 
 
+(add-hook 'css-mode-hook 'prettier-js-mode)
+(setq prettier-js-command "/home/wjc/.nvm/versions/node/v10.23.1/bin/prettier")
+
+(with-eval-after-load "whitespace"
+  (setq whitespace-action '(auto-cleanup)))
+
+
 ;; global:
 (map! ;; :nv "s"  #'evil-avy-goto-char-2
       ;; :nv "C->" #'transpose-sexps
@@ -855,8 +855,10 @@
  :nv  "C-8"         #'evil-multiedit-match-symbol-and-next
  :nvm "é"           #'evil-cp-previous-opening ; FIXME put this in global map?
  :nvm "&"           #'evil-cp-next-opening
- :i   "C-v"         #'evil-paste-after
- :i   "C-V"         #'evil-paste-after)
+
+ :i   "C-b"         #'yas-expand
+ :i   "C-v"         #'evil-paste-before
+ :i   "C-V"         #'evil-paste-before)
 
 ;; global
 (map! :leader

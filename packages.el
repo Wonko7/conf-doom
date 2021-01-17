@@ -58,6 +58,7 @@
 (package! org-journal)
 (package! org-roam)
 (package! org-ql)
+(package! org-web-tools)
 
 ;(package! org-protocol)
 ;(package! org-plus-contrib)
@@ -67,6 +68,7 @@
 (package! rainbow-identifiers)
 
 (package! graphql-mode)
+(package! prettier-js)
 
 ; nope these should come from opam:
 ;(package! ocamlformat)
