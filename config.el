@@ -104,14 +104,17 @@
         ;; evil-cross-lines t
         ))
 
-(setq company-minimum-prefix-length 1
-      company-idle-delay 0.0)
+(setq company-minimum-prefix-length 2
+      company-idle-delay 0.0
+      )
+(setq completion-styles
+      '(basic partial-completion emacs22))
 
-(setq company-fuzzy-sorting-backend 'flx
-        company-fuzzy-prefix-on-top nil
-        ;; company-fuzzy-history-backends '(company-yasnippet)
-        ;; company-fuzzy-trigger-symbols '("." "->" "<" "\"" "'")
-        )
+;; (setq company-fuzzy-sorting-backend 'flx
+;;         company-fuzzy-prefix-on-top nil
+;;         ;; company-fuzzy-history-backends '(company-yasnippet)
+;;         ;; company-fuzzy-trigger-symbols '("." "->" "<" "\"" "'")
+;;         )
 ;; (use-package! company-fuzzy
 ;;   :init
 ;;   (setq company-fuzzy-sorting-backend 'flx
@@ -124,8 +127,6 @@
 ;;   (global-company-fuzzy-mode t))
 ;; (global-company-fuzzy-mode t)
 ;; (print completion-styles)
-;; (setq completion-styles
-;;       '(basic partial-completion emacs22 initials))
 
 (add-hook 'prog-mode-hook 'rainbow-identifiers-mode)
 (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
@@ -264,13 +265,15 @@
 (setq cfw:org-agenda-schedule-args '(:timestamp))
 
 ;; calendar
-(use-package org-gcal
+(use-package! org-gcal
   :ensure t
+  ;;:after password-store
   :config
   (setq org-gcal-client-id (password-store-get "web/google/caldav/client-id")
         org-gcal-client-secret (password-store-get "web/google/caldav/secret")
         org-gcal-fetch-file-alist `((,(password-store-get "web/google/caldav/work") .  ,(concat org-directory "work/besport-wobbly.org"))
                                     (,(password-store-get "web/google/caldav/perso") .  ,(concat org-directory "the-road-so-far/tardis-wibbly.org")))))
+;; (print org-gcal-client-id)
 ;(add-hook 'org-agenda-mode-hook (lambda () (org-gcal-sync) ))
 ;(add-hook 'org-save-all-org-buffers (lambda () (org-gcal-sync) ))
 
@@ -591,7 +594,6 @@
 ;; nil numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type t)
 ;; (setq scroll-margin 0)
-
 (setq evil-snipe-scope 'whole-visible)
 
 (setq avy-keys '(?u ?h ?e ?t ?. ?c ?i ?d ?k ?m ?j ?w ?o ?n ?p ?g))
@@ -855,7 +857,9 @@
  :nv  "C-8"         #'evil-multiedit-match-symbol-and-next
  :nvm "é"           #'evil-cp-previous-opening ; FIXME put this in global map?
  :nvm "&"           #'evil-cp-next-opening
-
+ ;; ignored or overwritten, doom rape.
+ :i   "TAB"         #'company-complete-common
+ :i   [tab]         #'company-complete-common
  :i   "C-b"         #'yas-expand
  :i   "C-v"         #'evil-paste-before
  :i   "C-V"         #'evil-paste-before)

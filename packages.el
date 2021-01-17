@@ -76,5 +76,5 @@
 ;(package! dune)
 
 (package! highlight-indent-guides)
-(package! company-fuzzy)
-(package! flx)
+;; (package! company-fuzzy)
+;; (package! flx)
