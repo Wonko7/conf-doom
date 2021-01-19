@@ -60,6 +60,8 @@
 (package! org-ql)
 (package! org-web-tools)
 
+(package! writeroom-mode)
+
 ;(package! org-protocol)
 ;(package! org-plus-contrib)
 

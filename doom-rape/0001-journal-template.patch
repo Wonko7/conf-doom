@@ -1,24 +1,25 @@
-From f243ebd622920184e84b0471f093f19cac0b2f16 Mon Sep 17 00:00:00 2001
+From 005201c88474329fdb758e6cd5dff6251d1263c0 Mon Sep 17 00:00:00 2001
 From: William <william@undefined.re>
-Date: Fri, 6 Nov 2020 20:57:12 +0100
+Date: Sun, 17 Jan 2021 18:57:16 +0100
 Subject: [PATCH] journal template
 
 ---
- .../file-templates/templates/org-journal-mode/__      | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ modules/editor/file-templates/templates/org-journal-mode/__ | 6 ++++++
+ 1 file changed, 6 insertions(+)
  create mode 100644 modules/editor/file-templates/templates/org-journal-mode/__
 
 diff --git a/modules/editor/file-templates/templates/org-journal-mode/__ b/modules/editor/file-templates/templates/org-journal-mode/__
 new file mode 100644
-index 000000000..b5df12536
+index 000000000..5f3aa939a
 --- /dev/null
 +++ b/modules/editor/file-templates/templates/org-journal-mode/__
-@@ -0,1 +1,11 @@
+@@ -0,0 +1,6 @@
 +* `(format-time-string "%F %A")`
 +** innerspace                                                          :crypt:
 +*** water your buddha
 +*** ty
 +** witness the fitness
 +** ssdd
---
-2.29.1
+-- 
+2.30.0
+

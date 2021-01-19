@@ -103,7 +103,6 @@
         evil-escape-key-sequence "jj"
         ;; evil-cross-lines t
         ))
-
 (setq company-minimum-prefix-length 2
       company-idle-delay 0.0
       )
@@ -266,8 +265,8 @@
 
 ;; calendar
 (use-package! org-gcal
-  :ensure t
-  ;;:after password-store
+  ;:ensure t
+  :after password-store
   :config
   (setq org-gcal-client-id (password-store-get "web/google/caldav/client-id")
         org-gcal-client-secret (password-store-get "web/google/caldav/secret")
@@ -276,6 +275,35 @@
 ;; (print org-gcal-client-id)
 ;(add-hook 'org-agenda-mode-hook (lambda () (org-gcal-sync) ))
 ;(add-hook 'org-save-all-org-buffers (lambda () (org-gcal-sync) ))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; appt
+
+(require 'appt)
+
+(setq appt-message-warning-time 10) ; Show notification 5 minutes before event
+(setq appt-display-interval 5) ; Disable multiple reminders
+;; (setq appt-display-mode-line nil)
+
+(add-hook 'org-agenda-mode-hook #'org-agenda-to-appt)
+(run-at-time "12:01am" (* 24 3600) 'org-agenda-to-appt)
+
+                                        ; (3) ... When TODO.txt is saved
+(add-hook 'after-save-hook
+          (lambda ()
+             (when (string-prefix-p org-directory buffer-file-name)
+               (org-agenda-to-appt))))
+
+; Display appointments as a window manager notification
+(setq appt-disp-window-function #'my/appt-notif)
+(setq appt-delete-window-function (lambda () t))
+
+(setq my-appt-notification-app (concat (getenv "HOME") "/bin/appt-notification"))
+
+(defun my/appt-notif (min-to-appt new-time msg)
+  (if (atom min-to-appt)
+      (call-process "notif" nil 0 nil "send" (concat "RDV: " min-to-appt) msg)
+  (dolist (i (number-sequence 0 (1- (length min-to-appt))))
+    (call-process "notif" nil 0 nil "send" (concat "RDV: " (nth i min-to-appt)) (nth i msg)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; capture
 
@@ -567,7 +595,7 @@
 ;; https://github.com/hlissner/doom-emacs/issues/3172
 ;;(remove-hook! org-mode-hook #'electric-indent-mode)
 ;; (add-hook 'org-mode-hook (lambda () (electric-indent-mode -1)))
-(add-hook 'org-mode-hook (lambda () (electric-indent-local-mode -1)))
+;; (add-hook 'org-mode-hook (lambda () (electric-indent-local-mode -1)))
 
 (setq evil-search-wrap nil)
 ;;
@@ -652,8 +680,9 @@
       :nvm "M-g C" #'evil-cp-wrap-previous-curly
       :nvm "M-g s" #'evil-cp-wrap-next-square
       :nvm "M-g S" #'evil-cp-wrap-previous-square
-      ;:nvm "s"  #'evil-aavy-goto-char-2 use: gss
-      )
+      ;; :nvm "s"  #'evil-aavy-goto-char-2 use: gss
+      :nvm "s"  #'evil-snipe-s
+      :nvm "S"  #'evil-snipe-S)
 
 (map! :map evil-cleverparens-mode-map
       :localleader
@@ -807,11 +836,13 @@
 
 (map! :localleader
       :map tuareg-mode-map
+      "o"   #'merlin-pop-stack
       "RET" #'tuareg-eval-phrase
       "b"   #'tuareg-eval-buffer
       "TAB" #'tuareg-complete
       "K"   #'tuareg-kill-ocaml)
-
+(map! :map tuareg-mode-map
+      :i "TAB" #'company-indent-or-complete-common)
 ;; for your eval convenience  (remove-hook 'tuareg-mode #'ocamlformat-before-save)
 (add-hook 'tuareg-mode-hook #'(lambda ()
                                 (setq mode-name "🐫")
@@ -834,14 +865,37 @@
                                     (setq-local ocamlformat-file-kind 'interface)))
                                 (add-hook 'before-save-hook 'ocamlformat-before-save t t)
                                 (merlin-mode)))
+;; (add-hook 'tuareg-mode-hook 'lsp-deferred)
 
+;; (add-hook 'prog-mode-hook 'lsp-deferred)
+;; (lsp-register-client
+;;    (make-lsp-client
+;;     :new-connection (lsp-stdio-connection
+;;                      '("opam" "exec" "--" "ocamllsp"))
+;;     :major-modes '(caml-mode tuareg-mode)
+;;     :server-id 'ocaml-lsp))
+;; (defcustom lsp-ocaml-lsp-server-command
+;;   '("ocamllsp")
+;;   "Command to start ocaml-language-server."
+;;   :group 'lsp-ocaml
+;;   :type '(choice
+;;           (string :tag "Single string value")
+;;           (repeat :tag "List of string values"
+;;                   string)))
+;; (lsp-register-client
+;;  (make-lsp-client
+;;   :new-connection
+;;   (lsp-stdio-connection (lambda () lsp-ocaml-lsp-server-command))
+;;   :major-modes '(caml-mode tuareg-mode)
+;;   :priority 0
+;;   :server-id 'ocaml-lsp-server))
 
 (add-hook 'css-mode-hook 'prettier-js-mode)
+
 (setq prettier-js-command "/home/wjc/.nvm/versions/node/v10.23.1/bin/prettier")
 
 (with-eval-after-load "whitespace"
   (setq whitespace-action '(auto-cleanup)))
-
 
 ;; global:
 (map! ;; :nv "s"  #'evil-avy-goto-char-2
@@ -858,8 +912,8 @@
  :nvm "é"           #'evil-cp-previous-opening ; FIXME put this in global map?
  :nvm "&"           #'evil-cp-next-opening
  ;; ignored or overwritten, doom rape.
- :i   "TAB"         #'company-complete-common
- :i   [tab]         #'company-complete-common
+ ;:i   "TAB"         #'company-indent-or-complete-common
+ ;:i   [tab]         #'company-indent-or-complete-common
  :i   "C-b"         #'yas-expand
  :i   "C-v"         #'evil-paste-before
  :i   "C-V"         #'evil-paste-before)
@@ -883,8 +937,9 @@
       :desc "follow" :nvm "taf" #'org-agenda-follow-mode
 
       :desc "Open Calendar"                 :nvm "dC" #'=calendar
-      :desc "Sync Calendar"                 :nvm "dS" #'org-gcal-sync
+      :desc "Sync calendar"                 :nvm "dS" #'org-gcal-sync
       :desc "Delete from calendar"          :nvm "dX" #'org-gcal-delete-at-point
+      :desc "Post to calendar"              :nvm "dP" #'org-gcal-delete-at-point
 
       :desc "inactive timestamp"            :nvm "dn" #'my/insert-inactive-timestamp
 
