@@ -217,7 +217,7 @@
            "KILL(k)") ; Task was cancelled, aborted or is no longer applicable
           (sequence
            "[ ](T)"   ; A task that needs doing
-           "[-](S)"   ; Task is in progress
+           "[-](G)"   ; Task is in progress
            "[?](W)"   ; Task is being held up or paused
            "|"
            "[X](D)")) ; Task was completed
@@ -337,7 +337,6 @@
            "* TODO %?\n%t" :prepend t)
           ("s" "ssdd" entry (function (lambda () ;; I appear to prefer s
                                         (my/log-entry '("ssdd"))))
-
            "* TODO %?\n%t")
 
           ;; ("w" "work quick" entry (function (lambda ()
@@ -366,6 +365,11 @@
           ("N" "note to inbox" entry
            (file+olp "lol.org" "lol" "inbox")
            "* %?\n%U\n")
+          ("g" "groceries" item
+           (file+olp "lol.org" "lol" "TODO shopping" "TODO groceries")
+           "- %?\n")
+
+
 
           ;; besport
           ("b" "BeSport")
@@ -787,14 +791,30 @@
          (ignore-errors (car (process-lines "opam" "config" "var" "share")))))
     (when (and opam-share (file-directory-p opam-share))
       (expand-file-name "emacs/site-lisp/" opam-share))))
+   ;; fixme: compare with this:
+   ;; jj
+   ;; Add opam emacs directory to your load-path by appending this to your .emacs:
+   ;;   (let ((opam-share (ignore-errors (car (process-lines "opam" "config" "var" "share")))))
+   ;;    (when (and opam-share (file-directory-p opam-share))
+   ;;     ;; Register Merlin
+   ;;     (add-to-list 'load-path (expand-file-name "emacs/site-lisp" opam-share))
+   ;;     (autoload 'merlin-mode "merlin" nil t nil)
+   ;;     ;; Automatically start it in OCaml buffers
+   ;;     (add-hook 'tuareg-mode-hook 'merlin-mode t)
+   ;;     (add-hook 'caml-mode-hook 'merlin-mode t)
+   ;;     ;; Use opam switch to lookup ocamlmerlin binary
+   ;;     (setq merlin-command 'opam)))
+
 
 ;; (print opam-lisp-dir)
 (add-to-list 'load-path opam-lisp-dir)
 ;; (load opam-lisp-dir )
 (load (concat opam-lisp-dir "tuareg-site-file"))
-(require 'merlin)
-(require 'dune)
-(require 'ocamlformat)
+;(require 'merlin)
+;(require 'dune)
+;(require 'ocamlformat)
+
+(setq merlin-completion-dwim nil)
 
 ;; FIXME bikeshedding? 72? final-newline? seems ugly.
 (setq-default fill-column 80
@@ -911,6 +931,10 @@
  :nv  "C-8"         #'evil-multiedit-match-symbol-and-next
  :nvm "é"           #'evil-cp-previous-opening ; FIXME put this in global map?
  :nvm "&"           #'evil-cp-next-opening
+ :nvm "gzn"           #'evil-mc-make-and-goto-next-match
+ :nvm "gzN"           #'evil-mc-skip-and-goto-next-match
+ ;; breadcrumb
+ :nvm "S-SPC"       #'bc-set
  ;; ignored or overwritten, doom rape.
  ;:i   "TAB"         #'company-indent-or-complete-common
  ;:i   [tab]         #'company-indent-or-complete-common
