@@ -617,9 +617,16 @@
       (let ((host (system-name)))
         (cond ((string-equal host "daban-urnud") 20)
               ((string-equal host "yggdrasill")  35)
+              ((string-equal host "enterprise")  16)
               (t                                 16))))
 
-(setq doom-font (font-spec :family "Fira Mono for Powerline" :size my/font-size))
+;;(setq doom-font (font-spec :family "FuraMono Nerd Font" :size my/font-size))
+(setq doom-font (font-spec :family "JetBrainsMono Nerd Font Mono" :size my/font-size))
+;;(setq doom-font (font-spec :family "Fira Mono for Powerline" :size my/font-size))
+;; Emoji: 😄, 🤦, 🏴󠁧󠁢󠁳󠁣󠁴󠁿
+(set-fontset-font t 'symbol "Noto Color Emoji" nil 'append)
+;;(set-fontset-font t 'symbol "Symbola" nil 'append)
+;;
 (setq doom-theme 'doom-solarized-dark)
                                         ; j(setq doom-font (font . "Fira Mono for Powerline-14"))
 
