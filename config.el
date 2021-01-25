@@ -29,14 +29,12 @@
                                               (concat org-directory d))
                                             '("people/" "wip/" "work/" "the-road-so-far/"))))
 
-(use-package! org-protocol)
 
 (setq gc-cons-threshold 20000000)
 (setq server-name (getenv "EMACS_SERVER"))
-;; (if (string= "DANCE_COMMANDER" server-name)
-;;     (server-start))
-
-(load "~/conf/doom/yolobolo.el")
+(when (string= "DANCE_COMMANDER" server-name)
+  (load "~/conf/doom/yolobolo.el")
+  (use-package! org-protocol))
 
 (setq fancy-splash-image "/data/docs/pics/web-stuff/spock.jpg")
 (remove-hook '+doom-dashboard-functions #'doom-dashboard-widget-banner)
@@ -140,10 +138,16 @@
 
 
 (use-package flyspell
-  :ensure t
   :init
   (add-hook 'org-mode-hook
             (lambda () (flyspell-mode 1))))
+
+(custom-set-faces!
+  '(flycheck-error     :underline (:style line :color "#dc322f"))
+  '(flycheck-info      :underline (:style line :color "#859900"))
+  '(flycheck-warning   :underline (:style line :color "#b58900"))
+  '(flyspell-duplicate :underline (:style line :color "#b58900"))
+  '(flyspell-incorrect :underline (:style line :color "#dc322f")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; org packages:
 
@@ -152,8 +156,7 @@
 ;;   :hook (after-init . org-roam-mode))
 (use-package! org-roam
   :after org
-  :hook (after-init . org-roam-mode)
-  )
+  :hook (after-init . org-roam-mode))
 
 ;; (use-package! org-roam-protocol
 ;;   :after org-protocol)
@@ -799,7 +802,6 @@
     (when (and opam-share (file-directory-p opam-share))
       (expand-file-name "emacs/site-lisp/" opam-share))))
    ;; fixme: compare with this:
-   ;; jj
    ;; Add opam emacs directory to your load-path by appending this to your .emacs:
    ;;   (let ((opam-share (ignore-errors (car (process-lines "opam" "config" "var" "share")))))
    ;;    (when (and opam-share (file-directory-p opam-share))
@@ -814,12 +816,11 @@
 
 
 ;; (print opam-lisp-dir)
-(add-to-list 'load-path opam-lisp-dir)
+;;(add-to-list 'load-path opam-lisp-dir)
 ;; (load opam-lisp-dir )
-(load (concat opam-lisp-dir "tuareg-site-file"))
-;(require 'merlin)
+;;(load (concat opam-lisp-dir "tuareg-site-file"))
 ;(require 'dune)
-;(require 'ocamlformat)
+(require 'ocamlformat)
 
 (setq merlin-completion-dwim nil)
 
@@ -891,7 +892,8 @@
                                   (when (string-equal ext "eliomi")
                                     (setq-local ocamlformat-file-kind 'interface)))
                                 (add-hook 'before-save-hook 'ocamlformat-before-save t t)
-                                (merlin-mode)))
+                                ;; (merlin-mode)
+                                ))
 ;; (add-hook 'tuareg-mode-hook 'lsp-deferred)
 
 ;; (add-hook 'prog-mode-hook 'lsp-deferred)
@@ -942,6 +944,10 @@
  :nvm "gzN"           #'evil-mc-skip-and-goto-next-match
  ;; breadcrumb
  :nvm "S-SPC"       #'bc-set
+ :nvm  "C-j"        #'bc-next
+ :nvm  "C-k"        #'bc-previous
+ :nvm  "C-S-j"        #'bc-local-next
+ :nvm  "C-S-k"        #'bc-local-previous
  ;; ignored or overwritten, doom rape.
  ;:i   "TAB"         #'company-indent-or-complete-common
  ;:i   [tab]         #'company-indent-or-complete-common
@@ -962,8 +968,13 @@
       :nvm "jN" #'org-journal-new-entry
       :nvm "jr" #'org-journal-new-scheduled-entry
 
-      :nvm "C-n" (lambda () (interactive) (scroll-up 4))
-      :nvm "C-p" (lambda () (interactive) (scroll-down 4))
+      :desc "breadcrumb prev" :nvm  "<" #'bc-previous
+      :desc "breadcrumb next" :nvm  ">" #'bc-next
+      :desc "breadcrumb prev" :nvm  "l<" #'bc-local-previous
+      :desc "breadcrumb next" :nvm  "l>" #'bc-local-next
+
+      :desc "breadcrumb list" :nvm  "jl" #'bc-list
+      :desc "breadcrumb goto curr" :nvm  "jc" #'bc-goto-current
 
       :desc "follow" :nvm "taf" #'org-agenda-follow-mode
 
@@ -992,8 +1003,6 @@
 (map! :map org-agenda-mode-map ;; FIXME this is completely ignored :/
       :nvm "C-n" (lambda () (interactive) (scroll-up 4))
       :nvm "C-p" (lambda () (interactive) (scroll-down 4))
-      :nvm "C-j" (lambda () (interactive) (scroll-up 1))
-      :nvm "C-k" (lambda () (interactive) (scroll-down 1))
       :nvm "j" #'org-agenda-next-line
       :nvm "k" #'org-agenda-previous-line)
 
