@@ -21,76 +21,25 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; org files:
 
-(setq org-directory "/data/org/")
-(setq org-roam-directory (concat org-directory "here-be-dragons/"))
-(setq org-journal-dir (concat org-directory "the-road-so-far/"))
-(setq org-agenda-files (cons org-directory (mapcar
-                                            (lambda (d)
-                                              (concat org-directory d))
-                                            '("people/" "wip/" "work/" "the-road-so-far/"))))
-
+(require 'password-store)
+(load "~/conf/doom/org-conf")
 
 (setq gc-cons-threshold 20000000)
-(setq server-name (getenv "EMACS_SERVER"))
+;; (print mode-line-misc-info)
+;; (setq  mode-line-misc-info (assq-delete-all         'eglot--managed-mode-hook mode-line-misc-info))
+;; global-mode-string
+;; (setq my/session-name "lol")
+;; (add-to-list 'global-mode-string 'my/session-name)
+;; (setq mode-line-misc-info
+;;       (list `(lol ,(concat "lol " (daemonp)))))
+(setq server-name (daemonp))
 (when (string= "DANCE_COMMANDER" server-name)
   (load "~/conf/doom/yolobolo.el")
   (use-package! org-protocol))
 
-(setq fancy-splash-image "/data/docs/pics/web-stuff/spock.jpg")
-(remove-hook '+doom-dashboard-functions #'doom-dashboard-widget-banner)
-(add-hook '+doom-dashboard-functions #'chika-widget-banner)
-
-(defun chika-widget-banner ()
-  (let ((point (point)))
-    (mapc (lambda (line)
-            (insert (propertize (+doom-dashboard--center +doom-dashboard--width line)
-                                'face 'doom-dashboard-banner) " ")
-            (insert "\n"))
-          '("                                      :                                 :       "
-            "                                    :                                   :       "
-            "                                    :  RRVIttIti+==iiii++iii++=;:,       :      "
-            "                                    : IBMMMMWWWWMMMMMBXXVVYYIi=;:,        :     "
-            "                                    : tBBMMMWWWMMMMMMBXXXVYIti;;;:,,      :     "
-            "                                    t YXIXBMMWMMBMBBRXVIi+==;::;::::       ,    "
-            "live long & prosper                ;t IVYt+=+iIIVMBYi=:,,,=i+=;:::::,      ;;   "
-            "                                   YX=YVIt+=,,:=VWBt;::::=,,:::;;;:;:     ;;;   "
-            "                                   VMiXRttItIVRBBWRi:.tXXVVYItiIi==;:   ;;;;    "
-            "                                   =XIBWMMMBBBMRMBXi;,tXXRRXXXVYYt+;;: ;;;;;    "
-            "                                    =iBWWMMBBMBBWBY;;;,YXRRRRXXVIi;;;:;,;;;=    "
-            "                                     iXMMMMMWWBMWMY+;=+IXRRXXVYIi;:;;:,,;;=     "
-            "                                     iBRBBMMMMYYXV+:,:;+XRXXVIt+;;:;++::;;;     "
-            "                                     =MRRRBMMBBYtt;::::;+VXVIi=;;;:;=+;;;;=     "
-            "                                      XBRBBBBBMMBRRVItttYYYYt=;;;;;;==:;=       "
-            "                                       VRRRRRBRRRRXRVYYIttiti=::;:::=;=         "
-            "                                        YRRRRXXVIIYIiitt+++ii=:;:::;==          "
-            "                                        +XRRXIIIIYVVI;i+=;=tt=;::::;:;          "
-            "                                         tRRXXVYti++==;;;=iYt;:::::,;;          "
-            "                                          IXRRXVVVVYYItiitIIi=:::;,::;          "
-            "                                           tVXRRRBBRXVYYYIti;::::,::::          "
-            "                                            YVYVYYYYYItti+=:,,,,,:::::;         "
-            "                                            YRVI+==;;;;;:,,,,,,,:::::::         "
-            ))
-    (when (and (display-graphic-p)
-               (stringp fancy-splash-image)
-               (file-readable-p fancy-splash-image))
-      (let ((image (create-image (fancy-splash-image-file))))
-        (add-text-properties
-         point (point) `(display ,image rear-nonsticky (display)))
-        (save-excursion
-          (goto-char point)
-          (insert (make-string
-                   (truncate
-                    (max 0 (+ 1 (/ (- +doom-dashboard--width
-                                      (car (image-size image nil)))
-                                   2))))
-                   ? ))))
-      (insert (make-string (or (cdr +doom-dashboard-banner-padding) 0)
-                           ?\n)))))
-
+(load "~/conf/doom/fancy.el")
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; global config:
 
-(set-face-attribute 'nobreak-space nil :underline t)
-(setq x-super-keysym 'meta)
 
 ;; Place your private configuration here! Remember, you do not need to run 'doom
 ;; sync' after modifying this file!
@@ -128,6 +77,7 @@
 (add-hook 'prog-mode-hook 'rainbow-identifiers-mode)
 (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
 (add-hook 'prog-mode-hook 'electric-indent-mode)
+(add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
 
 ;; (global-spell-fu-mode 0)
 (setq ispell-program-name "/usr/bin/hunspell")
@@ -142,467 +92,7 @@
   (add-hook 'org-mode-hook
             (lambda () (flyspell-mode 1))))
 
-(custom-set-faces!
-  '(flycheck-error     :underline (:style line :color "#dc322f"))
-  '(flycheck-info      :underline (:style line :color "#859900"))
-  '(flycheck-warning   :underline (:style line :color "#b58900"))
-  '(flyspell-duplicate :underline (:style line :color "#b58900"))
-  '(flyspell-incorrect :underline (:style line :color "#dc322f")))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; org packages:
-
-
-;; (use-package! org-roam
-;;   :hook (after-init . org-roam-mode))
-(use-package! org-roam
-  :after org
-  :hook (after-init . org-roam-mode))
-
-;; (use-package! org-roam-protocol
-;;   :after org-protocol)
-;;
-;; (map! :map org-agenda-mode-map
-;;       :nvm "j" #'org-agenda-next-line
-;;       :nvm "k" #'org-agenda-previous-line)
-;; (map! :map evil-org-agenda-mode-map
-;;       :nvm "j" #'org-agenda-next-line
-;;       :nvm "k" #'org-agenda-previous-line)
-
-;; (after! org-agenda
-;;  (map! :map evil-org-agenda-mode-map
-;;       :nvm "j" #'org-agenda-next-line
-;;       :nvm "k" #'org-agenda-previous-line)
-;;  (map! :map org-agenda-mode-map
-;;       :nvm "j" #'org-agenda-next-line
-;;       :nvm "k" #'org-agenda-previous-line))
-
-(use-package! org-super-agenda
-  :after org-agenda
-  :init
-  (setq org-agenda-compact-blocks t
-        ;org-agenda-start-with-follow-mode t
-        org-super-agenda-header-separator "\n")
-  :config
-  (org-super-agenda-mode))
-
-(use-package! org-crypt
-  :config
-  (org-crypt-use-before-save-magic))
-
-;; FIXME/review show past:
-;;  https://github.com/bastibe/org-journal/issues/260
-(use-package! org-journal)
-
-;; org journal template:
-(set-file-template! "/20[-[:digit:]]+_[[:alpha:]]+\\.org$"
-  ;; :trigger "__"
-  :mode 'org-journal-mode)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; org conf:
-
-(after! org
-  (setq
-   org-plantuml-jar-path "/usr/share/plantuml/lib/plantuml.jar"
-   org-extend-today-until 3
-   org-todo-keywords
-        '((sequence
-           "NEXT(n/!)"  ; A task that recuring
-           "TODO(t)"  ; A task that needs doing & is ready to do
-           "PROJ(p)"  ; A project, which usually contains other tasks
-           "GOGO(g/!)"  ; A task that is in progress
-           "WAIT(w/!)"  ; Something external is holding up this task
-           "HOLD(h/!)"  ; This task is paused/on hold because of me
-           "ADD(a)"  ; feature
-           "FIX(f)"  ; feature
-           "BUG(b)"  ; feature
-           "|"
-           "DONE(d/!)"  ; Task successfully completed
-           "KILL(k)") ; Task was cancelled, aborted or is no longer applicable
-          (sequence
-           "[ ](T)"   ; A task that needs doing
-           "[-](G)"   ; Task is in progress
-           "[?](W)"   ; Task is being held up or paused
-           "|"
-           "[X](D)")) ; Task was completed
-        org-todo-keyword-faces
-        '(("[-]"  . +org-todo-active)
-          ("NEXT" . +org-todo-active)
-          ("GOGO" . +org-todo-active)
-          ("[?]"  . +org-todo-onhold)
-          ("WAIT" . +org-todo-onhold)
-          ("HOLD" . +org-todo-onhold)
-          ("PROJ" . +org-todo-project))))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; org-crypt, habbit, & related:
-
-;; make decrypting a bit more magical: decrypt after save
-;; use this to toggle feature: (remove-hook 'after-save-hook 'restore-point t)
-(defun save-point ()
-  (setq-local my/yolo (point)))
-
-(defun restore-point ()
-  (org-decrypt-entries)
-  (goto-char my/yolo))
-
-(add-hook
- 'org-mode-hook
- (lambda ()
-   (add-hook 'after-save-hook 'restore-point nil t)
-   (add-hook 'before-save-hook 'save-point (- 42) t)))
-
-(after! org-crypt
-  (setq org-tags-exclude-from-inheritance (quote ("crypt"))
-        org-crypt-disable-auto-save "encrypt"
-        org-crypt-key "william@underage.wang"))
-
-(after! org-habit
-  (setq org-habit-graph-column 60))
-
-(after! org
-  (setq org-agenda-start-on-weekday 1
-        calendar-week-start-day 1
-        org-log-into-drawer t
-        org-auto-align-tags t
-        org-tags-column 72))
-(setq cfw:org-agenda-schedule-args '(:timestamp))
-
-;; calendar
-(use-package! org-gcal
-  ;:ensure t
-  :after password-store
-  :config
-  (setq org-gcal-client-id (password-store-get "web/google/caldav/client-id")
-        org-gcal-client-secret (password-store-get "web/google/caldav/secret")
-        org-gcal-fetch-file-alist `((,(password-store-get "web/google/caldav/work") .  ,(concat org-directory "work/besport-wobbly.org"))
-                                    (,(password-store-get "web/google/caldav/perso") .  ,(concat org-directory "the-road-so-far/tardis-wibbly.org")))))
-;; (print org-gcal-client-id)
-;(add-hook 'org-agenda-mode-hook (lambda () (org-gcal-sync) ))
-;(add-hook 'org-save-all-org-buffers (lambda () (org-gcal-sync) ))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; appt
-
-(require 'appt)
-
-(setq appt-message-warning-time 10) ; Show notification 5 minutes before event
-(setq appt-display-interval 5) ; Disable multiple reminders
-;; (setq appt-display-mode-line nil)
-
-(add-hook 'org-agenda-mode-hook #'org-agenda-to-appt)
-(run-at-time "12:01am" (* 24 3600) 'org-agenda-to-appt)
-
-                                        ; (3) ... When TODO.txt is saved
-(add-hook 'after-save-hook
-          (lambda ()
-             (when (string-prefix-p org-directory buffer-file-name)
-               (org-agenda-to-appt))))
-
-; Display appointments as a window manager notification
-(setq appt-disp-window-function #'my/appt-notif)
-(setq appt-delete-window-function (lambda () t))
-
-(setq my-appt-notification-app (concat (getenv "HOME") "/bin/appt-notification"))
-
-(defun my/appt-notif (min-to-appt new-time msg)
-  (if (atom min-to-appt)
-      (call-process "notif" nil 0 nil "send" (concat "RDV: " min-to-appt) msg)
-  (dolist (i (number-sequence 0 (1- (length min-to-appt))))
-    (call-process "notif" nil 0 nil "send" (concat "RDV: " (nth i min-to-appt)) (nth i msg)))))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; capture
-
-(defun my/insert-inactive-timestamp ()
-  (interactive)
-  (insert (format-time-string "[%F %a %H:%M]")))
-
-(defun my/journal-open-today (&optional other-window)
-  (let ((fpath (expand-file-name (format-time-string "%F_%A.org") org-journal-dir)))
-    (if other-window
-        (find-file-other-window fpath)
-      (find-file fpath))
-    (org-decrypt-entries) ;; decrypt org entries before trying to add stuff in them, olp can't work on opaque gpg.
-    (when (<= (point-max) 300) ;; FIXME yeahhhhhhh there's probably a better test.
-      (org-journal--carryover))
-    fpath))
-
-(defun my/log-entry (olp-path)
-  (let ((m (org-find-olp (cons (org-capture-expand-file (my/journal-open-today))
-                               (cons (format-time-string "%F %A")
-                                     olp-path)))))
-    (goto-char m)))
-
-(after! org-capture ;; ?
-  (setq org-capture-projects-file "dev"
-        ;; add project stuff.
-        org-capture-templates
-        `(("d" "ssdd" entry (function (lambda ()
-                                        (my/log-entry '("ssdd"))))
-
-           "* TODO %?\n%t" :prepend t)
-          ("s" "ssdd" entry (function (lambda () ;; I appear to prefer s
-                                        (my/log-entry '("ssdd"))))
-           "* TODO %?\n%t")
-
-          ;; ("w" "work quick" entry (function (lambda ()
-          ;;                                   (my/log-entry '("log" "work"))) )
-          ;;  "* %?\n"
-          ;;  :no-save t
-          ;;  :clock-in t)
-          ("W" "log work" entry (function (lambda ()
-                                                  (my/log-entry '("log" "work"))) )
-           "* %?\n"
-           :no-save t
-           :jump-to-captured t
-           :clock-in t)
-
-          ("r" "RDV" entry
-           (file+olp ,(expand-file-name "tardis-wibbly.org" org-journal-dir) "wibbly" "inbox")
-           ,(concat "* %?\n :PROPERTIES:\n :calendar-id: " (password-store-get "web/google/caldav/perso") "\n :END:\n:org-gcal:\n%^T\n:END:\n\n")
-           :jump-to-captured t)
-
-          ("t" "todo to inbox" entry
-           (file+olp "lol.org" "lol" "inbox")
-           "* TODO %?\n%U\n")
-          ("n" "note to inbox" entry
-           (file+olp "lol.org" "lol" "inbox")
-           "* %?\n%U\n")
-          ("N" "note to inbox" entry
-           (file+olp "lol.org" "lol" "inbox")
-           "* %?\n%U\n")
-          ("g" "groceries" item
-           (file+olp "lol.org" "lol" "TODO shopping" "TODO groceries")
-           "- %?\n")
-
-
-
-          ;; besport
-          ("b" "BeSport")
-
-          ("br" "RDV" entry
-           (file+olp ,(expand-file-name "work/besport-wobbly.org" org-directory) "wobbly" "inbox")
-           ,(concat "* %?\n :PROPERTIES:\n :calendar-id: " (password-store-get "web/google/caldav/work") "\n :END:\n:org-gcal:\n%^T\n:END:\n\n")
-           :jump-to-captured t)
-
-          ;; ("ba" "Agenda/RDV" entry
-          ;;  (file+olp "work/besport.org" "besport" "agenda" "inbox")
-          ;;  "* 🐫 %?\n%^t\n")
-          ("bn" "Notes" entry
-           (file+datetree "work/blackbox.org")
-           "* %?\n%U\n"
-           :jump-to-captured t)
-          ("bt" "todo" entry
-           (file+olp "work/besport.org" "besport" "inbox")
-           "* TODO %?\n%U\n")
-          ("bb" "todo" entry
-           (file+olp "work/besport.org" "besport" "inbox")
-           "* TODO %?\n%U\n")
-
-          ("f" "Templates for notes from files")
-          ("ft" "todo from file" entry
-           (file+olp "lol.org" "lol" "inbox")
-           "* TODO %?\n%a")
-          ("fn" "note from file" entry
-           (file+olp "lol.org" "lol" "inbox")
-           "* %U %?\n%a")
-
-          ("j" "journal")
-          ("jf" "witness the fitness" entry (function (lambda ()
-                                                        (my/log-entry '("witness the fitness"))))
-           "* %?\n"
-           :no-save t
-           :jump-to-captured t)
-
-          ("jy" "ty" entry (function (lambda ()
-                                       (my/log-entry '("innerspace" "ty"))))
-           "* %?\n"
-           :jump-to-captured t
-           :no-save t)
-
-          ("ji" "innerspace" entry (function (lambda ()
-                                               (my/log-entry '("innerspace"))))
-           "* %?\n"
-           :jump-to-captured t
-           :no-save t)
-
-
-          ("c" "log")
-          ("cf" "witness the fitness" entry (function (lambda ()
-                                                        (my/log-entry '("log" "witness the fitness"))))
-           "* %?\n"
-           :no-save t
-           :jump-to-captured t
-           :clock-in t)
-
-
-          ("ci" "innerspace" entry (function (lambda ()
-                                               (my/log-entry '("log" "innerspace"))))
-           "* %?\n"
-           :no-save t
-           :jump-to-captured t
-           :clock-in t)
-
-
-          ("cw" "work" entry (function (lambda ()
-                                         (my/log-entry '("log" "work"))) )
-           "* %?\n"
-           :no-save t
-           :jump-to-captured t
-           :clock-in t)
-
-          ("cc" "chores" entry (function (lambda ()
-                                           (my/log-entry '("log" "chores"))))
-           "* %?\n"
-           :no-save t
-           :jump-to-captured t
-           :clock-in t)
-
-          ("cb" "bs" entry (function (lambda ()
-                                       (my/log-entry '("log" "bs"))))
-           "* %?\n"
-           :no-save t
-           :jump-to-captured t
-           :clock-in t)
-
-          ("Qp" "Protocol" entry
-           (file+olp "browsing/inbox.org" "browsing" "inbox")
-           "* [[%:link][%:description]]\n%U\n#+BEGIN_QUOTE\n%i\n#+END_QUOTE"
-           :immediate-finish t)
-          ("Ql" "Protocol Link direct" entry
-           (file+olp "browsing/inbox.org" "browsing" "inbox")
-           "* [[%:link][%:description]]\n%U"
-           :immediate-finish t)
-          ("QL" "Protocol Link" entry
-           (file+olp "browsing/inbox.org" "browsing" "inbox")
-           "* %?\n[[%:link][%:description]]\n%U")
-
-          ;;("j" "Journal" entry
-          ;; (file+olp+datetree +org-capture-journal-file)
-          ;; "* %U %?\n%i\n%a" :prepend t)
-
-          ;; TODO these look nice, look into this:
-          ;;
-
-          ;; Will use {project-root}/{todo,notes,changelog}.org, unless a
-          ;; {todo,notes,changelog}.org file is found in a parent directory.
-          ;; Uses the basename from `+org-capture-todo-file',
-          ;; `+org-capture-changelog-file' and `+org-capture-notes-file'.
-          ("p" "Templates for projects")
-          ("pt" "Project-local todo" entry  ; {project-root}/todo.org
-           (file+headline +org-capture-project-todo-file "Inbox")
-           "* TODO %?\n%i\n%a" :prepend t)
-          ("pn" "Project-local notes" entry  ; {project-root}/notes.org
-           (file+headline +org-capture-project-notes-file "Inbox")
-           "* %U %?\n%i\n%a" :prepend t)
-          ("pc" "Project-local changelog" entry  ; {project-root}/changelog.org
-           (file+headline +org-capture-project-changelog-file "Unreleased")
-           "* %U %?\n%i\n%a" :prepend t)
-
-          ;; Will use {org-directory}/{+org-capture-projects-file} and store
-          ;; these under {ProjectName}/{Tasks,Notes,Changelog} headings. They
-          ;; support `:parents' to specify what headings to put them under, e.g.
-          ;; :parents ("Projects")
-          ("o" "Centralized templates for projects")
-          ("ot" "Project todo" entry
-           (function +org-capture-central-project-todo-file)
-           "* TODO %?\n %i\n %a"
-           :heading "Tasks"
-           :prepend nil)
-          ("on" "Project notes" entry
-           (function +org-capture-central-project-notes-file)
-           "* %U %?\n %i\n %a"
-           :heading "Notes"
-           :prepend t)
-          ("oc" "Project changelog" entry
-           (function +org-capture-central-project-changelog-file)
-           "* %U %?\n %i\n %a"
-           :heading "Changelog"
-           :prepend t))))
-
-(after! org-journal
-  (setq org-journal-enable-agenda-integration t
-        org-journal-enable-cache t
-        org-journal-time-format ""
-        org-journal-time-prefix "*** "
-        org-journal-hide-entries-p nil
-        org-journal-carryover-items "next|TODO=\"PROJ\"|TODO=\"TODO\"|TODO=\"GOGO\"|TODO=\"[ ]\"|TODO=\"\\[ \\]\"|TODO=\"\\[\\\\]\"" ;; checkboxes do not work FIXME
-        org-journal-file-format "%F_%A.org"
-        org-journal-date-format "%F %A"))
-
-(after! org-agenda
-  (setq org-agenda-file-regexp "\\`\\\([^.].*\\.org\\\|[0-9]\\\{8\\\}\\\(\\.gpg\\\)?\\\)\\'"
-        org-agenda-prefix-format (quote
-                                  ((agenda . "%-21c%?-12t% s")
-                                   (timeline . "% s")
-                                   (todo . "%-21c")
-                                   (tags . "%-12c")
-                                   (search . "%-12c")))
-        org-agenda-deadline-leaders (quote ("!D!: " "D%2d: " ""))
-        org-agenda-scheduled-leaders (quote ("" "S%3d: "))
-        ;; fixes fucky binding on jk on an agenda header:
-        ;; https://github.com/alphapapa/org-super-agenda/issues/50
-        org-super-agenda-header-map (make-sparse-keymap)
-
-        ;; (setq org-agenda-time-grid '((daily today require-timed) "----------------------" nil)
-        ;;       org-agenda-skip-scheduled-if-done t
-        ;;       org-agenda-skip-deadline-if-done t
-        ;;       org-agenda-include-deadlines t
-        ;;       org-agenda-block-separator nil
-        ;;       org-agenda-compact-blocks t
-        ;;       org-agenda-start-with-log-mode t)
-        ;;
-
-        ;;       org-agenda-start-with-log-mode t)
-        org-agenda-start-with-log-mode t
-        org-habit-show-habits nil
-        org-agenda-skip-scheduled-if-done t
-        org-agenda-skip-deadline-if-done t
-        org-agenda-include-deadlines t
-
-        org-agenda-custom-commands '(("c" "Simple agenda view"
-                                      ((agenda "")
-                                       (alltodo "" )))
-                                     ("z" "Super zaen view"
-                                      ((agenda "" )
-                                       (alltodo "=" ((org-agenda-overriding-header "")
-                                                     (org-super-agenda-groups
-                                                      '((:name "ssdd"
-                                                         :tag ("tt" "bs" "fm" "fuckme" "lol" "yolo" "ssdd")
-                                                         :order 1)
-                                                        (:name "fun maximization"
-                                                         :tag ("fun")
-                                                         :order 2)
-                                                        (:name "WWSCD"
-                                                         :tag ("wwscd")
-                                                         :order 3)
-                                                        (:name "innerspace"
-                                                         :tag ("is" "h" "habit" "focus")
-                                                         :order 4)
-                                                        (:name "review"
-                                                         :tag ("review" "r")
-                                                         :order 4)
-                                                        (:name "next steps"
-                                                         :tag "next"
-                                                         :order 6)
-                                                        (:name "Projects"
-                                                         :todo "PROJ"
-                                                         :order 7)
-                                                        (:name "don't be a cunt"
-                                                         :tag "dbac"
-                                                         :order 8)
-                                                        ;; (:name "repeat after me"
-                                                        ;;  :order 9
-                                                        ;;  :habit t
-                                                        ;;  )
-                                                        (:name ".*"
-                                                         :order 10
-                                                         :anything t
-                                                         )
-                                                        )))))))))
-
-;; org advice newline bug:
-;; https://github.com/hlissner/doom-emacs/issues/3172
-;;(remove-hook! org-mode-hook #'electric-indent-mode)
-;; (add-hook 'org-mode-hook (lambda () (electric-indent-mode -1)))
-;; (add-hook 'org-mode-hook (lambda () (electric-indent-local-mode -1)))
 
 (setq evil-search-wrap nil)
 ;;
@@ -616,22 +106,6 @@
 (setq user-full-name "William"
       user-mail-address "john@doe.com")
 
-(setq my/font-size
-      (let ((host (system-name)))
-        (cond ((string-equal host "daban-urnud") 20)
-              ((string-equal host "yggdrasill")  35)
-              ((string-equal host "enterprise")  16)
-              (t                                 16))))
-
-;;(setq doom-font (font-spec :family "FuraMono Nerd Font" :size my/font-size))
-(setq doom-font (font-spec :family "JetBrainsMono Nerd Font Mono" :size my/font-size))
-;;(setq doom-font (font-spec :family "Fira Mono for Powerline" :size my/font-size))
-;; Emoji: 😄, 🤦, 🏴󠁧󠁢󠁳󠁣󠁴󠁿
-(set-fontset-font t 'symbol "Noto Color Emoji" nil 'append)
-;;(set-fontset-font t 'symbol "Symbola" nil 'append)
-;;
-(setq doom-theme 'doom-solarized-dark)
-                                        ; j(setq doom-font (font . "Fira Mono for Powerline-14"))
 
 ;; nil numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type t)
@@ -816,7 +290,7 @@
 
 
 ;; (print opam-lisp-dir)
-;;(add-to-list 'load-path opam-lisp-dir)
+(add-to-list 'load-path opam-lisp-dir)
 ;; (load opam-lisp-dir )
 ;;(load (concat opam-lisp-dir "tuareg-site-file"))
 ;(require 'dune)
@@ -894,7 +368,7 @@
                                 (add-hook 'before-save-hook 'ocamlformat-before-save t t)
                                 ;; (merlin-mode)
                                 ))
-;; (add-hook 'tuareg-mode-hook 'lsp-deferred)
+;;(add-hook 'tuareg-mode-hook 'lsp-deferred)
 
 ;; (add-hook 'prog-mode-hook 'lsp-deferred)
 ;; (lsp-register-client
@@ -958,7 +432,7 @@
 ;; global
 (map! :leader
       :nvm "SPC"  #'ivy-switch-buffer
-      :nvm "<"    #'+ivy/projectile-find-file
+      :nvm "'"    #'+ivy/projectile-find-file
       :nvm "ng"   #'counsel-org-goto-all ;; nG in split buffer?
 
       :desc "today"              :nvm "jt" #'(lambda() (interactive) (my/journal-open-today))
@@ -981,7 +455,7 @@
       :desc "Open Calendar"                 :nvm "dC" #'=calendar
       :desc "Sync calendar"                 :nvm "dS" #'org-gcal-sync
       :desc "Delete from calendar"          :nvm "dX" #'org-gcal-delete-at-point
-      :desc "Post to calendar"              :nvm "dP" #'org-gcal-delete-at-point
+      :desc "Post to calendar"              :nvm "dP" #'org-gcal-post-at-point
 
       :desc "inactive timestamp"            :nvm "dn" #'my/insert-inactive-timestamp
 
@@ -1024,7 +498,14 @@
                         (not (eq sym 'keymap))
                         (throw 'gotit sym))))))))
 
-;; INBOX
+(defun fuck-me/init ()
+  "doom init is fucking with me. Work around password-store & fonts init."
+  (interactive)
+  (fuck-me/init-font-symbols)
+  (fuck-me/init-cal)
+  (fuck-me/init-capture)
+  (fuck-me/init-faces))
+
 
 ;; Shell mode;
 ;
@@ -1045,9 +526,11 @@
 ;; (set-face-background 'highlight-indent-guides-even-face "#03282F")
 
 (set-face-background 'highlight-indent-guides-odd-face "#073642")
-;(set-face-background 'highlight-indent-guides-even-face "#073642")
 (set-face-background 'highlight-indent-guides-even-face "#002b36")
 
 ;;(set-face-foreground 'highlight-indent-guides-character-face "dimgray")
 
-(add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
+
+;; (print yas-snippet-dirs)
+;; (print doom-snippets-dir)
+;; (print +file-templates-dir)
