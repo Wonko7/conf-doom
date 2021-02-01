@@ -130,8 +130,8 @@
 (defun fuck-me/init-cal ()
   (setq org-gcal-client-id (password-store-get "web/google/caldav/client-id")
         org-gcal-client-secret (password-store-get "web/google/caldav/secret")
-        org-gcal-fetch-file-alist `((,(password-store-get "web/google/caldav/work") .  ,(concat org-directory "work/besport-wobbly.org"))
-                                    (,(password-store-get "web/google/caldav/perso") .  ,(concat org-directory "the-road-so-far/tardis-wibbly.org")))))
+        org-gcal-fetch-file-alist `((,(password-store-get "web/google/caldav/work") .  ,(concat org-directory "work/wobbly.org"))
+                                    (,(password-store-get "web/google/caldav/perso") .  ,(concat org-directory "the-road-so-far/wibbly.org")))))
 
 (use-package! org-gcal
   ;:ensure t
@@ -216,7 +216,7 @@
            :clock-in t)
 
           ("r" "RDV" entry
-           (file+olp ,(expand-file-name "tardis-wibbly.org" org-journal-dir) "wibbly" "inbox")
+           (file+olp ,(expand-file-name "wibbly.org" org-journal-dir) "wibbly" "inbox")
            ,(concat "* %?\n :PROPERTIES:\n :calendar-id: " (password-store-get "web/google/caldav/perso") "\n :END:\n:org-gcal:\n%^T\n:END:\n\n")
            :jump-to-captured t)
 
@@ -237,7 +237,7 @@
           ("b" "BeSport")
 
           ("br" "RDV" entry
-           (file+olp ,(expand-file-name "work/besport-wobbly.org" org-directory) "wobbly" "inbox")
+           (file+olp ,(expand-file-name "work/wobbly.org" org-directory) "wobbly" "inbox")
            ,(concat "* %?\n :PROPERTIES:\n :calendar-id: " (password-store-get "web/google/caldav/work") "\n :END:\n:org-gcal:\n%^T\n:END:\n\n")
            :jump-to-captured t)
 
