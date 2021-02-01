@@ -427,7 +427,10 @@
                                        (alltodo "=" ((org-agenda-overriding-header "")
                                                      (org-super-agenda-groups
                                                       '((:name "ssdd"
-                                                         :tag ("tt" "bs" "fm" "fuckme" "lol" "yolo" "ssdd")
+                                                         :tag ("tt" "lol" "yolo" "ssdd")
+                                                         :order 1)
+                                                        (:name "BS"
+                                                         :tag ("bs" "fm" "fuckme")
                                                          :order 1)
                                                         (:name "fun maximization"
                                                          :tag ("fun")
