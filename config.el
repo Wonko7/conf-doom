@@ -336,13 +336,18 @@
 ;; Hack to open files like Makefile.local with the right mode.
 (add-to-list 'auto-mode-alist '("\\.[^\\.].*\\'" nil t) t)
 
-(map! :localleader
+(defun fuck-me/init-tuareg-map ()
+  (map! :localleader
       :map tuareg-mode-map
       "o"   #'merlin-pop-stack
       "RET" #'tuareg-eval-phrase
       "b"   #'tuareg-eval-buffer
       "TAB" #'tuareg-complete
-      "K"   #'tuareg-kill-ocaml)
+      "K"   #'tuareg-kill-ocaml
+      "a"   #'ff-get-other-file
+      ))
+(fuck-me/init-tuareg-map)
+
 (map! :map tuareg-mode-map
       :i "TAB" #'company-indent-or-complete-common)
 ;; for your eval convenience  (remove-hook 'tuareg-mode #'ocamlformat-before-save)
@@ -350,7 +355,6 @@
                                 (setq mode-name "🐫")
                                 ;; FIXME( integrate this after trying them out.
                                 (define-key tuareg-mode-map (kbd "C-M-<tab>") #'ocamlformat)
-                                (local-set-key (kbd "C-c C-a") 'ff-get-other-file)
                                 ;; FIXME)
                                 (add-hook 'before-save-hook #'ocamlformat-before-save)
                                 (setq ff-other-file-alist '(("\\.mli\\'" (".ml")) ;; mll
@@ -501,6 +505,7 @@
 (defun fuck-me/init ()
   "doom init is fucking with me. Work around password-store & fonts init."
   (interactive)
+  (fuck-me/init-tuareg-map)
   (fuck-me/init-font-symbols)
   (fuck-me/init-cal)
   (fuck-me/init-capture)
