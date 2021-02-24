@@ -22,6 +22,10 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; org files:
 
 (require 'password-store)
+(require 'auth-source-pass)
+(auth-source-pass-enable)
+(setq auth-sources '(password-store))
+
 (load "~/conf/doom/org-conf")
 
 (setq gc-cons-threshold 20000000)

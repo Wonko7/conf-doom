@@ -128,10 +128,10 @@
 
 ;; calendar
 (defun fuck-me/init-cal ()
-  (setq org-gcal-client-id (password-store-get "web/google/caldav/client-id")
-        org-gcal-client-secret (password-store-get "web/google/caldav/secret")
-        org-gcal-fetch-file-alist `((,(password-store-get "web/google/caldav/work") .  ,(concat org-directory "work/wobbly.org"))
-                                    (,(password-store-get "web/google/caldav/perso") .  ,(concat org-directory "the-road-so-far/wibbly.org")))))
+  (setq org-gcal-client-id (auth-source-pass-get "id" "tokens/caldav/calendar.google.com")
+        org-gcal-client-secret (auth-source-pass-get 'secret "tokens/caldav/calendar.google.com")
+        org-gcal-fetch-file-alist `((,(auth-source-pass-get "work" "tokens/caldav/calendar.google.com") .  ,(concat org-directory "work/wobbly.org"))
+                                    (,(auth-source-pass-get "perso" "tokens/caldav/calendar.google.com") .  ,(concat org-directory "the-road-so-far/wibbly.org")))))
 
 (use-package! org-gcal
   ;:ensure t
