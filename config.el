@@ -26,7 +26,7 @@
 (auth-source-pass-enable)
 (setq auth-sources '(password-store))
 
-(load "~/conf/doom/org-conf")
+(load "~/conf/doom/org-conf.el")
 
 (setq gc-cons-threshold 20000000)
 ;; (print mode-line-misc-info)
@@ -274,11 +274,11 @@
 
 ;; ocaml
 
-(defconst opam-lisp-dir
-  (let ((opam-share
-         (ignore-errors (car (process-lines "opam" "config" "var" "share")))))
-    (when (and opam-share (file-directory-p opam-share))
-      (expand-file-name "emacs/site-lisp/" opam-share))))
+;;(defconst opam-lisp-dir
+;;  (let ((opam-share
+;;         (ignore-errors (car (process-lines "opam" "config" "var" "share")))))
+;;    (when (and opam-share (file-directory-p opam-share))
+;;      (expand-file-name "emacs/site-lisp/" opam-share))))
    ;; fixme: compare with this:
    ;; Add opam emacs directory to your load-path by appending this to your .emacs:
    ;;   (let ((opam-share (ignore-errors (car (process-lines "opam" "config" "var" "share")))))
@@ -294,11 +294,11 @@
 
 
 ;; (print opam-lisp-dir)
-(add-to-list 'load-path opam-lisp-dir)
+;; (add-to-list 'load-path opam-lisp-dir)
 ;; (load opam-lisp-dir )
 ;;(load (concat opam-lisp-dir "tuareg-site-file"))
 ;(require 'dune)
-(require 'ocamlformat)
+;(require 'ocamlformat)
 
 (setq merlin-completion-dwim nil)
 
@@ -358,7 +358,7 @@
 (add-hook 'tuareg-mode-hook #'(lambda ()
                                 (setq mode-name "🐫")
                                 ;; FIXME( integrate this after trying them out.
-                                (define-key tuareg-mode-map (kbd "C-M-<tab>") #'ocamlformat)
+                                ;(define-key tuareg-mode-map (kbd "C-M-<tab>") #'ocamlformat)
                                 ;; FIXME)
                                 (add-hook 'before-save-hook #'ocamlformat-before-save)
                                 (setq ff-other-file-alist '(("\\.mli\\'" (".ml")) ;; mll
