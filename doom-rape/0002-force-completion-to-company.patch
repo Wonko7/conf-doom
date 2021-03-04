@@ -1,0 +1,57 @@
+From f136de45b6520fe0313aa6e00a1ed5570b69ac91 Mon Sep 17 00:00:00 2001
+From: William <william@undefined.re>
+Date: Wed, 3 Mar 2021 13:46:53 +0100
+Subject: [PATCH 2/2] force completion to company
+
+---
+ opam-user-setup.el | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
+
+diff --git a/opam-user-setup.el b/opam-user-setup.el
+index 97b57fad2..d90fde95e 100644
+--- a/opam-user-setup.el
++++ b/opam-user-setup.el
+@@ -52,7 +52,7 @@
+   (add-hook 'caml-mode-hook h t))
+ 
+ (defun opam-setup-complete ()
+-  (if (require 'company nil t)
++  (if t ;; (require 'company nil t)
+     (opam-setup-add-ocaml-hook
+       (lambda ()
+          (company-mode)
+@@ -70,15 +70,16 @@
+   (autoload 'ocp-index-mode "ocp-index" "OCaml code browsing, documentation and completion based on build artefacts")
+   (opam-setup-add-ocaml-hook 'ocp-index-mode))
+ 
++(setq merlin-use-auto-complete-mode nil)
+ (defun opam-setup-merlin ()
+   (opam-setup-complete)
+   (require 'merlin)
+   (opam-setup-add-ocaml-hook 'merlin-mode)
+ 
+-  (defcustom ocp-index-use-auto-complete nil
++  (defcustom ocp-index-use-auto-complete true
+     "Use auto-complete with ocp-index (disabled by default by opam-user-setup because merlin is in use)"
+     :group 'ocp_index)
+-  (defcustom merlin-ac-setup 'easy
++  (defcustom merlin-ac-setup nil
+     "Use auto-complete with merlin (enabled by default by opam-user-setup)"
+     :group 'merlin-ac)
+ 
+@@ -143,3 +144,12 @@
+   (dolist (ext '(".cmo" ".cmx" ".cma" ".cmxa" ".cmxs" ".cmt" ".cmti" ".cmi" ".annot"))
+     (add-to-list 'completion-ignored-extensions ext)))
+ ;; ## end of OPAM user-setup addition for emacs / tuareg ## keep this line
++;; ## added by OPAM user-setup for emacs / ocp-indent ## 089c3b353ba638c84d41e53158e3e9c1 ## you can edit, but keep this line
++;; Load ocp-indent from its original switch when not found in current switch
++(when (not (assoc "ocp-indent" opam-tools-installed))
++  (autoload 'ocp-setup-indent "/home/wjc/.opam/4.11.1/share/emacs/site-lisp/ocp-indent.el" "Improved indentation for Tuareg mode")
++  (autoload 'ocp-indent-caml-mode-setup "/home/wjc/.opam/4.11.1/share/emacs/site-lisp/ocp-indent.el" "Improved indentation for Caml mode")
++  (add-hook 'tuareg-mode-hook 'ocp-setup-indent t)
++  (add-hook 'caml-mode-hook 'ocp-indent-caml-mode-setup  t)
++  (setq ocp-indent-path "/home/wjc/.opam/4.11.1/bin/ocp-indent"))
++;; ## end of OPAM user-setup addition for emacs / ocp-indent ## keep this line
+-- 
+2.30.1
+

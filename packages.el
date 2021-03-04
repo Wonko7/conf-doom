@@ -74,7 +74,7 @@
 (package! prettier-js)
 
 ; nope these should come from opam:
-;(package! ocamlformat)
+(package! ocamlformat)
 ;(package! merlin)
 ;(package! dune)
 

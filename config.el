@@ -1,25 +1,6 @@
-;; for reference:
-;;
-;; Here are some additional functions/macros that could help you configure Doom:
-;;
-;; - `load!' for loading external *.el files relative to this one
-;; - `use-package!' for configuring packages
-;; - `after!' for running code after a package has loaded
-;; - `add-load-path!' for adding directories to the `load-path', relative to
-;;   this file. Emacs searches the `load-path' when you load packages with
-;;   `require' or `use-package'.
-;; - `map!' for binding new keys
-;;
-;; To get information about any of these functions/macros, move the cursor over
-;; the highlighted symbol at press 'K' (non-evil users must press 'C-c c k').
-;; This will open documentation for it, including demos of how they are used.
-;;
-;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
-;; they are implemented.
-;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
-;;; lol:
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; org files:
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; general stuff: chapter1
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (require 'password-store)
 (require 'auth-source-pass)
@@ -28,25 +9,15 @@
 
 (load "~/conf/doom/org-conf.el")
 
+(setq shell-file-name "/bin/sh")
 (setq gc-cons-threshold 20000000)
-;; (print mode-line-misc-info)
-;; (setq  mode-line-misc-info (assq-delete-all         'eglot--managed-mode-hook mode-line-misc-info))
-;; global-mode-string
-;; (setq my/session-name "lol")
-;; (add-to-list 'global-mode-string 'my/session-name)
-;; (setq mode-line-misc-info
-;;       (list `(lol ,(concat "lol " (daemonp)))))
+
 (setq server-name (daemonp))
 (when (string= "DANCE_COMMANDER" server-name)
   (load "~/conf/doom/yolobolo.el")
   (use-package! org-protocol))
 
 (load "~/conf/doom/fancy.el")
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; global config:
-
-
-;; Place your private configuration here! Remember, you do not need to run 'doom
-;; sync' after modifying this file!
 
 (use-package! evil-escape
   :init
@@ -54,9 +25,15 @@
         evil-escape-key-sequence "jj"
         ;; evil-cross-lines t
         ))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; completion
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (setq company-minimum-prefix-length 2
-      company-idle-delay 0.0
-      )
+      company-idle-delay 0.0)
+
 (setq completion-styles
       '(basic partial-completion emacs22))
 
@@ -78,10 +55,20 @@
 ;; (global-company-fuzzy-mode t)
 ;; (print completion-styles)
 
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; prog mode:
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (add-hook 'prog-mode-hook 'rainbow-identifiers-mode)
 (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
 (add-hook 'prog-mode-hook 'electric-indent-mode)
 (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; spell
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; (global-spell-fu-mode 0)
 (setq ispell-program-name "/usr/bin/hunspell")
@@ -96,11 +83,34 @@
   (add-hook 'org-mode-hook
             (lambda () (flyspell-mode 1))))
 
-
-
 (setq evil-search-wrap nil)
-;;
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; project management: magit/forge & projectile
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; original: forge-topic-list-columns
+;; (("#" 5 forge-topic-list-sort-by-number
+;;   (:right-align t)
+;;   number nil)
+;;  ("Title" 35 t nil title nil))
+
+(setq forge-topic-list-columns
+            '(("#" 5 forge-topic-list-sort-by-number (:right-align t) number nil)
+              ("Author" 10 t nil author  nil)
+              ("Title" 60 t nil title  nil)
+              ;("Milestone" 9 t nil milestone nil)
+              ("State" 6 t nil state nil)
+              ("Updated" 10 t nill updated nil)
+              ;; ("Labels" 20 t nil labels nil)
+              ))
 (setq projectile-project-search-path '("~/conf" "~/conf/private" "/work/" "/work/besport" "/work/ocaml"))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; general stuff: chapter2: evil & avy & such
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (when (fboundp 'winner-mode)
   (winner-mode 1))
@@ -119,7 +129,10 @@
 (setq avy-keys '(?u ?h ?e ?t ?. ?c ?i ?d ?k ?m ?j ?w ?o ?n ?p ?g))
 (setq avy-all-windows t)
 
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; parens & clojure:
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (use-package! eval-sexp-fu
   ;:defer t
@@ -205,9 +218,15 @@
       :localleader
       :nvm "RET" #'eval-defun)
 
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; maps
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 ;; keyboard macros, for reference: https://www.emacswiki.org/emacs/KeyboardMacrosTricks
 ;; kmacro-name-last-macro
 ;; insert-kbd-macro
+
 (map! :localleader
       :map org-mode-map
       ;; send title (current line)
@@ -272,13 +291,17 @@
       :nvm "k" #'org-journal-previous-entry
       )
 
-;; ocaml
 
-;;(defconst opam-lisp-dir
-;;  (let ((opam-share
-;;         (ignore-errors (car (process-lines "opam" "config" "var" "share")))))
-;;    (when (and opam-share (file-directory-p opam-share))
-;;      (expand-file-name "emacs/site-lisp/" opam-share))))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; ocaml
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; (defconst opam-lisp-dir
+;;   (let ((opam-share
+;;          (ignore-errors (car (process-lines "opam" "config" "var" "share")))))
+;;     (when (and opam-share (file-directory-p opam-share))
+;;       (expand-file-name "emacs/site-lisp/" opam-share))))
+;; (print ocaml-lisp-dir)
    ;; fixme: compare with this:
    ;; Add opam emacs directory to your load-path by appending this to your .emacs:
    ;;   (let ((opam-share (ignore-errors (car (process-lines "opam" "config" "var" "share")))))
@@ -298,9 +321,14 @@
 ;; (load opam-lisp-dir )
 ;;(load (concat opam-lisp-dir "tuareg-site-file"))
 ;(require 'dune)
-;(require 'ocamlformat)
+(require 'ocamlformat)
 
-(setq merlin-completion-dwim nil)
+(setq merlin-command "~/.opam/4.11.1/bin/ocamlmerlin")
+(after! merlin
+  (setq merlin-command "~/.opam/4.11.1/bin/ocamlmerlin")
+  (setq merlin-completion-with-doc nil)
+  (setq merlin-completion-arg-type nil)
+  (setq merlin-completion-dwim nil))
 
 ;; FIXME bikeshedding? 72? final-newline? seems ugly.
 (setq-default fill-column 80
@@ -316,8 +344,6 @@
       compilation-scroll-output 'first-error
       compilation-context-lines 0
       disabled-command-function nil
-      merlin-command 'opam
-      merlin-completion-with-doc t
       sql-product 'postgres
       track-eol t
       tuareg-interactive-read-only-input t
@@ -343,6 +369,7 @@
 (defun fuck-me/init-tuareg-map ()
   (map! :localleader
       :map tuareg-mode-map
+      "ge"  #'merlin-error-next
       "o"   #'merlin-pop-stack
       "RET" #'tuareg-eval-phrase
       "b"   #'tuareg-eval-buffer
@@ -353,7 +380,9 @@
 (fuck-me/init-tuareg-map)
 
 (map! :map tuareg-mode-map
-      :i "TAB" #'company-indent-or-complete-common)
+      ;; :i "TAB" #'company-indent-or-complete-common
+      :nvm  "gd" #'merlin-locate
+      )
 ;; for your eval convenience  (remove-hook 'tuareg-mode #'ocamlformat-before-save)
 (add-hook 'tuareg-mode-hook #'(lambda ()
                                 (setq mode-name "🐫")
