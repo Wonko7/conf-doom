@@ -191,6 +191,10 @@
                                      olp-path)))))
     (goto-char m)))
 
+(defun my/monthly-log-file (name)
+  (let ((path (concat "the-road-so-far/" name (format-time-string "_%+4Y-%m-00.org"))))
+    path))
+
 (defun fuck-me/init-capture ()
   (setq org-capture-projects-file "dev"
         ;; add project stuff.
@@ -264,24 +268,35 @@
            "* %U %?\n%a")
 
           ("j" "journal")
-          ("jf" "witness the fitness" entry (function (lambda ()
-                                                        (my/log-entry '("witness the fitness"))))
-           "* %?\n"
+          ("jf" "witness the fitness" entry (file+datetree ,(my/monthly-log-file "witness-the-fitness"))
+           "* %?\n%U\n"
            :no-save t
            :jump-to-captured t)
 
-          ("jy" "ty" entry (function (lambda ()
-                                       (my/log-entry '("innerspace" "ty"))))
-           "* %?\n"
+          ("jy" "innerspace" entry (file+datetree ,(my/monthly-log-file "innerspace"))
+           "* %?\n%U\n"
            :jump-to-captured t
            :no-save t)
 
-          ("ji" "innerspace" entry (function (lambda ()
-                                               (my/log-entry '("innerspace"))))
-           "* %?\n"
+          ("ji" "innerspace" entry (file+datetree ,(my/monthly-log-file "innerspace"))
+           "* %?\n%U\n"
            :jump-to-captured t
            :no-save t)
 
+          ("jt" "tech" entry (file+datetree ,(my/monthly-log-file "tech"))
+           "* %?\n%U\n"
+           :jump-to-captured t
+           :no-save t)
+
+          ("jn" "lol" entry (file+datetree ,(my/monthly-log-file "lol"))
+           "* %?\n%U\n"
+           :jump-to-captured t
+           :no-save t)
+
+          ("jl" "lol" entry (file+datetree ,(my/monthly-log-file "lol"))
+           "* %?\n%U\n"
+           :jump-to-captured t
+           :no-save t)
 
           ("c" "log")
           ("cf" "witness the fitness" entry (function (lambda ()
