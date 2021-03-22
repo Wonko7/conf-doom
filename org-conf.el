@@ -270,33 +270,24 @@
           ("j" "journal")
           ("jf" "witness the fitness" entry (file+datetree ,(my/monthly-log-file "witness-the-fitness"))
            "* %?\n%U\n"
-           :no-save t
            :jump-to-captured t)
 
           ("jy" "innerspace" entry (file+datetree ,(my/monthly-log-file "innerspace"))
            "* %?\n%U\n"
-           :jump-to-captured t
-           :no-save t)
+           :jump-to-captured t)
 
           ("ji" "innerspace" entry (file+datetree ,(my/monthly-log-file "innerspace"))
            "* %?\n%U\n"
-           :jump-to-captured t
-           :no-save t)
+           :jump-to-captured t)
 
           ("jt" "tech" entry (file+datetree ,(my/monthly-log-file "tech"))
-           "* %?\n%U\n"
-           :jump-to-captured t
-           :no-save t)
+           "* %?\n%U\n")
 
           ("jn" "lol" entry (file+datetree ,(my/monthly-log-file "lol"))
-           "* %?\n%U\n"
-           :jump-to-captured t
-           :no-save t)
+           "* %?\n%U\n")
 
           ("jl" "lol" entry (file+datetree ,(my/monthly-log-file "lol"))
-           "* %?\n%U\n"
-           :jump-to-captured t
-           :no-save t)
+           "* %?\n%U\n")
 
           ("c" "log")
           ("cf" "witness the fitness" entry (function (lambda ()
