@@ -106,7 +106,8 @@
               ;; ("Labels" 20 t nil labels nil)
               ))
 (setq projectile-project-search-path '("~/conf" "~/conf/private" "/work/" "/work/besport" "/work/ocaml"))
-
+(map! :map forge-topic-mode-map
+     :nvm "co" #'forge-checkout-pullreq)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; general stuff: chapter2: evil & avy & such
