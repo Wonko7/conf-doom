@@ -254,7 +254,7 @@
            :jump-to-captured t)
           ("bt" "todo" entry
            (file+olp "work/besport.org" "besport" "inbox")
-           "* TODO %?\n%U\n")
+           "* TODO %? :bs:\n%U\n")
           ("bb" "todo" entry
            (file+olp "work/besport.org" "besport" "inbox")
            "* TODO %?\n%U\n")
