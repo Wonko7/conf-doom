@@ -474,3 +474,17 @@
 ;;(remove-hook! org-mode-hook #'electric-indent-mode)
 ;; (add-hook 'org-mode-hook (lambda () (electric-indent-mode -1)))
 ;; (add-hook 'org-mode-hook (lambda () (electric-indent-local-mode -1)))
+
+(defun my/cut-entry ()
+  (interactive)
+  (save-excursion
+    (progn 
+      (org-capture-goto-last-stored)
+      (goto-char (- (point) 1))
+      (org-cut-subtree)))
+  ;; ()
+  ;;(org-paste-subtree)
+  (insert  "\n")
+  (insert (current-kill 0))
+  )
+
