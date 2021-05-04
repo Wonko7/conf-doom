@@ -1,27 +1,27 @@
-From ee2b2204c61041cd5cedb75030b1a62df62178cc Mon Sep 17 00:00:00 2001
+From f4c7c6888b558f4e433af6a9accad21dd5381cb6 Mon Sep 17 00:00:00 2001
 From: William <william@undefined.re>
-Date: Fri, 9 Oct 2020 18:17:12 +0200
-Subject: [PATCH] leave-ret-alone
+Date: Tue, 4 May 2021 19:27:38 +0200
+Subject: [PATCH] leave-ret-alone2
 
 ---
  modules/lang/org/config.el | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/modules/lang/org/config.el b/modules/lang/org/config.el
-index 2d6bbf6..922c196 100644
+index 79afb071c..54d7bade6 100644
 --- a/modules/lang/org/config.el
 +++ b/modules/lang/org/config.el
-@@ -987,8 +987,8 @@ compelling reason, so..."
-         :ni "C-S-k"   #'org-shiftup
-         :ni "C-S-j"   #'org-shiftdown
-         ;; more intuitive RET keybinds
--        :n [return]   #'+org/dwim-at-point
--        :n "RET"      #'+org/dwim-at-point
-+        ;; :n [return]   #'+org/dwim-at-point
-+        ;; :n "RET"      #'+org/dwim-at-point
-         :i [return]   (cmd! (org-return electric-indent-mode))
-         :i "RET"      (cmd! (org-return electric-indent-mode))
-         :i [S-return] #'+org/shift-return
+@@ -1046,8 +1046,8 @@ compelling reason, so..."
+             :ni CSup      #'org-shiftup
+             :ni CSdown    #'org-shiftdown
+             ;; more intuitive RET keybinds
+-            :n [return]   #'+org/dwim-at-point
+-            :n "RET"      #'+org/dwim-at-point
++            ;;:n [return]   #'+org/dwim-at-point
++            ;;:n "RET"      #'+org/dwim-at-point
+             :i [return]   (cmd! (org-return electric-indent-mode))
+             :i "RET"      (cmd! (org-return electric-indent-mode))
+             :i [S-return] #'+org/shift-return
 -- 
-2.28.0
+2.31.1
 
