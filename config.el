@@ -152,6 +152,7 @@
 
 ;; (setq evil-cleverparens-use-additional-movement-keys nil)
 (add-hook 'emacs-lisp-mode-hook #'evil-cleverparens-mode)
+(add-hook 'scheme-mode-hook #'evil-cleverparens-mode)
                                         ;(add-hook 'emacs-lisp-mode-hook #'aggressive-indent)
                                         ;(evil-cleverparens-mode)
 ;; (after! elisp-mode)
