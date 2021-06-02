@@ -191,6 +191,10 @@
                                      olp-path)))))
     (goto-char m)))
 
+(defun my/work-monthly-log-file (name)
+  (let ((path (concat "work/" name (format-time-string "_%+4Y-%m-00.org"))))
+    path))
+
 (defun my/monthly-log-file (name)
   (let ((path (concat "the-road-so-far/" name (format-time-string "_%+4Y-%m-00.org"))))
     path))
@@ -248,8 +252,11 @@
           ;; ("ba" "Agenda/RDV" entry
           ;;  (file+olp "work/besport.org" "besport" "agenda" "inbox")
           ;;  "* 🐫 %?\n%^t\n")
+          ("jf" "witness the fitness" entry (file+olp+datetree )
+           "* %?\n%U\n"
+           :jump-to-captured t)
           ("bn" "Notes" entry
-           (file+datetree "work/blackbox.org")
+           (file+olp+datetree ,(my/work-monthly-log-file "blackbox"))
            "* %?\n%U\n"
            :jump-to-captured t)
           ("bt" "todo" entry
@@ -268,26 +275,17 @@
            "* %U %?\n%a")
 
           ("j" "journal")
-          ("jf" "witness the fitness" entry (file+datetree ,(my/monthly-log-file "witness-the-fitness"))
+          ("jf" "witness the fitness" entry (file+olp+datetree ,(my/monthly-log-file "witness-the-fitness"))
+           "* %?\n%U\n"
+           :jump-to-captured t)
+          ("jw" "witness the fitness" entry (file+olp+datetree ,(my/monthly-log-file "witness-the-fitness"))
            "* %?\n%U\n"
            :jump-to-captured t)
 
-          ("jy" "innerspace" entry (file+datetree ,(my/monthly-log-file "innerspace"))
+          ("ji" "innerspace" entry (file+olp+datetree ,(my/monthly-log-file "innerspace") "innerspace")
            "* %?\n%U\n"
            :jump-to-captured t)
 
-          ("ji" "innerspace" entry (file+datetree ,(my/monthly-log-file "innerspace"))
-           "* %?\n%U\n"
-           :jump-to-captured t)
-
-          ("jt" "tech" entry (file+datetree ,(my/monthly-log-file "tech"))
-           "* %?\n%U\n")
-
-          ("jn" "lol" entry (file+datetree ,(my/monthly-log-file "lol"))
-           "* %?\n%U\n")
-
-          ("jl" "lol" entry (file+datetree ,(my/monthly-log-file "lol"))
-           "* %?\n%U\n")
 
           ("c" "log")
           ("cf" "witness the fitness" entry (function (lambda ()
@@ -327,15 +325,19 @@
            :jump-to-captured t
            :clock-in t)
 
+          ("QP" "Protocol" entry
+           (file+olp "browsing/inbox.org" "browsing" "inbox")
+           "* [[%:link][%:description]]\n%U\n#+BEGIN_QUOTE\n%i\n#+END_QUOTE"
+           :immediate-finish t)
           ("Qp" "Protocol" entry
            (file+olp "browsing/inbox.org" "browsing" "inbox")
            "* [[%:link][%:description]]\n%U\n#+BEGIN_QUOTE\n%i\n#+END_QUOTE"
            :immediate-finish t)
-          ("Ql" "Protocol Link direct" entry
+          ("QL" "Protocol Link direct" entry
            (file+olp "browsing/inbox.org" "browsing" "inbox")
            "* [[%:link][%:description]]\n%U"
            :immediate-finish t)
-          ("QL" "Protocol Link" entry
+          ("Ql" "Protocol Link" entry
            (file+olp "browsing/inbox.org" "browsing" "inbox")
            "* %?\n[[%:link][%:description]]\n%U")
 
