@@ -95,6 +95,7 @@
 ;;   (:right-align t)
 ;;   number nil)
 ;;  ("Title" 35 t nil title nil))
+(setq git-commit-summary-max-length 72)
 
 (setq forge-topic-list-columns
             '(("#" 5 forge-topic-list-sort-by-number (:right-align t) number nil)
