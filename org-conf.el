@@ -199,6 +199,11 @@
   (let ((path (concat "the-road-so-far/" name (format-time-string "_%+4Y-%m-00.org"))))
     path))
 
+(defun transform-square-brackets-to-round-ones (string-to-transform)
+  "Transforms [ into ( and ] into ), other chars left unchanged."
+  (concat
+   (mapcar #'(lambda (c) (if (equal c ?[) ?\( (if (equal c ?]) ?\) c))) string-to-transform)))
+
 (defun fuck-me/init-capture ()
   (setq org-capture-projects-file "dev"
         ;; add project stuff.
@@ -282,7 +287,7 @@
            "* %?\n%U\n"
            :jump-to-captured t)
 
-          ("ji" "innerspace" entry (file+olp+datetree ,(my/monthly-log-file "innerspace") "innerspace")
+          ("ji" "innerspace" entry (file+olp+datetree ,(my/monthly-log-file "innerspace"))
            "* %?\n%U\n"
            :jump-to-captured t)
 
@@ -325,21 +330,14 @@
            :jump-to-captured t
            :clock-in t)
 
-          ("QP" "Protocol" entry
-           (file+olp "browsing/inbox.org" "browsing" "inbox")
-           "* [[%:link][%:description]]\n%U\n#+BEGIN_QUOTE\n%i\n#+END_QUOTE"
-           :immediate-finish t)
           ("Qp" "Protocol" entry
            (file+olp "browsing/inbox.org" "browsing" "inbox")
-           "* [[%:link][%:description]]\n%U\n#+BEGIN_QUOTE\n%i\n#+END_QUOTE"
+           "* [[%:link][%(transform-square-brackets-to-round-ones \"%:description\")]]\n%U\n#+BEGIN_QUOTE\n%i\n#+END_QUOTE"
            :immediate-finish t)
           ("QL" "Protocol Link direct" entry
            (file+olp "browsing/inbox.org" "browsing" "inbox")
-           "* [[%:link][%:description]]\n%U"
+           "* [[%:link][%(transform-square-brackets-to-round-ones \"%:description\")]]\n%U"
            :immediate-finish t)
-          ("Ql" "Protocol Link" entry
-           (file+olp "browsing/inbox.org" "browsing" "inbox")
-           "* %?\n[[%:link][%:description]]\n%U")
 
           ;;("j" "Journal" entry
           ;; (file+olp+datetree +org-capture-journal-file)
