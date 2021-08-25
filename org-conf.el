@@ -7,7 +7,9 @@
 (setq org-agenda-files (cons org-directory (mapcar
                                             (lambda (d)
                                               (concat org-directory d))
-                                            '("people/" "wip/" "work/" "the-road-so-far/"))))
+                                            '("people/" "wip/" "work/" "the-road-so-far/"
+                                              ;"here-be-dragons/"
+                                              ))))
 
 (after! elfeed
   (setq elfeed-search-filter "@2-weeks-ago +unread"))
