@@ -9,6 +9,12 @@
                                               (concat org-directory d))
                                             '("people/" "wip/" "work/" "the-road-so-far/"))))
 
+(after! elfeed
+  (setq elfeed-search-filter "@2-weeks-ago +unread"))
+(setq rmh-elfeed-org-files (list (concat org-directory "notes/rss/root.org")))
+(map! :map elfeed-search-mode-map
+      :nvm "RET" #'elfeed-search-show-entry)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; org packages:
 
 
