@@ -326,9 +326,9 @@
 ;(require 'dune)
 ;(require 'ocamlformat)
 
-(setq merlin-command "~/.opam/4.11.0/bin/ocamlmerlin")
+(setq merlin-command "/home/wjc/.opam/bs_2.4.11.1/bin/ocamlmerlin")
 (after! merlin
-  (setq merlin-command "~/.opam/4.11.0/bin/ocamlmerlin")
+  (setq merlin-command "/home/wjc/.opam/bs_2.4.11.1/bin/ocamlmerlin")
   (setq merlin-completion-with-doc nil)
   (setq merlin-completion-arg-type nil)
   (setq merlin-completion-dwim nil))
@@ -435,7 +435,7 @@
 
 (add-hook 'css-mode-hook 'prettier-js-mode)
 
-(setq prettier-js-command "/home/wjc/.nvm/versions/node/v10.23.1/bin/prettier")
+(setq prettier-js-command "/home/wjc/.npm-packages/bin/prettier")
 
 (with-eval-after-load "whitespace"
   (setq whitespace-action '(auto-cleanup)))
