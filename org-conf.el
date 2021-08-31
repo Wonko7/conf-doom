@@ -516,7 +516,7 @@
 (defun my/cut-entry ()
   (interactive)
   (save-excursion
-    (progn 
+    (progn
       (org-capture-goto-last-stored)
       (goto-char (- (point) 1))
       (org-cut-subtree)))
@@ -525,4 +525,3 @@
   (insert  "\n")
   (insert (current-kill 0))
   )
-
