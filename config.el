@@ -500,18 +500,40 @@
       :desc "inactive timestamp"            :nvm "dn" #'my/insert-inactive-timestamp
 
       :desc "password-store"                :nvm "P"  #'ivy-pass
-      :desc "Switch to buffer"              :nvm "rb" #'org-roam-switch-to-buffer
-      :desc "Org Roam Capture"              :nvm "rc" #'org-roam-capture
-      :desc "Find file"                     :nvm "rf" #'org-roam-find-file
-      :desc "Show graph"                    :nvm "rg" #'org-roam-graph
-      :desc "Insert"                        :nvm "ri" #'org-roam-insert
-      :desc "Insert (skipping org-capture)" :nvm "rI" #'org-roam-insert-immediate
-      :desc "Org Roam"                      :nvm "rr" #'org-roam
-      :desc "Roam tag"                      :nvm "rq" #'org-roam-tag-add
-      :desc "Arbitrary date"                :nvm "rdd" #'org-roam-dailies-date
-      :desc "Today"                         :nvm "rdt" #'org-roam-dailies-today
-      :desc "Tomorrow"                      :nvm "rdm" #'org-roam-dailies-tomorrow
-      :desc "Yesterday"                     :nvm "rdy" #'org-roam-dailies-yesterday
+
+      (:prefix ("r" . "org-roam")
+       "D" #'org-roam-demote-entire-buffer
+       "f" #'org-roam-node-find
+       "F" #'org-roam-ref-find
+       "g" #'org-roam-graph
+       "i" #'org-roam-node-insert
+       "I" #'org-id-get-create
+       "m" #'org-roam-buffer-toggle
+       "M" #'org-roam-buffer-display-dedicated
+       "n" #'org-roam-capture
+       "r" #'org-roam-refile
+       "R" #'org-roam-link-replace-all
+       (:prefix ("d" . "by date")
+        :desc "Goto previous note" "b" #'org-roam-dailies-goto-previous-note
+        :desc "Goto date"          "d" #'org-roam-dailies-goto-date
+        :desc "Capture date"       "D" #'org-roam-dailies-capture-date
+        :desc "Goto next note"     "f" #'org-roam-dailies-goto-next-note
+        :desc "Goto tomorrow"      "m" #'org-roam-dailies-goto-tomorrow
+        :desc "Capture tomorrow"   "M" #'org-roam-dailies-capture-tomorrow
+        :desc "Capture today"      "n" #'org-roam-dailies-capture-today
+        :desc "Goto today"         "t" #'org-roam-dailies-goto-today
+        :desc "Capture today"      "T" #'org-roam-dailies-capture-today
+        :desc "Goto yesterday"     "y" #'org-roam-dailies-goto-yesterday
+        :desc "Capture yesterday"  "Y" #'org-roam-dailies-capture-yesterday
+        :desc "Find directory"     "-" #'org-roam-dailies-find-directory)
+       (:prefix ("o" . "node properties")
+        "a" #'org-roam-alias-add
+        "A" #'org-roam-alias-remove
+        "t" #'org-roam-tag-add
+        "T" #'org-roam-tag-remove
+        "r" #'org-roam-ref-add
+        "R" #'org-roam-ref-remove))
+      ;;
       )
 
 (map! :map org-agenda-mode-map ;; FIXME this is completely ignored :/

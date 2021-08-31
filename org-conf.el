@@ -214,7 +214,6 @@
 
 (defun fuck-me/init-capture ()
   (setq org-capture-projects-file "dev"
-
         ;; add project stuff.
         org-capture-templates
         `(("d" "ssdd" entry (file+olp "lol.org" "lol" "ssdd")
@@ -384,6 +383,33 @@
            "* %U %?\n %i\n %a"
            :heading "Changelog"
            :prepend t))))
+
+
+(defun my/make-daily-capture (key desc entry jump)
+  (list key desc 'entry entry
+        :if-new (list 'file+head "%<%Y-%m-%d>.org" (concat  "#+title: %<%Y-%m-%d>\n\n" entry))
+        :jump-to-captured jump))
+
+(setq org-roam-dailies-capture-templates
+      `(,(my/make-daily-capture "d" "default" "* %?\n" nil)
+        ,(my/make-daily-capture "f" "witness the fitness"
+                                "* %? :wtf:\n%U\n" t)
+        ,(my/make-daily-capture "w" "witness the fitness"
+                                "* bouldering @%?\n%U\n** with :innerspace:\n** topped\n** projects\n** injuries\n" t)
+        ,(my/make-daily-capture "i" "innerspace"
+                                "* innerspace :crypt:\n%U\n%?\n" t)
+        ("b" "besport")
+        ,(my/make-daily-capture "bb" "blank"
+                                "* %? :bs:\n%U\n%?" nil)
+        ,(my/make-daily-capture "bl" "backlog prep"
+                                "* backlog :bs:bl:\n%U\n%?\n" nil)
+        ,(my/make-daily-capture "ba" "réu appli"
+                                (->> (+pass-get-entry "besport/capture/team")
+                                     (mapcar #'cdr)
+                                     (-drop 1)
+                                     (mapcar (lambda (s) (concat s "\n")))
+                                     (apply #'concat))
+                                t)))
 
 (after! org-capture
   (fuck-me/init-capture))
