@@ -257,9 +257,6 @@
           ;; ("ba" "Agenda/RDV" entry
           ;;  (file+olp "work/besport.org" "besport" "agenda" "inbox")
           ;;  "* 🐫 %?\n%^t\n")
-          ("jf" "witness the fitness" entry (file+olp+datetree )
-           "* %?\n%U\n"
-           :jump-to-captured t)
           ("bn" "Notes" entry
            (file+olp+datetree ,(my/work-monthly-log-file "blackbox"))
            "* %?\n%U\n"
@@ -284,7 +281,7 @@
            "* %?\n%U\n"
            :jump-to-captured t)
           ("jw" "witness the fitness" entry (file+olp+datetree ,(my/monthly-log-file "witness-the-fitness"))
-           "* %?\n%U\n"
+           "* bouldering @%?\n%U\n** with :innerspace:\n** topped\n** projects\n** injuries\n"
            :jump-to-captured t)
 
           ("ji" "innerspace" entry (file+olp+datetree ,(my/monthly-log-file "innerspace"))

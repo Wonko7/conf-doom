@@ -324,11 +324,11 @@
 ;; (load opam-lisp-dir )
 ;;(load (concat opam-lisp-dir "tuareg-site-file"))
 ;(require 'dune)
-(require 'ocamlformat)
+;(require 'ocamlformat)
 
-(setq merlin-command "~/.opam/4.11.1/bin/ocamlmerlin")
+(setq merlin-command "~/.opam/4.11.0/bin/ocamlmerlin")
 (after! merlin
-  (setq merlin-command "~/.opam/4.11.1/bin/ocamlmerlin")
+  (setq merlin-command "~/.opam/4.11.0/bin/ocamlmerlin")
   (setq merlin-completion-with-doc nil)
   (setq merlin-completion-arg-type nil)
   (setq merlin-completion-dwim nil))
