@@ -214,14 +214,12 @@
 
 (defun fuck-me/init-capture ()
   (setq org-capture-projects-file "dev"
+
         ;; add project stuff.
         org-capture-templates
-        `(("d" "ssdd" entry (function (lambda ()
-                                        (my/log-entry '("ssdd"))))
-
-           "* TODO %?\n%t" :prepend t)
-          ("s" "ssdd" entry (function (lambda () ;; I appear to prefer s
-                                        (my/log-entry '("ssdd"))))
+        `(("d" "ssdd" entry (file+olp "lol.org" "lol" "ssdd")
+           "* TODO %?\n%U" :prepend t)
+          ("s" "ssdd" entry (file+olp "lol.org" "lol" "ssdd")
            "* TODO %?\n%t")
 
           ;; ("w" "work quick" entry (function (lambda ()
