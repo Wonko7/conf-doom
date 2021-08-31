@@ -417,11 +417,6 @@
                                      (apply #'concat))
                                 t))))
 
-
-
-
-
-
 (after! org-capture
   (fuck-me/init-capture))
 
