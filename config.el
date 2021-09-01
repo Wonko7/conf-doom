@@ -384,7 +384,7 @@
 
 (map! :map tuareg-mode-map
       ;; :i "TAB" #'company-indent-or-complete-common
-      :nvm  "gd" #'merlin-locate
+      :nvm  "gd" #'+lookup/definition
       )
 ;; for your eval convenience  (remove-hook 'tuareg-mode #'ocamlformat-before-save)
 (add-hook 'tuareg-mode-hook #'(lambda ()
@@ -406,8 +406,10 @@
                                   (when (string-equal ext "eliomi")
                                     (setq-local ocamlformat-file-kind 'interface)))
                                 (add-hook 'before-save-hook 'ocamlformat-before-save t t)
-                                ;; (merlin-mode)
-                                ))
+                                (let ((ext (file-name-extension buffer-file-name)))
+                                  (when (member ext '("eliom" "eliomi"))
+                                    (setq-local lsp-modeline-code-actions-enable nil)))))
+
 ;;(add-hook 'tuareg-mode-hook 'lsp-deferred)
 
 ;; (add-hook 'prog-mode-hook 'lsp-deferred)
