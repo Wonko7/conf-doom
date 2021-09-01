@@ -461,39 +461,42 @@
                                       ((agenda "" )
                                        (alltodo "=" ((org-agenda-overriding-header "")
                                                      (org-super-agenda-groups
-                                                      '((:name "ssdd"
-                                                         :tag ("tt" "lol" "yolo" "ssdd")
+                                                      '((:name "ssdd: daily edition"
+                                                         :tag ("ssdd")
                                                          :order 1)
+                                                        (:name "ssdd"
+                                                         :tag ("tt" "lol" "yolo")
+                                                         :order 2)
                                                         (:name "BS"
                                                          :tag ("bs" "fm" "fuckme")
-                                                         :order 1)
+                                                         :order 3)
                                                         (:name "fun maximization"
                                                          :tag ("fun")
-                                                         :order 2)
+                                                         :order 4)
                                                         (:name "WWSCD"
                                                          :tag ("wwscd")
-                                                         :order 3)
+                                                         :order 5)
                                                         (:name "innerspace"
                                                          :tag ("is" "h" "habit" "focus")
-                                                         :order 4)
+                                                         :order 6)
                                                         (:name "review"
                                                          :tag ("review" "r")
-                                                         :order 4)
+                                                         :order 7)
                                                         (:name "next steps"
                                                          :tag "next"
-                                                         :order 6)
+                                                         :order 8)
                                                         (:name "Projects"
                                                          :todo "PROJ"
-                                                         :order 7)
+                                                         :order 9)
                                                         (:name "don't be a cunt"
                                                          :tag "dbac"
-                                                         :order 8)
+                                                         :order 10)
                                                         ;; (:name "repeat after me"
                                                         ;;  :order 9
                                                         ;;  :habit t
                                                         ;;  )
                                                         (:name ".*"
-                                                         :order 10
+                                                         :order 11
                                                          :anything t
                                                          )
                                                         )))))))))
