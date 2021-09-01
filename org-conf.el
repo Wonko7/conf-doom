@@ -136,10 +136,10 @@
 
 ;; calendar
 (defun fuck-me/init-cal ()
-  (setq org-gcal-client-id (auth-source-pass-get "id" "tokens/caldav/calendar.google.com")
-        org-gcal-client-secret (auth-source-pass-get 'secret "tokens/caldav/calendar.google.com")
-        org-gcal-fetch-file-alist `((,(auth-source-pass-get "work" "tokens/caldav/calendar.google.com") .  ,(concat org-directory "work/wobbly.org"))
-                                    (,(auth-source-pass-get "perso" "tokens/caldav/calendar.google.com") .  ,(concat org-directory "the-road-so-far/wibbly.org")))))
+  (setq org-gcal-client-id (+pass-get-field "tokens/caldav/calendar.google.com" "id")
+        org-gcal-client-secret (+pass-get-secret  "tokens/caldav/calendar.google.com")
+        org-gcal-fetch-file-alist `((,(+pass-get-field "tokens/caldav/calendar.google.com" "work") .  ,(concat org-directory "work/wobbly.org"))
+                                    (,(+pass-get-field "tokens/caldav/calendar.google.com" "perso") .  ,(concat org-directory "the-road-so-far/wibbly.org")))))
 
 (use-package! org-gcal
   ;:ensure t
@@ -235,7 +235,7 @@
 
           ("r" "RDV" entry
            (file+olp ,(expand-file-name "wibbly.org" org-journal-dir) "wibbly" "inbox")
-           ,(concat "* %?\n :PROPERTIES:\n :calendar-id: " (password-store-get "web/google/caldav/perso") "\n :END:\n:org-gcal:\n%^T\n:END:\n\n")
+           ,(concat "* %?\n :PROPERTIES:\n :calendar-id: " (+pass-get-field "tokens/caldav/calendar.google.com" "perso") "\n :END:\n:org-gcal:\n%^T\n:END:\n\n")
            :jump-to-captured t)
 
           ("t" "todo to inbox" entry
@@ -256,7 +256,7 @@
 
           ("br" "RDV" entry
            (file+olp ,(expand-file-name "work/wobbly.org" org-directory) "wobbly" "inbox")
-           ,(concat "* %?\n :PROPERTIES:\n :calendar-id: " (password-store-get "web/google/caldav/work") "\n :END:\n:org-gcal:\n%^T\n:END:\n\n")
+           ,(concat "* %?\n :PROPERTIES:\n :calendar-id: " (+pass-get-field "tokens/caldav/calendar.google.com" "work") "\n :END:\n:org-gcal:\n%^T\n:END:\n\n")
            :jump-to-captured t)
 
           ;; ("ba" "Agenda/RDV" entry
@@ -382,15 +382,9 @@
            (function +org-capture-central-project-changelog-file)
            "* %U %?\n %i\n %a"
            :heading "Changelog"
-           :prepend t))))
+           :prepend t)))
 
-
-(defun my/make-daily-capture (key desc entry jump)
-  (list key desc 'entry entry
-        :if-new (list 'file+head "%<%Y-%m-%d>.org" (concat  "#+title: %<%Y-%m-%d>\n\n" entry))
-        :jump-to-captured jump))
-
-(setq org-roam-dailies-capture-templates
+  (setq org-roam-dailies-capture-templates
       `(,(my/make-daily-capture "d" "default" "* %?\n" nil)
         ,(my/make-daily-capture "f" "witness the fitness"
                                 "* %? :wtf:\n%U\n" t)
@@ -410,6 +404,15 @@
                                      (mapcar (lambda (s) (concat s "\n")))
                                      (apply #'concat))
                                 t)))
+  )
+
+
+(defun my/make-daily-capture (key desc entry jump)
+  (list key desc 'entry entry
+        :if-new (list 'file+head "%<%Y-%m-%d>.org" (concat  "#+title: %<%Y-%m-%d>\n\n" entry))
+        :jump-to-captured jump))
+
+
 
 (after! org-capture
   (fuck-me/init-capture))
