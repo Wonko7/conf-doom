@@ -400,15 +400,10 @@
                                 (setq-local comment-style 'indent)
                                 (setq-local tuareg-interactive-program
                                             (concat tuareg-interactive-program " -nopromptcont"))
-                                (let ((ext (file-name-extension buffer-file-name)))
-                                  (when (string-equal ext "eliom")
-                                    (setq-local ocamlformat-file-kind 'implementation))
-                                  (when (string-equal ext "eliomi")
-                                    (setq-local ocamlformat-file-kind 'interface)))
-                                (add-hook 'before-save-hook 'ocamlformat-before-save t t)
-                                (let ((ext (file-name-extension buffer-file-name)))
+                                (ignore-errors (let ((ext (file-name-extension buffer-file-name)))
                                   (when (member ext '("eliom" "eliomi"))
-                                    (setq-local lsp-modeline-code-actions-enable nil)))))
+                                    (setq-local lsp-modeline-code-actions-enable nil))))
+                                (add-hook 'before-save-hook 'ocamlformat-before-save t t)))
 
 ;;(add-hook 'tuareg-mode-hook 'lsp-deferred)
 
