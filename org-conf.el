@@ -24,9 +24,6 @@
 
 (use-package! org-roam
   :hook (after-init . org-roam-setup))
-(use-package! org-roam
-  :after org
-)
 
 ;; (use-package! org-roam-protocol
 ;;   :after org-protocol)
