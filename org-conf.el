@@ -17,6 +17,8 @@
 (map! :map elfeed-search-mode-map
       :nvm "RET" #'elfeed-search-show-entry)
 
+(setq emacsql-sqlite-executable (executable-find "emacsql-sqlite"))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; org packages:
 
 
@@ -68,9 +70,10 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; org conf:
 
+
 (after! org
   (setq
-   org-plantuml-jar-path "/usr/share/plantuml/lib/plantuml.jar"
+   org-plantuml-jar-path (shell-command-to-string "cat `which plantuml` 2>/dev/null  | 2>/dev/null sed -nre 's/.* ([^ ]+\.jar).*/\\1/p' | tr -d '\n'")
    org-extend-today-until 3
    org-todo-keywords
         '((sequence

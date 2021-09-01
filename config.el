@@ -326,9 +326,9 @@
 ;(require 'dune)
 ;(require 'ocamlformat)
 
-(setq merlin-command "/home/wjc/.opam/bs_2.4.11.1/bin/ocamlmerlin")
+(setq merlin-command (executable-find "ocamlmerlin"))
 (after! merlin
-  (setq merlin-command "/home/wjc/.opam/bs_2.4.11.1/bin/ocamlmerlin")
+  (setq merlin-command (executable-find "ocamlmerlin"))
   (setq merlin-completion-with-doc nil)
   (setq merlin-completion-arg-type nil)
   (setq merlin-completion-dwim nil))
@@ -434,8 +434,7 @@
 ;;   :server-id 'ocaml-lsp-server))
 
 (add-hook 'css-mode-hook 'prettier-js-mode)
-
-(setq prettier-js-command "/home/wjc/.npm-packages/bin/prettier")
+(setq prettier-js-command (executable-find "prettier"))
 
 (with-eval-after-load "whitespace"
   (setq whitespace-action '(auto-cleanup)))
