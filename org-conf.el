@@ -7,8 +7,8 @@
 (setq org-agenda-files (cons org-directory (mapcar
                                             (lambda (d)
                                               (concat org-directory d))
-                                            '("people/" "wip/" "work/" "the-road-so-far/"
-                                              ;"here-be-dragons/"
+                                            '("people/" "wip/" "work/" ;; "the-road-so-far/"
+                                              "here-be-dragons/"
                                               ))))
 
 (after! elfeed

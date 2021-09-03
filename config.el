@@ -71,12 +71,13 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; (global-spell-fu-mode 0)
-(setq ispell-program-name "/usr/bin/hunspell")
-(setq ispell-dictionary "en_GB,fr_FR")
-(add-to-list 'ispell-local-dictionary-alist '("en_GB,fr_FR" "[[:alpha:]]" "[^[:alpha:]]" "[0-9']" t
-                                              ("-d" "en_GB,fr_FR")
-                                              nil utf-8))
-
+(setenv "LANG" "en_GB-ise.utf8")
+(setq ispell-program-name "hunspell")
+(setq ispell-dictionary "en_GB-ise,en_GB-ize,fr-toutesvariantes")
+(setq ispell-local-dictionary-alist `(("en_GB-ise,en_GB-ize,fr-toutesvariantes"
+                                       "[[:alpha:]]" "[^[:alpha:]]" "[0-9']" t
+                                       ("-d" "en_GB-ise,en_GB-ize,fr-toutesvariantes")
+                                       nil utf-8)))
 
 (use-package flyspell
   :init
