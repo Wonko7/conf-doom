@@ -15,7 +15,8 @@
 (setq server-name (daemonp))
 (when (string= "DANCE_COMMANDER" server-name)
   (load "~/conf/doom/yolobolo.el")
-  (use-package! org-protocol))
+  (use-package! org-protocol)
+  (run-with-idle-timer 3 nil #'fuck-me/init))
 
 (load "~/conf/doom/fancy.el")
 
