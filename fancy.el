@@ -78,14 +78,14 @@
               (t                                 16))))
 
 (setq doom-font (font-spec :family "JetBrainsMono Nerd Font Mono" :size my/font-size))
-(setq use-default-font-for-symbols nil)
-(add-hook! 'after-setting-font-hook
-  (set-fontset-font t 'symbol "Noto Color Emoji" nil 'append))
-(add-hook! 'doom-load-theme-hook :append
-  (set-fontset-font t 'symbol "Noto Color Emoji" nil 'append))
-;; Emoji: 😄, 🤦, 🏴󠁧󠁢󠁳󠁣󠁴󠁿
+(setq use-default-font-for-symbols t)
+(set-fontset-font t 'symbol "NotoEmoji Nerd Font Mono" nil 'append)
+;; (set-fontset-font t 'symbol "NotoEmoji Nerd Font Mono" nil 'append)
+;; (set-fontset-font t 'symbol "Twitter Color Emoji" nil 'append)
+;; Emoji: 😄, 🤦, 🏴󠁧󠁢󠁳󠁣󠁴󠁿 🖖
 
 (setq doom-theme 'doom-solarized-dark)
 
 (defun fuck-me/init-font-symbols ()
-  (set-fontset-font t 'symbol "Noto Color Emoji" nil 'append))
+  (set-fontset-font t 'symbol "NotoEmoji Nerd Font Mono" nil 'append)
+  t)
