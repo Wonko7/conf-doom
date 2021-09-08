@@ -82,4 +82,10 @@
 ;; (package! company-fuzzy)
 ;; (package! flx)
 
-(package! dogears)
+(package! plz
+  :recipe (:host github :repo "alphapapa/plz.el"))
+(package! ement
+  :recipe (:host github :repo "alphapapa/ement.el"))
+
+(package! dogears
+  :recipe (:host github :repo "alphapapa/dogears.el"))

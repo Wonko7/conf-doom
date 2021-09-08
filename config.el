@@ -18,6 +18,10 @@
   (use-package! org-protocol)
   (run-with-idle-timer 3 nil #'fuck-me/init))
 
+(when (string= "COMMUNICATIONS" server-name)
+  ;; start irc & cie?
+  )
+
 (load "~/conf/doom/fancy.el")
 
 (use-package! evil-escape
