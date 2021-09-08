@@ -81,3 +81,5 @@
 (package! highlight-indent-guides)
 ;; (package! company-fuzzy)
 ;; (package! flx)
+
+(package! dogears)

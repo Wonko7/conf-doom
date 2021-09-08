@@ -7,8 +7,9 @@
 (setq org-agenda-files (cons org-directory (mapcar
                                             (lambda (d)
                                               (concat org-directory d))
-                                            '("people/" "wip/" "work/" ;; "the-road-so-far/"
+                                            '("wip/" "work/" ;; "the-road-so-far/"
                                               "here-be-dragons/"
+                                              "here-be-dragons/daily/"
                                               ))))
 
 (after! elfeed
@@ -213,7 +214,7 @@
    (mapcar #'(lambda (c) (if (equal c ?[) ?\( (if (equal c ?]) ?\) c))) string-to-transform)))
 
 (defun my/make-daily-capture (key desc entry jump)
-  (list key desc 'entry (concat "\n" entry)
+  (list key desc 'entry (concat "\n\n" entry)
         :if-new (list 'file+head "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n\n")
         :jump-to-captured jump))
 
@@ -398,8 +399,12 @@
                                 "* bouldering @%?\n%U\n** with :innerspace:\n** topped\n** projects\n** injuries\n" t)
         ,(my/make-daily-capture "i" "innerspace"
                                 "* innerspace :crypt:\n%U\n%?\n" t)
+        ,(my/make-daily-capture "t" "TODO"
+                                "* TODO %? :ssdd:\n%U\n" t)
         ("b" "besport")
 
+        ,(my/make-daily-capture "bt" "TODO"
+                                "* TODO %? :bs:\n%t\n" t)
         ,(my/make-daily-capture "bb" "boop"
                                 "* boop %? :bs:boop:\n%U\n" t)
         ,(my/make-daily-capture "bl" "backlog prep"
@@ -470,7 +475,7 @@
                                                       '((:name "ssdd: daily edition"
                                                          :tag ("ssdd")
                                                          :order 1)
-                                                        (:name "ssdd"
+                                                        (:name "ssdd: yolo"
                                                          :tag ("tt" "lol" "yolo")
                                                          :order 2)
                                                         (:name "BS"
