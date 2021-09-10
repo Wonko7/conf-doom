@@ -16,6 +16,7 @@
 (when (string= "DANCE_COMMANDER" server-name)
   (load "~/conf/doom/yolobolo.el")
   (use-package! org-protocol)
+  (use-package! org-roam-protocol)
   (run-with-idle-timer 3 nil #'fuck-me/init))
 
 (when (string= "COMMUNICATIONS" server-name)

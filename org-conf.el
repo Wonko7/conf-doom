@@ -26,6 +26,20 @@
 (use-package! org-roam
   :hook (after-init . org-roam-setup))
 
+; Workaround an upstream issue with evil, as described in https://github.com/syl20bnr/spacemacs/issues/14137
+      ;; (defadvice org-roam-node-insert (around append-if-in-evil-normal-mode activate compile)
+      ;;   "If in evil normal mode and cursor is on a whitespace character, then go into
+      ;;    append mode first before inserting the link. This is to put the link after the
+      ;;    space rather than before."
+      ;;   (let ((is-in-evil-normal-mode (and (bound-and-true-p evil-mode)
+      ;;                                     (not (bound-and-true-p evil-insert-state-minor-mode))
+      ;;                                     (looking-at "[[:blank:]]"))))
+      ;;     (if (not is-in-evil-normal-mode)
+      ;;         ad-do-it
+      ;;       (evil-append 0)
+      ;;       ad-do-it
+      ;;       (evil-normal-state))))
+
 ;; (use-package! org-roam-protocol
 ;;   :after org-protocol)
 ;;
@@ -403,8 +417,8 @@
                                 "* TODO %? :ssdd:\n%U\n" t)
         ("b" "besport")
 
-        ,(my/make-daily-capture "bt" "TODO"
-                                "* TODO %? :bs:\n%t\n" t)
+        ,(my/make-daily-capture "bt" "TODO" ;; same pb as ssdd.
+                                "* TODO %? :bs:\n%U\n" t)
         ,(my/make-daily-capture "bb" "boop"
                                 "* boop %? :bs:boop:\n%U\n" t)
         ,(my/make-daily-capture "bl" "backlog prep"
