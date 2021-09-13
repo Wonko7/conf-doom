@@ -56,7 +56,7 @@
 ;(package! auth-source)
 
 (package! org-super-agenda)
-(package! org-journal)
+;; (package! org-journal)
 (package! org-roam :pin "f819720c5101")
 (package! org-ql)
 (package! org-web-tools)

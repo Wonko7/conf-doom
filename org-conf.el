@@ -73,12 +73,12 @@
 
 ;; FIXME/review show past:
 ;;  https://github.com/bastibe/org-journal/issues/260
-(use-package! org-journal)
+;; (use-package! org-journal)
 
 ;; org journal template:
-(set-file-template! "/20[-[:digit:]]+_[[:alpha:]]+\\.org$"
-  ;; :trigger "__"
-  :mode 'org-journal-mode)
+;; (set-file-template! "/20[-[:digit:]]+_[[:alpha:]]+\\.org$"
+;;   ;; :trigger "__"
+;;   :mode 'org-journal-mode)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; org conf:
 
