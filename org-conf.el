@@ -127,11 +127,11 @@
   (org-decrypt-entries)
   (goto-char my/yolo))
 
-(add-hook
- 'org-mode-hook
- (lambda ()
-   (add-hook 'after-save-hook 'restore-point nil t)
-   (add-hook 'before-save-hook 'save-point (- 42) t)))
+;; (add-hook
+;;  'org-mode-hook
+;;  (lambda ()
+;;    (add-hook 'after-save-hook 'restore-point nil t)
+;;    (add-hook 'before-save-hook 'save-point (- 42) t)))
 
 (after! org-crypt
   (setq org-tags-exclude-from-inheritance (quote ("crypt"))
