@@ -405,31 +405,46 @@
            :prepend t)))
 
   (setq org-roam-dailies-capture-templates
-      `(,(my/make-daily-capture "d" "default" "* %?\n" t)
+        `(,(my/make-daily-capture "n" "note" "* %?\n" t)
 
-        ,(my/make-daily-capture "f" "witness the fitness"
-                                "* %? :wtf:\n%U\n" t)
-        ,(my/make-daily-capture "w" "witness the fitness"
-                                "* bouldering @%?\n%U\n** with :innerspace:\n** topped\n** projects\n** injuries\n" t)
-        ,(my/make-daily-capture "i" "innerspace"
-                                "* innerspace :crypt:\n%U\n%?\n" t)
-        ,(my/make-daily-capture "t" "TODO"
-                                "* TODO %? :ssdd:\n%U\n" t)
-        ("b" "besport")
+          ("d" "ssdd top" entry "* TODO %?\n%t"
+           :if-new (file+head+olp "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n\n" ("ssdd"))
+           :prepend t)
+          ("s" "ssdd bottom" entry "* TODO %?\n%t"
+           :if-new (file+head+olp "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n\n" ("ssdd")))
 
-        ,(my/make-daily-capture "bt" "TODO" ;; same pb as ssdd.
-                                "* TODO %? :bs:\n%U\n" t)
-        ,(my/make-daily-capture "bb" "boop"
-                                "* boop %? :bs:boop:\n%U\n" t)
-        ,(my/make-daily-capture "bl" "backlog prep"
-                                "* backlog :bs:bl:\n%U\n%?\n" t)
-        ,(my/make-daily-capture "ba" "réu appli"
-                                (->> (+pass-get-entry "besport/capture/team")
-                                     (mapcar #'cdr)
-                                     (-drop 1)
-                                     (mapcar (lambda (s) (concat s "\n")))
-                                     (apply #'concat))
-                                t))))
+          ,(my/make-daily-capture "f" "witness the fitness"
+                                  "* %? :wtf:\n%U\n" t)
+          ,(my/make-daily-capture "w" "witness the fitness"
+                                  "* bouldering @%?\n%U\n** with :innerspace:\n** topped\n** projects\n** injuries\n" t)
+          ,(my/make-daily-capture "i" "innerspace"
+                                  "* innerspace :crypt:\n%U\n%?\n" t)
+          ,(my/make-daily-capture "t" "TODO"
+                                  "* TODO %? :ssdd:\n%U\n" t)
+
+          ("b" "besport")
+
+          ("bd" "BS ssdd top" entry "* TODO %? :bs:\n%t"
+           :if-new (file+head+olp "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n\n" ("BS ssdd"))
+           :prepend t)
+          ("bs" "BS ssdd bottom" entry "* TODO %? :bs:\n%t"
+           :if-new (file+head+olp "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n\n" ("BS ssdd")))
+
+          ,(my/make-daily-capture "bt" "TODO" ;; same pb as ssdd.
+                                  "* TODO %? :bs:\n%U\n" t)
+          ,(my/make-daily-capture "bb" "boop"
+                                  "* boop %? :bs:boop:\n%U\n" t)
+          ,(my/make-daily-capture "bl" "backlog prep"
+                                  "* backlog :bs:bl:\n%U\n%?\n" t)
+          ,(my/make-daily-capture "bn" "note"
+                                  "* %? :bs:\n%U\n\n" t)
+          ,(my/make-daily-capture "ba" "réu appli"
+                                  (->> (+pass-get-entry "besport/capture/team")
+                                       (mapcar #'cdr)
+                                       (-drop 1)
+                                       (mapcar (lambda (s) (concat s "\n")))
+                                       (apply #'concat))
+                                  t))))
 
 (after! org-capture
   (fuck-me/init-capture))
