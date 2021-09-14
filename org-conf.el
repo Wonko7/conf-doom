@@ -306,7 +306,7 @@
            "* %?\n%U\n"
            :jump-to-captured t)
           ("jw" "witness the fitness" entry (file+olp+datetree ,(my/monthly-log-file "witness-the-fitness"))
-           "* bouldering @%?\n%U\n** with :innerspace:\n** topped\n** projects\n** injuries\n"
+           "* bouldering @%?\n%U\n** with :innerspace:\n** topped\n** projects\n** [[roam:injuries]]\n"
            :jump-to-captured t)
 
           ("ji" "innerspace" entry (file+olp+datetree ,(my/monthly-log-file "innerspace"))
