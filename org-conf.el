@@ -229,7 +229,7 @@
 
 (defun my/make-daily-capture (key desc entry jump)
   (list key desc 'entry (concat "\n\n" entry)
-        :if-new (list 'file+head "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n\n")
+        :if-new (list 'file+head "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n#+category: ${title}\n\n")
         :jump-to-captured jump))
 
 (defun fuck-me/init-capture ()
@@ -408,10 +408,10 @@
         `(,(my/make-daily-capture "n" "note" "* %?\n" t)
 
           ("d" "ssdd top" entry "* TODO %?\n%t"
-           :if-new (file+head+olp "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n\n" ("ssdd"))
+           :if-new (file+head+olp "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n#+category: ${title}\n\n" ("ssdd"))
            :prepend t)
           ("s" "ssdd bottom" entry "* TODO %?\n%t"
-           :if-new (file+head+olp "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n\n" ("ssdd")))
+           :if-new (file+head+olp "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n#+category: ${title}\n\n" ("ssdd")))
 
           ,(my/make-daily-capture "f" "witness the fitness"
                                   "* %? :wtf:\n%U\n" t)
