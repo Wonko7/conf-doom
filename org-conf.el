@@ -407,7 +407,6 @@
 
   (setq org-roam-dailies-capture-templates
         `(,(my/make-daily-capture "n" "note" "* %?\n" t)
-
           ("d" "ssdd top" entry "* TODO %?\n%t"
            :if-new (file+head+olp "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n#+category: ${title}\n\n" ("ssdd"))
            :prepend t)
