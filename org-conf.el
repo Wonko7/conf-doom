@@ -353,11 +353,11 @@
            :clock-in t)
 
           ("Qp" "Protocol" entry
-           (file+olp "browsing/inbox.org" "browsing" "inbox")
+           (file+olp "here-be-dragons/20210915144652-browsing_inbox.org" "browsing" "inbox")
            "* [[%:link][%(transform-square-brackets-to-round-ones \"%:description\")]]\n%U\n#+BEGIN_QUOTE\n%i\n#+END_QUOTE"
            :immediate-finish t)
           ("QL" "Protocol Link direct" entry
-           (file+olp "browsing/inbox.org" "browsing" "inbox")
+           (file+olp "here-be-dragons/20210915144652-browsing_inbox.org" "browsing" "inbox")
            "* [[%:link][%(transform-square-brackets-to-round-ones \"%:description\")]]\n%U"
            :immediate-finish t)
 
