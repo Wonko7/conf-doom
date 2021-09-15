@@ -468,7 +468,8 @@
  ;; ignored or overwritten, doom rape.
  ;:i   "TAB"         #'company-indent-or-complete-common
  ;:i   [tab]         #'company-indent-or-complete-common
- :i   "C-i"         #'org-roam-node-insert
+ ;:i   "C-i"         #'org-roam-node-insert
+ :i   "C-i"         #'completion-at-point
  :i   "C-b"         #'yas-expand
  :i   "C-v"         #'evil-paste-before
  :i   "C-V"         #'evil-paste-before)
