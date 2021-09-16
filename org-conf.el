@@ -406,11 +406,12 @@
            :prepend t)))
 
   (setq org-roam-dailies-capture-templates
-        `(,(my/make-daily-capture "n" "note" "* %?\n" t)
-          ("d" "ssdd top" entry "* TODO %?\n%t"
+        `(,(my/make-daily-capture "n" "note" "* %?\n%U\n" t)
+
+          ("d" "ssdd top" entry "* TODO %?\n%U"
            :if-new (file+head+olp "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n#+category: ${title}\n\n" ("ssdd"))
            :prepend t)
-          ("s" "ssdd bottom" entry "* TODO %?\n%t"
+          ("s" "ssdd bottom" entry "* TODO %?\n%U"
            :if-new (file+head+olp "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n#+category: ${title}\n\n" ("ssdd")))
 
           ,(my/make-daily-capture "f" "witness the fitness"
@@ -419,15 +420,15 @@
                                   "* bouldering @%?\n%U\n** with :innerspace:\n** topped\n** projects\n** injuries\n" t)
           ,(my/make-daily-capture "i" "innerspace"
                                   "* innerspace :crypt:\n%U\n%?\n" t)
-          ,(my/make-daily-capture "t" "TODO"
-                                  "* TODO %? :ssdd:\n%U\n" t)
+          ,(my/make-daily-capture "r" "RDV"
+                                  "* TODO RDV %? \n${title}\n" t)
 
           ("b" "besport")
 
-          ("bd" "BS ssdd top" entry "* TODO %? :bs:\n%t"
+          ("bd" "BS ssdd top" entry "* TODO %? :bs:\n%U"
            :if-new (file+head+olp "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n\n" ("BS ssdd"))
            :prepend t)
-          ("bs" "BS ssdd bottom" entry "* TODO %? :bs:\n%t"
+          ("bs" "BS ssdd bottom" entry "* TODO %? :bs:\n%U"
            :if-new (file+head+olp "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n\n" ("BS ssdd")))
 
           ,(my/make-daily-capture "bt" "TODO" ;; same pb as ssdd.
