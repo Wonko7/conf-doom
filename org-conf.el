@@ -13,7 +13,8 @@
                                               ))))
 
 (after! elfeed
-  (setq elfeed-search-filter "@2-weeks-ago +unread"))
+  ;(setq elfeed-search-filter "@2-weeks-ago +unread")
+  (setq elfeed-search-filter "+unread +tf"))
 (setq rmh-elfeed-org-files (list (concat org-directory "notes/rss/root.org")))
 (map! :map elfeed-search-mode-map
       :nvm "RET" #'elfeed-search-show-entry)

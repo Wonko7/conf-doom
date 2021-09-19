@@ -506,12 +506,18 @@
 
       :desc "password-store"                :nvm "P"  #'ivy-pass
 
+      (:prefix ("e" . "elfeed")
+       "e" #'elfeed
+       "s" #'elfeed-update
+       "A" #'elfeed-apply-autotags-now)
+
       (:prefix ("r" . "org-roam")
        "D" #'org-roam-demote-entire-buffer
        "f" #'org-roam-node-find
        "F" #'org-roam-ref-find
        "g" #'org-roam-graph
        "i" #'org-roam-node-insert
+       "s" #'org-roam-db-sync
        "I" #'org-id-get-create
        "m" #'org-roam-buffer-toggle
        "M" #'org-roam-buffer-display-dedicated
@@ -551,8 +557,7 @@
 
 (map! :map elfeed-show-mode-map
       :nvm "U" #'elfeed-search-tag-all-unread
-      :nvm "u" #'elfeed-search-tag-all-read
-      )
+      :nvm "u" #'elfeed-search-tag-all-read)
 
 ;; dired
 (map! :localleader
