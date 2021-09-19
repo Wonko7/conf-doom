@@ -549,6 +549,11 @@
       :nvm "j" #'org-agenda-next-line
       :nvm "k" #'org-agenda-previous-line)
 
+(map! :map elfeed-show-mode-map
+      :nvm "U" #'elfeed-search-tag-all-unread
+      :nvm "u" #'elfeed-search-tag-all-read
+      )
+
 ;; dired
 (map! :localleader
       :map dired-mode-map
