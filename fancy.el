@@ -61,7 +61,11 @@
 
 (defun fuck-me/init-faces ()
   (custom-set-faces!
-    '(caml-types-expr-face     :background "#072530")
+;;    '(caml-types-expr-face     :background "#072530")
+    '(lsp-face-highlight-textual :foreground unspecified :background nil :underline (:style line :color "#d33682")) ;; ping
+    ;'(lsp-face-highlight-textual :foreground unspecified :background nil :underline (:style line :color "#d33682")) ;; ping
+    ;'(lsp-face-highlight-textual :foreground unspecified :background nil :underline (:style line :color "#268bd2")) ;; blue
+    '(caml-types-expr-face :underline (:style line :color "#072530"))
     '(flycheck-error     :underline (:style line :color "#dc322f"))
     '(flycheck-info      :underline (:style line :color "#859900"))
     '(flycheck-warning   :underline (:style line :color "#b58900"))
