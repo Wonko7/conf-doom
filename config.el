@@ -526,11 +526,11 @@
        "R" #'org-roam-link-replace-all
        (:prefix ("d" . "by date")
         :desc "Goto previous note" "b" #'org-roam-dailies-goto-previous-note
-        :desc "Goto previous note" "j" #'org-roam-dailies-goto-previous-note
+        :desc "Goto previous note" "k" #'org-roam-dailies-goto-previous-note
         :desc "Goto date"          "d" #'org-roam-dailies-goto-date
         :desc "Capture date"       "D" #'org-roam-dailies-capture-date
         :desc "Goto next note"     "f" #'org-roam-dailies-goto-next-note
-        :desc "Goto next note"     "k" #'org-roam-dailies-goto-next-note
+        :desc "Goto next note"     "j" #'org-roam-dailies-goto-next-note
         :desc "Goto tomorrow"      "m" #'org-roam-dailies-goto-tomorrow
         :desc "Capture tomorrow"   "M" #'org-roam-dailies-capture-tomorrow
         :desc "Capture today"      "n" #'org-roam-dailies-capture-today
