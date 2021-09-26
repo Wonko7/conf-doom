@@ -32,7 +32,7 @@
         ;; evil-cross-lines t
         ))
 
-
+(use-package! dogears)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; completion
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -459,15 +459,14 @@
  :nvm "&"           #'evil-cp-next-opening
  :nvm "gzn"           #'evil-mc-make-and-goto-next-match
  :nvm "gzN"           #'evil-mc-skip-and-goto-next-match
- ;; breadcrumb
- :nvm "S-SPC"       #'bc-set
- :nvm  "C-j"        #'bc-next
- :nvm  "C-k"        #'bc-previous
- :nvm  "C-S-j"        #'bc-local-next
- :nvm  "C-S-k"        #'bc-local-previous
+ ;; dogears
+ :nvm "S-SPC"       #'dogears-go
+ :nvm  "C-j"        #'dogears-back
+ :nvm  "C-k"        #'dogears-forward
+ ;:nvm  "C-S-j"        #'bc-local-next
+ ;:nvm  "C-S-k"        #'bc-local-previous
  ;; ignored or overwritten, doom rape.
- ;:i   "TAB"         #'company-indent-or-complete-common
- ;:i   [tab]         #'company-indent-or-complete-common
+ ;:i   "TAB"         #'company-indent-or-complete-common :i   [tab]         #'company-indent-or-complete-common
  :i   "C-i"         #'org-roam-node-insert
  ;:i   "C-i"         #'completion-at-point
  :i   "C-b"         #'yas-expand
@@ -487,13 +486,13 @@
       :nvm "jN" #'org-journal-new-entry
       :nvm "jr" #'org-journal-new-scheduled-entry
 
-      :desc "breadcrumb prev" :nvm  "<" #'bc-previous
-      :desc "breadcrumb next" :nvm  ">" #'bc-next
-      :desc "breadcrumb prev" :nvm  "l<" #'bc-local-previous
-      :desc "breadcrumb next" :nvm  "l>" #'bc-local-next
-
-      :desc "breadcrumb list" :nvm  "jl" #'bc-list
-      :desc "breadcrumb goto curr" :nvm  "jc" #'bc-goto-current
+      :desc "dogears prev"    :nvm  "<" #'dogears-back
+      :desc "dogears next"    :nvm  ">" #'dogears-forward
+      :desc "dogears list"    :nvm  "dl"         #'dogears-list
+      :desc "dogears go"      :nvm  "dg"         #'dogears-go
+      :desc "dogears sidebar" :nvm  "ds"         #'dogears-sidebar
+      :desc "dogears sidebar" :nvm "dr"       #'dogears-remember
+      :desc "dogears sidebar" :nvm "RET"       #'dogears-remember
 
       :desc "follow" :nvm "taf" #'org-agenda-follow-mode
 

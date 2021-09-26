@@ -50,7 +50,7 @@
 ;(unpin! t)
 
 
-(package! breadcrumb)
+;(package! breadcrumb)
 (package! evil-cleverparens)
 (package! aggressive-indent)
 ;(package! auth-source)
