@@ -147,7 +147,8 @@
         calendar-week-start-day 1
         org-log-into-drawer t
         org-auto-align-tags t
-        org-tags-column 72))
+        org-tags-column 72
+        org-edit-timestamp-down-means-later t))
 (setq cfw:org-agenda-schedule-args '(:timestamp))
 
 ;; calendar
