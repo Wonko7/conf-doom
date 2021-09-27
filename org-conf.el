@@ -173,13 +173,13 @@
 (setq appt-display-interval 5) ; Disable multiple reminders
 ;; (setq appt-display-mode-line nil)
 
-(add-hook 'org-agenda-mode-hook #'org-agenda-to-appt)
+;; (add-hook 'org-agenda-mode-hook #'org-agenda-to-appt)
 (run-at-time "12:01am" (* 24 3600) 'org-agenda-to-appt)
 
-(add-hook 'after-save-hook
-          (lambda ()
-             (when (string-prefix-p org-directory buffer-file-name)
-               (org-agenda-to-appt))))
+;; (add-hook 'after-save-hook
+;;           (lambda ()
+;;              (when (string-prefix-p org-directory buffer-file-name)
+;;                (org-agenda-to-appt))))
 
 ; Display appointments as a window manager notification
 (setq appt-disp-window-function #'my/appt-notif)
