@@ -229,9 +229,11 @@
   (concat
    (mapcar #'(lambda (c) (if (equal c ?[) ?\( (if (equal c ?]) ?\) c))) string-to-transform)))
 
+(defvar my/daily-header "#+title: %<%Y-%m-%d>\n#+category: %<%Y-%m-%d>")
+(defvar my/daily-file "%<%Y-%m-%d>.org")
 (defun my/make-daily-capture (key desc entry jump)
   (list key desc 'entry (concat "\n\n" entry)
-        :if-new (list 'file+head "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n#+category: ${title}")
+        :if-new (list 'file+head my/daily-file my/daily-header)
         :jump-to-captured jump))
 
 (defun fuck-me/init-capture ()
@@ -275,7 +277,6 @@
 
           ;; besport
           ("b" "BeSport")
-
           ("br" "RDV" entry
            (file+olp ,(expand-file-name "work/wobbly.org" org-directory) "wobbly" "inbox")
            ,(concat "* %?\n :PROPERTIES:\n :calendar-id: " (+pass-get-field "tokens/caldav/calendar.google.com" "work") "\n :END:\n:org-gcal:\n%^T\n:END:\n\n")
@@ -408,45 +409,53 @@
 
   (setq org-roam-dailies-capture-templates
         `(,(my/make-daily-capture "n" "note" "* %?\n%U\n" t)
-
-          ("d" "ssdd top" entry "* TODO %?\n%U"
-           :if-new (file+head+olp "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n#+category: ${title}" ("ssdd"))
+          ("d" "ssdd top" entry "* [ ] %?"
+           :if-new (file+head+olp ,my/daily-file ,my/daily-header ("ssdd"))
            :prepend t)
-          ("s" "ssdd bottom" entry "* TODO %?\n%U"
-           :if-new (file+head+olp "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n#+category: ${title}" ("ssdd")))
-
-          ,(my/make-daily-capture "f" "witness the fitness"
-                                  "* %? :wtf:\n%U\n" t)
-          ,(my/make-daily-capture "w" "witness the fitness"
-                                  "* bouldering @%?\n%U\n** with :innerspace:\n** topped\n** projects\n** injuries\n" t)
+          ("s" "ssdd bottom" entry "* [ ] %?"
+           :if-new (file+head+olp ,my/daily-file ,my/daily-header ("ssdd")))
           ,(my/make-daily-capture "i" "innerspace"
                                   "* innerspace :crypt:\n%U\n%?\n" t)
           ,(my/make-daily-capture "r" "RDV"
-                                  "* TODO RDV %? \n${title}\n" t)
+                                  "* RDV %? \n<%<%Y-%m-%d>>\n" t)
+          ("w" "witness the fitness")
+          ("wb" "bouldering" entry "* bouldering @%?\n%U\n** with :innerspace:\n** topped\n** projects\n** injuries\n"
+           :jump-to-captured t
+           :if-new (file+head+olp ,my/daily-file ,my/daily-header ("witness the fitness")))
+          ("wc" "campusing" entry "* monkey ceiling\n%U\n** campusing%?"
+           :jump-to-captured t
+           :if-new (file+head+olp ,my/daily-file ,my/daily-header ("witness the fitness")))
+          ("wf" "fingerboard" entry "* fingerboard\n%U\n** rice-bucket\n- %?\n** pull-ups\n** campusing\n** deadhangs"
+           :jump-to-captured t
+           :if-new (file+head+olp ,my/daily-file ,my/daily-header ("witness the fitness")))
+          ("ww" "wtf" entry "* %? :wtf:\n%U\n"
+           :jump-to-captured t
+           :if-new (file+head+olp ,my/daily-file ,my/daily-header ("witness the fitness")))
 
           ("b" "besport")
 
           ("bd" "BS ssdd top" entry "* TODO %? :bs:\n%U"
-           :if-new (file+head+olp "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n\n" ("BS ssdd"))
+           :if-new (file+head+olp ,my/daily-file ,my/daily-header ("BS ssdd"))
            :prepend t)
           ("bs" "BS ssdd bottom" entry "* TODO %? :bs:\n%U"
-           :if-new (file+head+olp "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n\n" ("BS ssdd")))
-
-          ,(my/make-daily-capture "bt" "TODO" ;; same pb as ssdd.
-                                  "* TODO %? :bs:\n%U\n" t)
-          ,(my/make-daily-capture "bb" "boop"
-                                  "* boop %? :bs:boop:\n%U\n" t)
-          ,(my/make-daily-capture "bl" "backlog prep"
-                                  "* backlog :bs:bl:\n%U\n%?\n" t)
-          ,(my/make-daily-capture "bn" "note"
-                                  "* %? :bs:\n%U\n\n" t)
-          ,(my/make-daily-capture "ba" "réu appli"
-                                  (->> (+pass-get-entry "besport/capture/team")
-                                       (mapcar #'cdr)
-                                       (-drop 1)
-                                       (mapcar (lambda (s) (concat s "\n")))
-                                       (apply #'concat))
-                                  t))))
+           :if-new (file+head+olp ,my/daily-file ,my/daily-header ("BS ssdd")))
+          ("bb" "boop" entry "* boop %? :bs:boop:\n%U\n"
+           :if-new (file+head+olp ,my/daily-file ,my/daily-header ("bs"))
+           :jump-to-captured t)
+          ("bl" "backlog prep" entry "* backlog :bs:bl:\n%U\n%?"
+           :if-new (file+head+olp ,my/daily-file ,my/daily-header ("bs"))
+           :jump-to-captured t)
+          ("bn" "note" entry "* %? :bs:\n%U"
+           :if-new (file+head+olp ,my/daily-file ,my/daily-header ("bs"))
+           :jump-to-captured t)
+          ("ba" "réu appli" entry
+           ,(->> (+pass-get-entry "besport/capture/team")
+                (mapcar #'cdr)
+                (-drop 1)
+                (mapcar (lambda (s) (concat s "\n")))
+                (apply #'concat))
+           :if-new (file+head+olp ,my/daily-file ,my/daily-header ("bs"))
+           :jump-to-captured t))))
 
 (after! org-capture
   (fuck-me/init-capture))

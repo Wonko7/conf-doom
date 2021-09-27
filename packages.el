@@ -57,7 +57,7 @@
 
 (package! org-super-agenda)
 ;; (package! org-journal)
-(package! org-roam :pin "f819720c5101")
+;; (package! org-roam :pin "f819720c5101")
 (package! org-ql)
 (package! org-web-tools)
 
@@ -89,3 +89,5 @@
 
 (package! dogears
   :recipe (:host github :repo "alphapapa/dogears.el"))
+
+(package! magit-annex)
