@@ -434,10 +434,10 @@
 
           ("b" "besport")
 
-          ("bd" "BS ssdd top" entry "* TODO %? :bs:\n%U"
+          ("bd" "BS ssdd top" entry "* [ ] %?"
            :if-new (file+head+olp ,my/daily-file ,my/daily-header ("BS ssdd"))
            :prepend t)
-          ("bs" "BS ssdd bottom" entry "* TODO %? :bs:\n%U"
+          ("bs" "BS ssdd bottom" entry "* [ ] %?"
            :if-new (file+head+olp ,my/daily-file ,my/daily-header ("BS ssdd")))
           ("bb" "boop" entry "* boop %? :bs:boop:\n%U\n"
            :if-new (file+head+olp ,my/daily-file ,my/daily-header ("bs"))
