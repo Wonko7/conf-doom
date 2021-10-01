@@ -27,6 +27,14 @@
 (use-package! org-roam
   :hook (after-init . org-roam-setup))
 
+;; (use-package! org-roam-ui
+;;   :after org
+;;   :config
+;;   (setq org-roam-ui-sync-theme t
+;;         org-roam-ui-follow t
+;;         org-roam-ui-update-on-save t
+;;         org-roam-ui-open-on-start t))
+
 ; Workaround an upstream issue with evil, as described in https://github.com/syl20bnr/spacemacs/issues/14137
       ;; (defadvice org-roam-node-insert (around append-if-in-evil-normal-mode activate compile)
       ;;   "If in evil normal mode and cursor is on a whitespace character, then go into
