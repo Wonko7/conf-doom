@@ -96,6 +96,7 @@
   (setq
    org-plantuml-jar-path (shell-command-to-string "cat `which plantuml` 2>/dev/null  | 2>/dev/null sed -nre 's/.* ([^ ]+\.jar).*/\\1/p' | tr -d '\n'")
    org-extend-today-until 3
+   org-startup-folded 'content
    org-todo-keywords
         '((sequence
            "NEXT(n/!)"  ; A task that recuring
