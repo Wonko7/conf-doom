@@ -92,7 +92,9 @@
 
 (package! magit-annex)
 
-;; (package! websocket)
+(package! websocket)
 ;; (package! org-roam-ui :recipe (:host github :repo "org-roam/org-roam-ui" :files ("*.el" "out")))
+;; (package! org-roam-timestamps :recipe (:host github :repo "ThomasFKJorna/org-roam-timestamps"))
+;; ^ was buggy
 
 (package! elpher)

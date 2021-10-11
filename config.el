@@ -228,6 +228,13 @@
       :localleader
       :nvm "RET" #'eval-defun)
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; geiser: guile
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(with-eval-after-load 'geiser-guile
+  (add-to-list 'geiser-guile-load-path "~/src/guix"))
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; maps
@@ -463,6 +470,11 @@
  :nvm "S-SPC"       #'dogears-go
  :nvm  "C-j"        #'dogears-back
  :nvm  "C-k"        #'dogears-forward
+
+ (:prefix ("C-w" . "window stuff")
+  :desc "Go to window" :nvm "C-g" #'ace-select-window
+  :desc "Go to window" :nvm "g"   #'ace-select-window)
+
  ;:nvm  "C-S-j"        #'bc-local-next
  ;:nvm  "C-S-k"        #'bc-local-previous
  ;; ignored or overwritten, doom rape.
@@ -615,3 +627,9 @@
 ;; (print yas-snippet-dirs)
 ;; (print doom-snippets-dir)
 ;; (print +file-templates-dir)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; elfeed
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(setq elfeed-goodies/entry-pane-position 'bottom)

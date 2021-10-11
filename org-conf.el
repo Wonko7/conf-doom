@@ -27,6 +27,10 @@
 (use-package! org-roam
   :hook (after-init . org-roam-setup))
 
+;; (use-package! org-roam-timestamps
+;;   :after org-roam
+;;   :config (org-roam-timestamps-mode))
+
 ;; (use-package! org-roam-ui
 ;;   :after org
 ;;   :config
