@@ -11,6 +11,7 @@
 
 (setq shell-file-name "/bin/sh")
 (setq gc-cons-threshold 20000000)
+(setq require-final-newline nil)
 
 (setq server-name (daemonp))
 (when (string= "DANCE_COMMANDER" server-name)
@@ -33,6 +34,8 @@
         ))
 
 (use-package! dogears)
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; completion
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -60,7 +63,6 @@
 ;;   (global-company-fuzzy-mode t))
 ;; (global-company-fuzzy-mode t)
 ;; (print completion-styles)
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; prog mode:
