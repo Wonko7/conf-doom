@@ -20,9 +20,17 @@
   (use-package! org-roam-protocol)
   (run-with-idle-timer 3 nil #'fuck-me/init))
 
-(when (string= "COMMUNICATIONS" server-name)
-  ;; start irc & cie?
-  )
+(when (string= "COMMUNICATION" server-name)
+  (message server-name)
+  (load "~/conf/doom/communication.el")
+  (run-with-idle-timer 3 nil
+                       (lambda ()
+                         (=irc)
+                                        ;(ement-connect :user-id "@wonko7:matrix.org" :password (lambda (&rest _) (+pass-get-secret "web/matrix/wonko7")) :uri-prefix "http://localhost:8009")
+                                        ;(ement-connect :user-id "@wonko7:matrix.org" :password (+pass-get-secret "web/matrix/wonko7") :uri-prefix "http://127.0.0.1:8009")
+                         (ement-connect :user-id "@wonko7:matrix.org" :password (+pass-get-secret "web/matrix/wonko7") :uri-prefix "http://127.0.0.1:8009")
+
+)))
 
 (load "~/conf/doom/fancy.el")
 
@@ -34,7 +42,9 @@
         ))
 
 (use-package! dogears)
+;; (use-package! foldout) / origami
 
+(dogears-mode 1)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; completion
