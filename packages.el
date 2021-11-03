@@ -98,3 +98,9 @@
 ;; ^ was buggy
 
 (package! elpher)
+;; (package! gnutls)
+
+;; (package! origami)
+;; (package! foldout)
+
+;; (package! debbugs)

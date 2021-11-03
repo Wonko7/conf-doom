@@ -523,42 +523,47 @@
                                                      (org-super-agenda-groups
                                                       '((:name "ssdd: daily edition"
                                                          :tag ("ssdd")
-                                                         :order 1)
+                                                         :order 10)
                                                         (:name "ssdd: yolo"
                                                          :tag ("tt" "lol" "yolo")
-                                                         :order 2)
+                                                         :order 20)
                                                         (:name "BS"
                                                          :tag ("bs" "fm" "fuckme")
-                                                         :order 3)
+                                                         :order 30)
                                                         (:name "fun maximization"
                                                          :tag ("fun")
-                                                         :order 4)
+                                                         :order 40)
                                                         (:name "WWSCD"
                                                          :tag ("wwscd")
-                                                         :order 5)
+                                                         :order 50)
+                                                        (:name "wtf: focus"
+                                                         :and (:tag "wtf" :tag "focus")
+                                                         :order 51)
+                                                        (:name "wtf"
+                                                         :tag ("wtf")
+                                                         :order 52)
                                                         (:name "innerspace"
                                                          :tag ("is" "h" "habit" "focus")
-                                                         :order 6)
+                                                         :order 60)
                                                         (:name "review"
                                                          :tag ("review" "r")
-                                                         :order 7)
+                                                         :order 70)
                                                         (:name "next steps"
                                                          :tag "next"
-                                                         :order 8)
+                                                         :order 80)
                                                         (:name "Projects"
                                                          :todo "PROJ"
-                                                         :order 9)
+                                                         :order 90)
                                                         (:name "don't be a cunt"
                                                          :tag "dbac"
-                                                         :order 10)
+                                                         :order 100)
                                                         ;; (:name "repeat after me"
                                                         ;;  :order 9
                                                         ;;  :habit t
                                                         ;;  )
                                                         (:name ".*"
-                                                         :order 11
-                                                         :anything t
-                                                         )
+                                                         :order 999
+                                                         :anything t)
                                                         )))))))))
 
 ;; org advice newline bug:
