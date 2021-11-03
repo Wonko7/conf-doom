@@ -169,7 +169,8 @@
   (setq org-gcal-client-id (+pass-get-field "tokens/caldav/calendar.google.com" "id")
         org-gcal-client-secret (+pass-get-secret  "tokens/caldav/calendar.google.com")
         org-gcal-fetch-file-alist `((,(+pass-get-field "tokens/caldav/calendar.google.com" "work") .  ,(concat org-directory "work/wobbly.org"))
-                                    (,(+pass-get-field "tokens/caldav/calendar.google.com" "perso") .  ,(concat org-directory "the-road-so-far/wibbly.org")))))
+                                    ;; (,(+pass-get-field "tokens/caldav/calendar.google.com" "perso") .  ,(concat org-directory "the-road-so-far/wibbly.org"))
+                                    )))
 
 (use-package! org-gcal
   ;:ensure t
