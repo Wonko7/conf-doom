@@ -1,0 +1,82 @@
+From 89961765f578e133eb09ba5c1e0dd49908614711 Mon Sep 17 00:00:00 2001
+From: William <william@undefined.re>
+Date: Mon, 13 Sep 2021 08:24:21 +0200
+Subject: [PATCH] rape doom
+
+---
+ modules/app/calendar/autoload.el         |  2 +-
+ modules/checkers/spell/config.el         | 12 ++++++------
+ modules/config/default/+evil-bindings.el |  5 +++--
+ modules/lang/org/config.el               |  4 ++--
+ 4 files changed, 12 insertions(+), 11 deletions(-)
+
+diff --git a/modules/app/calendar/autoload.el b/modules/app/calendar/autoload.el
+index bb446931e..6e076928d 100644
+--- a/modules/app/calendar/autoload.el
++++ b/modules/app/calendar/autoload.el
+@@ -44,7 +44,7 @@
+    ;; :custom-map cfw:my-cal-map
+    :contents-sources
+    (list
+-    (cfw:org-create-source (face-foreground 'default))  ; orgmode source
++    (cfw:org-create-source "#d81b60")  ; orgmode source
+     )))
+ 
+ ;;;###autoload
+diff --git a/modules/checkers/spell/config.el b/modules/checkers/spell/config.el
+index 6041b6f23..dcb8cae2c 100644
+--- a/modules/checkers/spell/config.el
++++ b/modules/checkers/spell/config.el
+@@ -131,12 +131,12 @@
+                      conf-mode-hook
+                      prog-mode-hook)
+                    #'spell-fu-mode))
+-      :config
+-      (map! :after spell-fu
+-            :map override
+-            :n [return]
+-            (cmds! (memq 'spell-fu-incorrect-face (face-at-point nil t))
+-                   #'+spell/correct))
++      ;; :config
++      ;; (map! :after spell-fu
++      ;;       :map override
++      ;;       :n [return]
++      ;;       (cmds! (memq 'spell-fu-incorrect-face (face-at-point nil t))
++      ;;              #'+spell/correct))
+ 
+       ;; TODO PR this fix upstream!
+       (defadvice! +spell--fix-face-detection-a (fn &rest args)
+diff --git a/modules/config/default/+evil-bindings.el b/modules/config/default/+evil-bindings.el
+index 3932697c1..526528109 100644
+--- a/modules/config/default/+evil-bindings.el
++++ b/modules/config/default/+evil-bindings.el
+@@ -267,8 +267,9 @@
+         (:map evil-multiedit-state-map
+          "M-d"    #'evil-multiedit-match-and-next
+          "M-D"    #'evil-multiedit-match-and-prev
+-         "RET"    #'evil-multiedit-toggle-or-restrict-region
+-         [return] #'evil-multiedit-toggle-or-restrict-region)))
++         "C-RET"    #'evil-multiedit-toggle-or-restrict-region
++         ;[return] #'evil-multiedit-toggle-or-restrict-region
++         )))
+ 
+       (:when (featurep! :editor snippets)
+        ;; auto-yasnippet
+diff --git a/modules/lang/org/config.el b/modules/lang/org/config.el
+index 506930fbd..dad3787fc 100644
+--- a/modules/lang/org/config.el
++++ b/modules/lang/org/config.el
+@@ -1149,8 +1149,8 @@ compelling reason, so..."
+             :ni CSup      #'org-shiftup
+             :ni CSdown    #'org-shiftdown
+             ;; more intuitive RET keybinds
+-            :n [return]   #'+org/dwim-at-point
+-            :n "RET"      #'+org/dwim-at-point
++            ;;:n [return]   #'+org/dwim-at-point
++            ;;:n "RET"      #'+org/dwim-at-point
+             :i [return]   (cmd! (org-return electric-indent-mode))
+             :i "RET"      (cmd! (org-return electric-indent-mode))
+             :i [S-return] #'+org/shift-return
+-- 
+2.33.1
+
