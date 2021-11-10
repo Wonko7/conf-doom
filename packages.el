@@ -50,6 +50,8 @@
 ;(unpin! t)
 
 
+;; pinned org-roam was too slow on startup
+(unpin! org-roam)
 ;(package! breadcrumb)
 (package! evil-cleverparens)
 (package! aggressive-indent)
