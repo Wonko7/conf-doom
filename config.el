@@ -125,7 +125,7 @@
               ("Updated" 10 t nill updated nil)
               ;; ("Labels" 20 t nil labels nil)
               ))
-(setq projectile-project-search-path '("~/conf" "~/conf/private" "/work/" "/work/besport" "/work/ocaml"))
+(setq projectile-project-search-path '(( "~/conf" . 1) ( "~/conf/private" . 1) ( "/work/" . 1) ( "/work/besport" . 1) ( "/work/ocaml" . 1)))
 (map! :map forge-topic-mode-map
      :nvm "co" #'forge-checkout-pullreq)
 
