@@ -477,16 +477,6 @@
 (after! org-capture
   (fuck-me/init-capture))
 
-(after! org-journal
-  (setq org-journal-enable-agenda-integration t
-        org-journal-enable-cache t
-        org-journal-time-format ""
-        org-journal-time-prefix "*** "
-        org-journal-hide-entries-p nil
-        org-journal-carryover-items "next|TODO=\"PROJ\"|TODO=\"TODO\"|TODO=\"GOGO\"|TODO=\"[ ]\"|TODO=\"\\[ \\]\"|TODO=\"\\[\\\\]\"" ;; checkboxes do not work FIXME
-        org-journal-file-format "%F_%A.org"
-        org-journal-date-format "%F %A"))
-
 (after! org-agenda
   (setq org-agenda-file-regexp "\\`\\\([^.].*\\.org\\\|[0-9]\\\{8\\\}\\\(\\.gpg\\\)?\\\)\\'"
         org-agenda-prefix-format (quote

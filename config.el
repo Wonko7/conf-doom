@@ -129,6 +129,7 @@
 (map! :map forge-topic-mode-map
      :nvm "co" #'forge-checkout-pullreq)
 
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; general stuff: chapter2: evil & avy & such
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -215,6 +216,8 @@
       :localleader
       :nvm "r"   #'paredit-raise-sexp
       :nvm "R"   #'evil-cp-raise-form
+      :nvm ">"   #'sp-transpose-sexp
+      :nvm "<"   (lambda() (interactive) (sp-transpose-sexp -1))
       :nvm "t"   #'sp-transpose-sexp
       :nvm "T"   (lambda() (interactive) (sp-transpose-sexp -1))
       :nvm "M-T" (lambda() (interactive) (sp-transpose-sexp -1))
@@ -462,6 +465,21 @@
 (with-eval-after-load "whitespace"
   (setq whitespace-action '(auto-cleanup)))
 
+(defun my/toggle-maximize-buffer ()
+  "maximize buffer"
+  (interactive)
+  (if (= 1 (length (window-list)))
+      (jump-to-register '_)
+    (progn
+      (window-configuration-to-register '_)
+      (delete-other-windows))))
+
+(setq aw-scope 'visible) ;; hmm :/
+
+(map!  :map magit-mode-map
+ :nv  "C-f"         #'my/toggle-maximize-buffer)
+(map!  :map help-mode-map
+ :nv  "C-f"         #'my/toggle-maximize-buffer)
 ;; global:
 (map! ;; :nv "s"  #'evil-avy-goto-char-2
       ;; :nv "C->" #'transpose-sexps
@@ -469,6 +487,7 @@
  :n   "-d"          #'delete-trailing-whitespace
  :n   "C-S-<left>"  #'winner-undo
  :n   "C-S-<right>" #'winner-redo
+ :nv  "C-f"         #'my/toggle-maximize-buffer
  :nv  "C-t"         #'transpose-words
  :nv  "g>"          #'transpose-words
  :nv  "g<"          #'(lambda() (interactive) (transpose-words -1))
