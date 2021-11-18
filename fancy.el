@@ -81,6 +81,8 @@
               ((string-equal host "enterprise")  16)
               (t                                 16))))
 
+(setq my/current-font-size my/font-size)
+
 (setq doom-font (font-spec :family "JetBrainsMono Nerd Font Mono" :size my/font-size))
 (setq use-default-font-for-symbols t)
 (set-fontset-font t 'symbol "NotoEmoji Nerd Font Mono" nil 'append)
@@ -89,6 +91,14 @@
 ;; Emoji: 😄, 🤦, 🏴󠁧󠁢󠁳󠁣󠁴󠁿 🖖
 
 (setq doom-theme 'doom-solarized-dark)
+
+(defun my/toggle-font-size ()
+  (interactive)
+  (if (= my/current-font-size my/font-size)
+      (setq my/current-font-size 16) ;; for now only used on yggdrasill
+    (setq my/current-font-size my/font-size))
+  (setq doom-font (font-spec :family "JetBrainsMono Nerd Font Mono" :size my/current-font-size))
+  (doom-init-fonts-h t))
 
 (defun fuck-me/init-font-symbols ()
   (set-fontset-font t 'symbol "NotoEmoji Nerd Font Mono" nil 'append)
