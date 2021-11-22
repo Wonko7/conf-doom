@@ -265,7 +265,7 @@
           ;;  :no-save t
           ;;  :clock-in t)
           ("W" "log work" entry (function (lambda ()
-                                                  (my/log-entry '("log" "work"))) )
+                                            (my/log-entry '("log" "work"))) )
            "* %?\n"
            :no-save t
            :jump-to-captured t
@@ -390,13 +390,13 @@
           ;; Uses the basename from `+org-capture-todo-file',
           ;; `+org-capture-changelog-file' and `+org-capture-notes-file'.
           ("p" "Templates for projects")
-          ("pt" "Project-local todo" entry  ; {project-root}/todo.org
+          ("pt" "Project-local todo" entry ; {project-root}/todo.org
            (file+headline +org-capture-project-todo-file "Inbox")
            "* TODO %?\n%i\n%a" :prepend t)
-          ("pn" "Project-local notes" entry  ; {project-root}/notes.org
+          ("pn" "Project-local notes" entry ; {project-root}/notes.org
            (file+headline +org-capture-project-notes-file "Inbox")
            "* %U %?\n%i\n%a" :prepend t)
-          ("pc" "Project-local changelog" entry  ; {project-root}/changelog.org
+          ("pc" "Project-local changelog" entry ; {project-root}/changelog.org
            (file+headline +org-capture-project-changelog-file "Unreleased")
            "* %U %?\n%i\n%a" :prepend t)
 
@@ -419,17 +419,17 @@
            (function +org-capture-central-project-changelog-file)
            "* %U %?\n %i\n %a"
            :heading "Changelog"
-           :prepend t)))
+           :prepend t))
 
-  (setq org-roam-dailies-capture-templates
+        org-roam-dailies-capture-templates
         `(,(my/make-daily-capture "n" "note" "* %?\n%U\n" t)
           ("d" "ssdd top" entry "* [ ] %?"
-           :if-new (file+head+olp ,my/daily-file ,my/daily-header ("ssdd"))
+           :if-new (file+head+olp ,my/daily-file ,my/daily-header ("🖖 ssdd"))
            :prepend t)
           ("s" "ssdd bottom" entry "* [ ] %?"
-           :if-new (file+head+olp ,my/daily-file ,my/daily-header ("ssdd")))
+           :if-new (file+head+olp ,my/daily-file ,my/daily-header ("🖖 ssdd")))
           ,(my/make-daily-capture "i" "innerspace"
-                                  "* innerspace :crypt:\n%U\n%?\n" t)
+                                  "* ☯ innerspace\n%U\n%?\n" t)
           ,(my/make-daily-capture "r" "RDV"
                                   "* RDV %? \n<%<%Y-%m-%d>>\n" t)
           ("w" "witness the fitness")
@@ -449,29 +449,29 @@
           ("b" "besport")
 
           ("bd" "BS ssdd top" entry "* [ ] %?"
-           :if-new (file+head+olp ,my/daily-file ,my/daily-header ("BS ssdd"))
+           :if-new (file+head+olp ,my/daily-file ,my/daily-header ("🐫 BS ssdd"))
            :prepend t)
           ("bs" "BS ssdd bottom" entry "* [ ] %?"
-           :if-new (file+head+olp ,my/daily-file ,my/daily-header ("BS ssdd")))
+           :if-new (file+head+olp ,my/daily-file ,my/daily-header ("🐫 BS ssdd")))
           ("bb" "boop" entry "* boop %? :bs:boop:\n%U\n"
-           :if-new (file+head+olp ,my/daily-file ,my/daily-header ("bs"))
+           :if-new (file+head+olp ,my/daily-file ,my/daily-header ("🐫 BS"))
            :jump-to-captured t)
           ("bl" "backlog prep" entry "* backlog :bs:bl:\n%U\n%?"
-           :if-new (file+head+olp ,my/daily-file ,my/daily-header ("bs"))
+           :if-new (file+head+olp ,my/daily-file ,my/daily-header ("🐫 BS"))
            :jump-to-captured t)
           ("bn" "note" entry "* %? :bs:\n%U"
-           :if-new (file+head+olp ,my/daily-file ,my/daily-header ("bs"))
+           :if-new (file+head+olp ,my/daily-file ,my/daily-header ("🐫 BS"))
            :jump-to-captured t)
           ("br" "réu" entry "* %? :bs:\n%U"
-           :if-new (file+head+olp ,my/daily-file ,my/daily-header ("bs"))
+           :if-new (file+head+olp ,my/daily-file ,my/daily-header ("🐫 BS"))
            :jump-to-captured t)
           ("ba" "réu appli" entry
            ,(->> (+pass-get-entry "besport/capture/team")
-                (mapcar #'cdr)
-                (-drop 1)
-                (mapcar (lambda (s) (concat s "\n")))
-                (apply #'concat))
-           :if-new (file+head+olp ,my/daily-file ,my/daily-header ("bs"))
+                 (mapcar #'cdr)
+                 (-drop 1)
+                 (mapcar (lambda (s) (concat s "\n")))
+                 (apply #'concat))
+           :if-new (file+head+olp ,my/daily-file ,my/daily-header ("🐫 BS"))
            :jump-to-captured t))))
 
 (after! org-capture
