@@ -433,18 +433,18 @@
           ,(my/make-daily-capture "r" "RDV"
                                   "* RDV %? \n<%<%Y-%m-%d>>\n" t)
           ("w" "witness the fitness")
-          ("wb" "bouldering" entry "* bouldering %? :wtf:\n%U\n** with :innerspace:\n** topped\n** projects\n** injuries\n"
+          ("wb" "bouldering" entry "* ⛰ bouldering %? :wtf:\n%U\n** with :innerspace:\n** topped\n** projects\n** injuries\n"
            :jump-to-captured t
-           :if-new (file+head+olp ,my/daily-file ,my/daily-header ("witness the fitness")))
+           :if-new (file+head+olp ,my/daily-file ,my/daily-header ("⛰ witness the fitness")))
           ("wc" "campusing" entry "* monkey ceiling :wtf:\n%U\n** campusing%?"
            :jump-to-captured t
-           :if-new (file+head+olp ,my/daily-file ,my/daily-header ("witness the fitness")))
-          ("wf" "fingerboard" entry "* fingerboard :wtf:\n%U\n** rice-bucket\n- %?\n** pull-ups\n** campusing\n** deadhangs"
+           :if-new (file+head+olp ,my/daily-file ,my/daily-header ("⛰ witness the fitness")))
+          ("wf" "fingerboard" entry "* 🤘 fingerboard :wtf:\n%U\n** 🍚 rice bucket\n- %?\n** 💪 pull-ups\n** 🐒 campusing\n** 🤘 deadhangs"
            :jump-to-captured t
-           :if-new (file+head+olp ,my/daily-file ,my/daily-header ("witness the fitness")))
-          ("ww" "wtf" entry "* %? :wtf:\n%U\n"
+           :if-new (file+head+olp ,my/daily-file ,my/daily-header ("⛰ witness the fitness")))
+          ("ww" "⛰ wtf" entry "* %? :wtf:\n%U\n"
            :jump-to-captured t
-           :if-new (file+head+olp ,my/daily-file ,my/daily-header ("witness the fitness")))
+           :if-new (file+head+olp ,my/daily-file ,my/daily-header ("⛰ witness the fitness")))
 
           ("b" "besport")
 
