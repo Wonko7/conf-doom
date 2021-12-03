@@ -45,6 +45,7 @@
 ;; (use-package! foldout) / origami
 
 (dogears-mode 1)
+(global-prettify-symbols-mode 1)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; completion

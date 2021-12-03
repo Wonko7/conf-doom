@@ -246,7 +246,7 @@
 (defvar my/daily-header "#+title: %<%Y-%m-%d>\n#+category: %<%Y-%m-%d>")
 (defvar my/daily-file "%<%Y-%m-%d>.org")
 (defun my/make-daily-capture (key desc entry jump)
-  (list key desc 'entry (concat "\n\n" entry)
+  (list key desc 'entry entry
         :if-new (list 'file+head my/daily-file my/daily-header)
         :jump-to-captured jump))
 
@@ -428,8 +428,35 @@
            :prepend t)
           ("s" "ssdd bottom" entry "* [ ] %?"
            :if-new (file+head+olp ,my/daily-file ,my/daily-header ("🖖 ssdd")))
-          ,(my/make-daily-capture "i" "innerspace"
-                                  "* ☯ innerspace\n%U\n%?\n" t)
+
+          ("m" "media")
+          ("mt" "tv" entry "* 📺 %?\n%U"
+           :jump-to-captured t
+           :if-new (file+head+olp ,my/daily-file ,my/daily-header ("📼 media")))
+          ("mb" "book" entry "* 📕 %?\n%U"
+           :jump-to-captured t
+           :if-new (file+head+olp ,my/daily-file ,my/daily-header ("📼 media")))
+          ("mp" "podcast" entry "* 🎙 %?\n%U"
+           :jump-to-captured t
+           :if-new (file+head+olp ,my/daily-file ,my/daily-header ("📼 media")))
+
+          ("i" "innerspace")
+          ("ii" "innerspace" entry "* ☯ innerspace\n%U\n%?\n"
+           :jump-to-captured t
+           :if-new (file+head+olp ,my/daily-file ,my/daily-header ("☯ innerspace")))
+          ("im" "metta" entry "* ☯ metta\n%U\n%?\n"
+           :jump-to-captured t
+           :if-new (file+head+olp ,my/daily-file ,my/daily-header ("☯ innerspace")))
+          ("iv" "vipassana" entry "* ☯ vipassana\n%U\n%?\n"
+           :jump-to-captured t
+           :if-new (file+head+olp ,my/daily-file ,my/daily-header ("☯ innerspace")))
+          ("is" "sleep / dreams" entry "* 🌙 sleep / dreams\n%U\n%?\n"
+           :jump-to-captured t
+           :if-new (file+head+olp ,my/daily-file ,my/daily-header ("☯ innerspace")))
+          ("it" "trees" entry "* 🌳 trees\n%U\n%?\n"
+           :jump-to-captured t
+           :if-new (file+head+olp ,my/daily-file ,my/daily-header ("☯ innerspace")))
+
           ,(my/make-daily-capture "r" "RDV"
                                   "* RDV %? \n<%<%Y-%m-%d>>\n" t)
           ("w" "witness the fitness")
@@ -442,7 +469,10 @@
           ("wf" "fingerboard" entry "* 🤘 fingerboard :wtf:\n%U\n** 🍚 rice bucket\n- %?\n** 💪 pull-ups\n** 🐒 campusing\n** 🤘 deadhangs"
            :jump-to-captured t
            :if-new (file+head+olp ,my/daily-file ,my/daily-header ("⛰ witness the fitness")))
-          ("ww" "⛰ wtf" entry "* %? :wtf:\n%U\n"
+          ("ww" "wtf" entry "* %? :wtf:\n%U\n"
+           :jump-to-captured t
+           :if-new (file+head+olp ,my/daily-file ,my/daily-header ("⛰ witness the fitness")))
+          ("wi" "injuries" entry "* 🏥 injuries :wtf:inj:\n%U\n%?\n"
            :jump-to-captured t
            :if-new (file+head+olp ,my/daily-file ,my/daily-header ("⛰ witness the fitness")))
 
