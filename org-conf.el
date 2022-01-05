@@ -436,24 +436,27 @@
           ("mb" "book" entry "* 📕 %?\n%U"
            :jump-to-captured t
            :if-new (file+head+olp ,my/daily-file ,my/daily-header ("📼 media")))
+          ("mm" "music (is so nice)" entry "* 🎵 %?\n%U"
+           :jump-to-captured t
+           :if-new (file+head+olp ,my/daily-file ,my/daily-header ("📼 media")))
           ("mp" "podcast" entry "* 🎙 %?\n%U"
            :jump-to-captured t
            :if-new (file+head+olp ,my/daily-file ,my/daily-header ("📼 media")))
 
           ("i" "innerspace")
-          ("ii" "innerspace" entry "* ☯ innerspace\n%U\n%?\n"
+          ("ii" "innerspace" entry "* ☯ %?\n%U"
            :jump-to-captured t
            :if-new (file+head+olp ,my/daily-file ,my/daily-header ("☯ innerspace")))
-          ("im" "metta" entry "* ☯ metta\n%U\n%?\n"
+          ("im" "metta" entry "* ☯ metta\n%U\n%?"
            :jump-to-captured t
            :if-new (file+head+olp ,my/daily-file ,my/daily-header ("☯ innerspace")))
-          ("iv" "vipassana" entry "* ☯ vipassana\n%U\n%?\n"
+          ("iv" "vipassana" entry "* ☯ vipassana\n%U\n%?"
            :jump-to-captured t
            :if-new (file+head+olp ,my/daily-file ,my/daily-header ("☯ innerspace")))
-          ("is" "sleep / dreams" entry "* 🌙 sleep / dreams\n%U\n%?\n"
+          ("is" "sleep / dreams" entry "* 🌙 sleep / dreams\n%U\n%?"
            :jump-to-captured t
            :if-new (file+head+olp ,my/daily-file ,my/daily-header ("☯ innerspace")))
-          ("it" "trees" entry "* 🌳 trees\n%U\n%?\n"
+          ("it" "trees" entry "* 🌳 trees\n%U\n%?"
            :jump-to-captured t
            :if-new (file+head+olp ,my/daily-file ,my/daily-header ("☯ innerspace")))
 
@@ -466,10 +469,13 @@
           ("wc" "campusing" entry "* monkey ceiling :wtf:\n%U\n** campusing%?"
            :jump-to-captured t
            :if-new (file+head+olp ,my/daily-file ,my/daily-header ("⛰ witness the fitness")))
-          ("wf" "fingerboard" entry "* 🤘 fingerboard :wtf:\n%U\n** 🍚 rice bucket\n- %?\n** 💪 pull-ups\n** 🐒 campusing\n** 🤘 deadhangs"
+          ("wf" "fingerboard" entry "* 🤘 [[id:f9bffcdd-13d2-474b-811a-3a8f90458daf][fingerboard]] :wtf:\n%U\n** 🍚 rice bucket\n- %?\n** 💪 [[id:0c8446f1-0640-4492-9f2c-5cddfb601a27][pull-ups]]\n** 🐒 [[id:dc388e37-deec-4241-b014-7d99e7f02ad4][campusing]]\n** 🤘 [[id:793f903d-06eb-4368-b057-b30412aff151][deadhangs]]"
            :jump-to-captured t
            :if-new (file+head+olp ,my/daily-file ,my/daily-header ("⛰ witness the fitness")))
           ("ww" "wtf" entry "* %? :wtf:\n%U\n"
+           :jump-to-captured t
+           :if-new (file+head+olp ,my/daily-file ,my/daily-header ("⛰ witness the fitness")))
+          ("wh" "handstands" entry "* 💪 [[id:4fd6d453-4088-4182-91b8-ae020d456487][handstands]] :wtf:\n%U\n** 🍚 rice bucket\n- %?\n** 💪 [[id:8ec22995-68d0-4d98-bca0-86aca9afd5e4][push-ups: pike]]\n** 💪 [[id:a3008fc4-00d8-44d3-ae5a-b8f99e7f634d][l-sit]]\n** 💪 [[id:0c85ae6e-3819-4754-9c50-8b8a3e25b5b2][push-ups: lover boy]]"
            :jump-to-captured t
            :if-new (file+head+olp ,my/daily-file ,my/daily-header ("⛰ witness the fitness")))
           ("wi" "injuries" entry "* 🏥 injuries :wtf:inj:\n%U\n%?\n"
