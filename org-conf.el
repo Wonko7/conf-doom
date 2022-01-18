@@ -147,6 +147,7 @@
 ;;    (add-hook 'after-save-hook 'restore-point nil t)
 ;;    (add-hook 'before-save-hook 'save-point (- 42) t)))
 
+(setq epa-file-encrypt-to '("william@underage.wang"))
 (after! org-crypt
   (setq org-tags-exclude-from-inheritance (quote ("crypt"))
         org-crypt-disable-auto-save "encrypt"
@@ -178,6 +179,20 @@
   :config
   (fuck-me/init-cal))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; align
+
+(defun my/org-mode-realign-all-tags ()
+  (interactive)
+  "Code to realign tags, stolen from org.el"
+  (save-excursion
+    (goto-char (point-min))
+    (while (re-search-forward org-outline-regexp-bol nil t)
+      (org-set-tags (org-get-tags nil t))
+      (end-of-line))))
+
+(add-hook 'before-save-hook (lambda ()
+                              (when (eq major-mode 'org-mode)
+                                (my/org-mode-realign-all-tags))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; appt
 
@@ -475,7 +490,10 @@
           ("ww" "wtf" entry "* %? :wtf:\n%U\n"
            :jump-to-captured t
            :if-new (file+head+olp ,my/daily-file ,my/daily-header ("⛰ witness the fitness")))
-          ("wh" "handstands" entry "* 💪 [[id:4fd6d453-4088-4182-91b8-ae020d456487][handstands]] :wtf:\n%U\n** 🍚 rice bucket\n- %?\n** 💪 [[id:8ec22995-68d0-4d98-bca0-86aca9afd5e4][push-ups: pike]]\n** 💪 [[id:a3008fc4-00d8-44d3-ae5a-b8f99e7f634d][l-sit]]\n** 💪 [[id:0c85ae6e-3819-4754-9c50-8b8a3e25b5b2][push-ups: lover boy]]"
+          ("wh" "handstands" entry "* 💪 [[id:4fd6d453-4088-4182-91b8-ae020d456487][handstands]] :wtf:\n%U\n** 🍚 rice bucket\n- %?\n** 💪 [[id:4fd6d453-4088-4182-91b8-ae020d456487][handstands]]\n** 💪 [[id:8ec22995-68d0-4d98-bca0-86aca9afd5e4][push-ups: pike]]\n** 💪 [[id:a3008fc4-00d8-44d3-ae5a-b8f99e7f634d][l-sit]]\n** 💪 [[id:0c85ae6e-3819-4754-9c50-8b8a3e25b5b2][push-ups: lover boy]]"
+           :jump-to-captured t
+           :if-new (file+head+olp ,my/daily-file ,my/daily-header ("⛰ witness the fitness")))
+          ("wl" "leg day" entry "* 💪 leg day :wtf:\n%U\n** 🍚 rice bucket\n- %?\n** 💪 [[id:12d61817-b852-4ccb-ade2-40b29415694d][cossak hip rotations]]\n** 💪 [[id:a561809c-02eb-4f18-88dc-67eb6810fe8c][pistol squats]]\n"
            :jump-to-captured t
            :if-new (file+head+olp ,my/daily-file ,my/daily-header ("⛰ witness the fitness")))
           ("wi" "injuries" entry "* 🏥 injuries :wtf:inj:\n%U\n%?\n"
