@@ -356,6 +356,9 @@
 ;(require 'dune)
 ;(require 'ocamlformat)
 
+;; lsp:
+(setq lsp-lens-place-position 'above-line)
+
 (setq merlin-command (executable-find "ocamlmerlin"))
 (after! merlin
   (setq merlin-command (executable-find "ocamlmerlin"))
@@ -400,6 +403,7 @@
 (add-to-list 'auto-mode-alist '("\\.[^\\.].*\\'" nil t) t)
 
 (defun fuck-me/init-tuareg-map ()
+  ;; review this.
   (map! :localleader
       :map tuareg-mode-map
       "ge"  #'merlin-error-next
