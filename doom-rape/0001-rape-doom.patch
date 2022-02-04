@@ -1,14 +1,14 @@
-From 9e20b48efb1704af22f1b322f9166013a9688cd6 Mon Sep 17 00:00:00 2001
-From: William <wjcaldwell@besport.com>
-Date: Mon, 22 Nov 2021 19:11:47 +0100
-Subject: [PATCH] leave ret alone
+From 82bf1c5a70f2ed7821a58000c5adad83ebb16c0a Mon Sep 17 00:00:00 2001
+From: William <william@undefined.re>
+Date: Fri, 4 Feb 2022 10:43:46 +0100
+Subject: [PATCH] rape
 
 ---
- modules/app/calendar/autoload.el         |  2 +-
- modules/checkers/spell/config.el         | 12 ++++++------
- modules/config/default/+evil-bindings.el |  2 +-
- modules/lang/org/config.el               |  4 ++--
- 4 files changed, 10 insertions(+), 10 deletions(-)
+ modules/app/calendar/autoload.el         | 2 +-
+ modules/checkers/spell/config.el         | 4 ++--
+ modules/config/default/+evil-bindings.el | 2 +-
+ modules/lang/org/config.el               | 4 ++--
+ 4 files changed, 6 insertions(+), 6 deletions(-)
 
 diff --git a/modules/app/calendar/autoload.el b/modules/app/calendar/autoload.el
 index bb446931e..6e076928d 100644
@@ -24,28 +24,20 @@ index bb446931e..6e076928d 100644
  
  ;;;###autoload
 diff --git a/modules/checkers/spell/config.el b/modules/checkers/spell/config.el
-index 6041b6f23..dcb8cae2c 100644
+index c97d2c3e2..9b2f1d3ba 100644
 --- a/modules/checkers/spell/config.el
 +++ b/modules/checkers/spell/config.el
-@@ -131,12 +131,12 @@
-                      conf-mode-hook
-                      prog-mode-hook)
-                    #'spell-fu-mode))
--      :config
--      (map! :after spell-fu
--            :map override
--            :n [return]
--            (cmds! (memq 'spell-fu-incorrect-face (face-at-point nil t))
--                   #'+spell/correct))
-+      ;; :config
-+      ;; (map! :after spell-fu
-+      ;;       :map override
-+      ;;       :n [return]
-+      ;;       (cmds! (memq 'spell-fu-incorrect-face (face-at-point nil t))
-+      ;;              #'+spell/correct))
+@@ -218,8 +218,8 @@ e.g. proselint and langtool."
+                        (memq 'flyspell-incorrect (face-at-point nil t)))
+                   #'flyspell-correct-at-point)))
+       (map! :map flyspell-mouse-map
+-            "RET"    flyspell-correct
+-            [return] flyspell-correct
++            ;"RET"    flyspell-correct
++            ;[return] flyspell-correct
+             [mouse-1] #'flyspell-correct-at-point)))
  
-       ;; TODO PR this fix upstream!
-       (defadvice! +spell--fix-face-detection-a (fn &rest args)
+ 
 diff --git a/modules/config/default/+evil-bindings.el b/modules/config/default/+evil-bindings.el
 index 45cc4f270..8b1485158 100644
 --- a/modules/config/default/+evil-bindings.el
@@ -60,10 +52,10 @@ index 45cc4f270..8b1485158 100644
        (:when (featurep! :editor snippets)
         ;; auto-yasnippet
 diff --git a/modules/lang/org/config.el b/modules/lang/org/config.el
-index 24280177c..53cc850d9 100644
+index 1e1b5b5c3..8adcc0b1b 100644
 --- a/modules/lang/org/config.el
 +++ b/modules/lang/org/config.el
-@@ -1150,8 +1150,8 @@ compelling reason, so..."
+@@ -1167,8 +1167,8 @@ compelling reason, so..."
              :ni CSup      #'org-shiftup
              :ni CSdown    #'org-shiftdown
              ;; more intuitive RET keybinds
@@ -75,5 +67,5 @@ index 24280177c..53cc850d9 100644
              :i "RET"      (cmd! (org-return electric-indent-mode))
              :i [S-return] #'+org/shift-return
 -- 
-2.33.1
+2.34.0
 
