@@ -462,7 +462,16 @@
           ("ii" "innerspace" entry "* ☯ %?\n%U"
            :jump-to-captured t
            :if-new (file+head+olp ,my/daily-file ,my/daily-header ("☯ innerspace")))
+          ("if" "fam" entry "* ❤ %?\n%U"
+           :jump-to-captured t
+           :if-new (file+head+olp ,my/daily-file ,my/daily-header ("☯ innerspace")))
+          ("ih" "home" entry "* 🏡 [[id:ce6bdbed-76a3-42b6-b614-43438ffd742d][home]] %?\n%U"
+           :jump-to-captured t
+           :if-new (file+head+olp ,my/daily-file ,my/daily-header ("☯ innerspace")))
           ("im" "metta" entry "* ☯ metta\n%U\n%?"
+           :jump-to-captured t
+           :if-new (file+head+olp ,my/daily-file ,my/daily-header ("☯ innerspace")))
+          ("ip" "piracy" entry "* ☠ %?\n%U"
            :jump-to-captured t
            :if-new (file+head+olp ,my/daily-file ,my/daily-header ("☯ innerspace")))
           ("iv" "vipassana" entry "* ☯ vipassana\n%U\n%?"
