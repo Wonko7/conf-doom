@@ -1,4 +1,4 @@
-From 8606497e7ed377761a0f9cba14f9474d1c320041 Mon Sep 17 00:00:00 2001
+From 30eb769c57a038d6e3075582ce4245c032c4b22c Mon Sep 17 00:00:00 2001
 From: William <william@undefined.re>
 Date: Fri, 18 Feb 2022 11:06:09 +0100
 Subject: [PATCH] rape
@@ -8,7 +8,8 @@ Subject: [PATCH] rape
  modules/checkers/spell/config.el         | 4 ++--
  modules/config/default/+evil-bindings.el | 2 +-
  modules/lang/org/config.el               | 4 ++--
- 4 files changed, 6 insertions(+), 6 deletions(-)
+ modules/ui/emoji/config.el               | 4 ++--
+ 5 files changed, 8 insertions(+), 8 deletions(-)
 
 diff --git a/modules/app/calendar/autoload.el b/modules/app/calendar/autoload.el
 index bb446931e..6e076928d 100644
@@ -66,6 +67,20 @@ index 5779c9ca2..e01fc2279 100644
              :i [return]   #'+org/return
              :i "RET"      #'+org/return
              :i [S-return] #'+org/shift-return
+diff --git a/modules/ui/emoji/config.el b/modules/ui/emoji/config.el
+index 672da4161..d62e8dee9 100644
+--- a/modules/ui/emoji/config.el
++++ b/modules/ui/emoji/config.el
+@@ -10,7 +10,7 @@
+                    (if (featurep! +unicode) 'unicode))))
+ 
+   ;; No rendering emoji in verbatim tags.
+-  (setq-hook! 'org-mode-hook
+-    emojify-inhibit-functions (cons #'org-in-verbatim-emphasis emojify-inhibit-functions))
++  ;; (setq-hook! 'org-mode-hook
++  ;;   emojify-inhibit-functions (cons #'org-in-verbatim-emphasis emojify-inhibit-functions))
+ 
+   (emojify-set-emoji-styles emojify-styles))
 -- 
 2.34.0
 

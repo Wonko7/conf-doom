@@ -83,12 +83,25 @@
 
 (setq my/current-font-size my/font-size)
 
+;; this would be great if unicode would work:
+;(setq emojify-display-style 'image)
+;; (use-package emojify
+;;   :config
+;;   ;;(when (member "Segoe UI Emoji" (font-family-list))
+;;   ;;  (set-fontset-font
+;;   ;;   t 'symbol (font-spec :family "Segoe UI Emoji") nil 'prepend))
+;;   (set-fontset-font t 'symbol "Twitter Color Emoji" nil 'append)
+;;   ;(setq emojify-display-style 'unicode)
+;;   (setq emojify-display-style 'unicode)
+;;   (setq emojify-emoji-styles '(unicode))
+;;         ))
+
 (setq doom-font (font-spec :family "JetBrainsMono Nerd Font Mono" :size my/font-size))
 (setq use-default-font-for-symbols t)
 (set-fontset-font t 'symbol "NotoEmoji Nerd Font Mono" nil 'append)
-;; (set-fontset-font t 'symbol "NotoEmoji Nerd Font Mono" nil 'append)
 ;; (set-fontset-font t 'symbol "Twitter Color Emoji" nil 'append)
-;; Emoji: 😄, 🤦, 🏴󠁧󠁢󠁳󠁣󠁴󠁿 🖖
+;; Twitter Color Emoji
+;; Emoji: 😄, 🤦, 🏴󠁧󠁢󠁳󠁣󠁴󠁿 🖖 🏠🏡
 
 (setq doom-theme 'doom-solarized-dark)
 
