@@ -1,6 +1,6 @@
-From 82bf1c5a70f2ed7821a58000c5adad83ebb16c0a Mon Sep 17 00:00:00 2001
+From 8606497e7ed377761a0f9cba14f9474d1c320041 Mon Sep 17 00:00:00 2001
 From: William <william@undefined.re>
-Date: Fri, 4 Feb 2022 10:43:46 +0100
+Date: Fri, 18 Feb 2022 11:06:09 +0100
 Subject: [PATCH] rape
 
 ---
@@ -24,7 +24,7 @@ index bb446931e..6e076928d 100644
  
  ;;;###autoload
 diff --git a/modules/checkers/spell/config.el b/modules/checkers/spell/config.el
-index c97d2c3e2..9b2f1d3ba 100644
+index 765e9e518..f0e2beb40 100644
 --- a/modules/checkers/spell/config.el
 +++ b/modules/checkers/spell/config.el
 @@ -218,8 +218,8 @@ e.g. proselint and langtool."
@@ -52,19 +52,19 @@ index 45cc4f270..8b1485158 100644
        (:when (featurep! :editor snippets)
         ;; auto-yasnippet
 diff --git a/modules/lang/org/config.el b/modules/lang/org/config.el
-index 1e1b5b5c3..8adcc0b1b 100644
+index 5779c9ca2..e01fc2279 100644
 --- a/modules/lang/org/config.el
 +++ b/modules/lang/org/config.el
-@@ -1167,8 +1167,8 @@ compelling reason, so..."
+@@ -1180,8 +1180,8 @@ compelling reason, so..."
              :ni CSup      #'org-shiftup
              :ni CSdown    #'org-shiftdown
              ;; more intuitive RET keybinds
 -            :n [return]   #'+org/dwim-at-point
 -            :n "RET"      #'+org/dwim-at-point
-+            ;;:n [return]   #'+org/dwim-at-point
-+            ;;:n "RET"      #'+org/dwim-at-point
-             :i [return]   (cmd! (org-return electric-indent-mode))
-             :i "RET"      (cmd! (org-return electric-indent-mode))
++            ;; :n [return]   #'+org/dwim-at-point
++            ;; :n "RET"      #'+org/dwim-at-point
+             :i [return]   #'+org/return
+             :i "RET"      #'+org/return
              :i [S-return] #'+org/shift-return
 -- 
 2.34.0
