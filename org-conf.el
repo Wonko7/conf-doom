@@ -459,6 +459,9 @@
            :if-new (file+head+olp ,my/daily-file ,my/daily-header ("📼 media")))
 
           ("i" "innerspace")
+          ("ie" "third eye" entry "* ☯ [[id:b94c6aad-213c-4091-8275-bfa8c0c363e6][prying open my third eye]]\n%U\n%?"
+           :jump-to-captured t
+           :if-new (file+head+olp ,my/daily-file ,my/daily-header ("☯ innerspace")))
           ("ii" "innerspace" entry "* ☯ %?\n%U"
            :jump-to-captured t
            :if-new (file+head+olp ,my/daily-file ,my/daily-header ("☯ innerspace")))
@@ -474,13 +477,13 @@
           ("ip" "piracy" entry "* ☠ %?\n%U"
            :jump-to-captured t
            :if-new (file+head+olp ,my/daily-file ,my/daily-header ("☯ innerspace")))
-          ("iv" "vipassana" entry "* ☯ vipassana\n%U\n%?"
+          ("iv" "vipassana" entry "* ☯ [[id:37187551-897a-4f6a-a978-c057644f34af][vipassana]]\n%U\n%?"
            :jump-to-captured t
            :if-new (file+head+olp ,my/daily-file ,my/daily-header ("☯ innerspace")))
           ("is" "sleep / dreams" entry "* 🌙 sleep / dreams\n%U\n%?"
            :jump-to-captured t
            :if-new (file+head+olp ,my/daily-file ,my/daily-header ("☯ innerspace")))
-          ("it" "trees" entry "* 🌳 trees\n%U\n%?"
+          ("it" "trees" entry "* 🌳 trees / [[id:cadf3871-658d-4db2-b16c-36aa03dc71dc][brocoli]]\n%U\n%?"
            :jump-to-captured t
            :if-new (file+head+olp ,my/daily-file ,my/daily-header ("☯ innerspace")))
 
