@@ -527,12 +527,12 @@
       :nvm "'"    #'+ivy/projectile-find-file
       :nvm "ng"   #'counsel-org-goto-all ;; nG in split buffer?
 
-      :desc "today"              :nvm "jt" #'(lambda() (interactive) (my/journal-open-today))
-      :desc "today other window" :nvm "jT" #'(lambda() (interactive) (my/journal-open-today t))
+      ;:desc "today"              :nvm "jt" #'(lambda() (interactive) (my/journal-open-today))
+      ;:desc "today other window" :nvm "jT" #'(lambda() (interactive) (my/journal-open-today t))
 
-      :nvm "jn" #'my/journal-new-todo ;; FIXME remove/or call capture instead?
-      :nvm "jN" #'org-journal-new-entry
-      :nvm "jr" #'org-journal-new-scheduled-entry
+      ;:nvm "jn" #'my/journal-new-todo ;; FIXME remove/or call capture instead?
+      ;:nvm "jN" #'org-journal-new-entry
+      ;:nvm "jr" #'org-journal-new-scheduled-entry
 
       :desc "dogears prev"    :nvm  "<" #'dogears-back
       :desc "dogears next"    :nvm  ">" #'dogears-forward
