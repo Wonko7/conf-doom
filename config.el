@@ -544,6 +544,7 @@
 
       :desc "follow" :nvm "taf" #'org-agenda-follow-mode
 
+      ;; calendar
       :desc "Open Calendar"                 :nvm "dC" #'=calendar
       :desc "Sync calendar"                 :nvm "dS" #'org-gcal-sync
       :desc "Delete from calendar"          :nvm "dX" #'org-gcal-delete-at-point
@@ -552,6 +553,9 @@
       :desc "inactive timestamp"            :nvm "dn" #'my/insert-inactive-timestamp
 
       :desc "password-store"                :nvm "P"  #'ivy-pass
+
+      ;; misc
+      :desc "diff %" :nvm "g=" #'vc-diff
 
       (:prefix ("e" . "elfeed")
        "e" #'elfeed

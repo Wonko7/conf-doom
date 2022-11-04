@@ -1,5 +1,7 @@
 ;;; ../conf/doom/org-conf.el -*- lexical-binding: t; -*-
 
+;; (setq org-element-use-cache nil)
+;; "config.el"
 
 (setq org-directory "/data/org/")
 (setq org-roam-directory (concat org-directory "here-be-dragons/"))
@@ -443,6 +445,7 @@
            :prepend t)
           ("s" "ssdd bottom" entry "* [ ] %?"
            :if-new (file+head+olp ,my/daily-file ,my/daily-header ("🖖 ssdd")))
+          ("g" "go" plain "%?" :jump-to-captured t :if-new (file ,my/daily-file))
 
           ("m" "media")
           ("mt" "tv" entry "* 📺 %?\n%U"
@@ -459,6 +462,9 @@
            :if-new (file+head+olp ,my/daily-file ,my/daily-header ("📼 media")))
 
           ("i" "innerspace")
+          ("ic" "coffee" entry "* ☕ [[id:88321f53-b156-4254-91b7-4af1359853ca][coffee]]\n%U\n%?"
+           :jump-to-captured t
+           :if-new (file+head+olp ,my/daily-file ,my/daily-header ("☯ innerspace")))
           ("ie" "third eye" entry "* ☯ [[id:b94c6aad-213c-4091-8275-bfa8c0c363e6][prying open my third eye]]\n%U\n%?"
            :jump-to-captured t
            :if-new (file+head+olp ,my/daily-file ,my/daily-header ("☯ innerspace")))
@@ -471,7 +477,10 @@
           ("ih" "home" entry "* 🏡 [[id:ce6bdbed-76a3-42b6-b614-43438ffd742d][home]] %?\n%U"
            :jump-to-captured t
            :if-new (file+head+olp ,my/daily-file ,my/daily-header ("☯ innerspace")))
-          ("iH" "Health" entry "* 🏡 [[id:3e525893-2e96-401b-bb98-a5a47601192d][health]] %?\n%U"
+          ("iH" "Health" entry "* ⚖ [[id:721ab13d-c8ff-4f55-8c8f-54687d031fab][weight]] %?\n%U"
+           :jump-to-captured t
+           :if-new (file+head+olp ,my/daily-file ,my/daily-header ("☯ innerspace")))
+          ("iw" "weight" entry "* 🏥 [[id:3e525893-2e96-401b-bb98-a5a47601192d][health]] %?\n%U"
            :jump-to-captured t
            :if-new (file+head+olp ,my/daily-file ,my/daily-header ("☯ innerspace")))
           ("im" "metta" entry "* ☯ metta\n%U\n%?"
@@ -493,33 +502,47 @@
           ,(my/make-daily-capture "r" "RDV"
                                   "* RDV %? \n<%<%Y-%m-%d>>\n" t)
           ("w" "witness the fitness")
-          ("wb" "bouldering" entry "* ⛰ bouldering %? :wtf:\n%U\n** ❤ with :innerspace:\n** 🔥 topped\n** 👷 projects\n** 🏥 [[id:820e7fc2-6cd0-4865-988f-7f526f5545a9][injuries]]\n"
+          ("wb" "bouldering" entry "* ⛰ [[id:546e7d60-daa1-413c-96de-a026f4649a17][bouldering]] %? :wtf:\n%U\n** ❤ with :innerspace:\n** 🔥 topped\n** 👷 projects\n** 🏥 [[id:820e7fc2-6cd0-4865-988f-7f526f5545a9][injuries]]\n"
            :jump-to-captured t
            :if-new (file+head+olp ,my/daily-file ,my/daily-header ("⛰ witness the fitness")))
-          ("wc" "campusing" entry "* monkey ceiling :wtf:\n%U\n** campusing%?"
+          ("ws" "sport climbing" entry "* ⛰ [[id:80360dc7-4428-433b-8651-30248b4fe46d][sport climbing]] %? :wtf:\n%U\n** ❤ with :innerspace:\n** 🔥 topped\n** 👷 projects\n** 🏥 [[id:820e7fc2-6cd0-4865-988f-7f526f5545a9][injuries]]\n"
            :jump-to-captured t
            :if-new (file+head+olp ,my/daily-file ,my/daily-header ("⛰ witness the fitness")))
-          ("wf" "fingerboard" entry "* 🤘 [[id:f9bffcdd-13d2-474b-811a-3a8f90458daf][fingerboard]] :wtf:\n%U\n** 🍚 rice bucket\n- %?\n** 💪 [[id:0c8446f1-0640-4492-9f2c-5cddfb601a27][pull-ups]]\n** 🐒 [[id:dc388e37-deec-4241-b014-7d99e7f02ad4][campusing]]\n** 🤘 [[id:793f903d-06eb-4368-b057-b30412aff151][deadhangs]]"
+          ("wf" "fingerboard" entry "* 🤘 [[id:f9bffcdd-13d2-474b-811a-3a8f90458daf][fingerboard]] :wtf:\n%U\n** 🍚 [[id:7acd1856-7e65-4134-b6ec-715976a03e7e][rice bucket]]\n- %?\n** 💪 [[id:0c8446f1-0640-4492-9f2c-5cddfb601a27][pull-ups]]\n** 🐒 [[id:dc388e37-deec-4241-b014-7d99e7f02ad4][campusing]]\n** 🤘 [[id:793f903d-06eb-4368-b057-b30412aff151][deadhangs]]"
            :jump-to-captured t
            :if-new (file+head+olp ,my/daily-file ,my/daily-header ("⛰ witness the fitness")))
-          ;; ("ww" "wtf" entry "* %? :wtf:\n%U\n"
-          ;;  :jump-to-captured t
-          ;;  :if-new (file+head+olp ,my/daily-file ,my/daily-header ("⛰ witness the fitness")))
-          ("wh" "handstands" entry "* 💪 [[id:4fd6d453-4088-4182-91b8-ae020d456487][handstands]] :wtf:\n%U\n** 🍚 rice bucket\n- %?\n** 💪 [[id:4fd6d453-4088-4182-91b8-ae020d456487][handstands]]\n** 💪 [[id:8ec22995-68d0-4d98-bca0-86aca9afd5e4][push-ups: pike]]\n** 💪 [[id:a3008fc4-00d8-44d3-ae5a-b8f99e7f634d][l-sit]]\n** 💪 [[id:0c85ae6e-3819-4754-9c50-8b8a3e25b5b2][push-ups: lover boy]]"
+          ("wh" "handstands" entry "** 🤸 [[id:4fd6d453-4088-4182-91b8-ae020d456487][handstands]] :wtf:\n%U *** 🍚 [[id:7acd1856-7e65-4134-b6ec-715976a03e7e][rice bucket]]\n- %?x *** 💪 [[id:5636c886-4684-4343-8797-b46ae4c08301][crow to push butt up high straight back]]\n*** 💪 [[id:ee90c7f5-5ee6-4db4-b613-fccf792e6c2f][baby HSPUs]]\n*** 🤸 [[id:4fd6d453-4088-4182-91b8-ae020d456487][handstands]]\nsession max hold: \n*** 🍌 [[id:6d270194-77c5-4dba-a682-6de4e28ecd38][btw banana stretch]]"
            :jump-to-captured t
            :if-new (file+head+olp ,my/daily-file ,my/daily-header ("⛰ witness the fitness")))
-          ("wl" "leg day" entry "* 💪 leg day :wtf:\n%U\n** 🍚 rice bucket\n- %?\n** 💪 [[id:12d61817-b852-4ccb-ade2-40b29415694d][cossak hip rotations]]\n** 💪 [[id:a561809c-02eb-4f18-88dc-67eb6810fe8c][pistol squats]]\n"
+          ("wr" "rice bucket" entry "* 🍚 [[id:7acd1856-7e65-4134-b6ec-715976a03e7e][rice bucket]] :wtf:\n%U%?"
+           :jump-to-captured t
+           :if-new (file+head+olp ,my/daily-file ,my/daily-header ("⛰ witness the fitness")))
+          ("wl" "leg day" entry "* 💪 leg day :wtf:\n%U\n** 🍚 [[id:7acd1856-7e65-4134-b6ec-715976a03e7e][rice bucket]]\n- %?\n** 💪 [[id:12d61817-b852-4ccb-ade2-40b29415694d][cossak hip rotations]]\n** 💪 [[id:a561809c-02eb-4f18-88dc-67eb6810fe8c][pistol squats]]\n"
            :jump-to-captured t
            :if-new (file+head+olp ,my/daily-file ,my/daily-header ("⛰ witness the fitness")))
           ("wi" "injuries" entry "* 🏥 [[id:820e7fc2-6cd0-4865-988f-7f526f5545a9][injuries]] :wtf:inj:\n%U\n%?\n"
            :jump-to-captured t
            :if-new (file+head+olp ,my/daily-file ,my/daily-header ("⛰ witness the fitness")))
-          ("ww" "woody" entry "* 📐 [[id:a679eafc-fcaf-404d-a14e-d730a1a5b58b][woody]] :wtf:\n%U\n** 🍚 rice bucket\n- %?\n** 🔥 topped\n** 👷 projects\n** 🏥 [[id:820e7fc2-6cd0-4865-988f-7f526f5545a9][injuries]]"
+          ("ww" "woody" entry "* 📐 [[id:a679eafc-fcaf-404d-a14e-d730a1a5b58b][woody]] :wtf:\n%U\n** 🍚 [[id:7acd1856-7e65-4134-b6ec-715976a03e7e][rice bucket]]\n- %?\n** 🔥 topped\n** 👷 projects\n** 🏥 [[id:820e7fc2-6cd0-4865-988f-7f526f5545a9][injuries]]"
            :jump-to-captured t
            :if-new (file+head+olp ,my/daily-file ,my/daily-header ("⛰ witness the fitness")))
 
-          ("b" "besport")
+          ("t" "tech")
+          ("tg" "guix" entry "* 🐧 [[id:844ed739-42ce-4277-b7b5-b8f4a79869dc][guix]]\n%U\n%?"
+           :jump-to-captured t
+           :if-new (file+head+olp ,my/daily-file ,my/daily-header ("⚛ tech")))
+          ("te" "emacs" entry "* 🐧 [[id:ab80bf16-aadd-4fa3-a9d6-4d4f7fd1b2e9][emacs]]\n%U\n%?"
+           :jump-to-captured t
+           :if-new (file+head+olp ,my/daily-file ,my/daily-header ("⚛ tech")))
+          ("tl" "linux" entry "* 🐧 [[id:25647313-7296-4803-b2c4-f57b5b6e2d72][linux]]\n%U\n%?"
+           :jump-to-captured t
+           :if-new (file+head+olp ,my/daily-file ,my/daily-header ("⚛ tech")))
+          ("tp" "physics" entry "* ⚛ [[id:a3e5f916-a260-4925-81ef-5f7c6f5e3157][physics]]\n%U\n%?"
+           :jump-to-captured t
+           :if-new (file+head+olp ,my/daily-file ,my/daily-header ("⚛ tech")))
 
+
+          ("b" "besport")
           ("bd" "BS ssdd top" entry "* [ ] %?"
            :if-new (file+head+olp ,my/daily-file ,my/daily-header ("🐫 BS ssdd"))
            :prepend t)
